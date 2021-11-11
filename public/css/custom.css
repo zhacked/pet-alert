@@ -3,20 +3,14 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background: #0047ff;
-  background: linear-gradient(315deg, #0047ff 0%, #0028b4 27%, #a00000 79%, red 100%);
+
 }
 
 .custom-card__glass {
   backdrop-filter: blur(16px) saturate(180%);
+
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  background-color: rgba(17, 25, 40, 0.45);
+  background-color: rgba(252, 252, 252, 0.959);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.125);
   -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.06), 2px 2px 2px rgba(0, 0, 0, 0.06), 4px 4px 4px rgba(0, 0, 0, 0.06), 8px 8px 8px rgba(0, 0, 0, 0.06), 16px 16px 16px rgba(0, 0, 0, 0.06), 32px 32px 32px rgba(0, 0, 0, 0.06), -1px -1px 1px rgba(255, 255, 255, 0.06), -2px -2px 2px rgba(255, 255, 255, 0.06), -4px -4px 4px rgba(255, 255, 255, 0.06), -8px -8px 8px rgba(255, 255, 255, 0.06), -16px -16px 16px rgba(255, 255, 255, 0.06), -32px -32px 32px rgba(255, 255, 255, 0.06);
@@ -24,7 +18,7 @@
 }
 
 .custom-button {
-  background-color: #DC6872;
+  background-color: #3911e9;
   border: none;
   letter-spacing: 0.5em;
   font-size: 1em;
@@ -40,7 +34,7 @@
 
 .custom-input {
   background: none;
-  color: #fff !important;
+  color: rgb(5, 5, 5) !important;
 }
 
 .custom-input:focus {
@@ -48,7 +42,7 @@
 }
 
 .custom-input__label {
-  color: #fff;
+  color: rgb(12, 12, 12);
 }
 
 .custom-welcome {

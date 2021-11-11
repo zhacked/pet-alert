@@ -4,12 +4,11 @@
     <div class="custom-layout__login container-fluid">
         <div class="container">
             <div class="d-flex justify-content-center align-items-center flex-column">
-                <img src="{{ asset('image/rooster.png') }}" class="mb-5" width="160px" height="110px" alt="LOGO">
-                <div class="custom-card__glass d-flex justify-content-center align-items-center p-4 card"
-                    style="max-width: 90%; width: 600px">
-
+                <img src="{{ asset('image/dog.png') }}" class="mb-5" width="160px" height="110px" alt="LOGO">
+                <div class="custom-card__glass card d-flex justify-content-center align-items-center p-4 card"
+                    style="max-width: 90%; width: 600px border:1px solid black;">
                     <div class="card-body container-fluid px-5 py-3">
-                        <h1 class="text-center text-white custom-welcome">WELCOME</h1>
+                        <h1 class="text-center text-black custom-welcome">Pet Alert</h1>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-3">
@@ -17,7 +16,7 @@
                                     class="form-label  custom-input__label">{{ __('E-Mail Address') }}</label>
                                 <div class="d-flex flex-column">
                                     <input id="email" type="email"
-                                        class="form-control custom-input @error('email') is-invalid @enderror" name="email"
+                                        class="text-black form-control custom-input @error('email') is-invalid @enderror" name="email"
                                         value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                     @error('email')
@@ -42,10 +41,11 @@
 
                             </div>
 
-                            <div class="d-grid col-6 mx-auto">
+                            <div class="d-grid col-6 float-right ">
                                 <button class="btn btn-block btn-primary mt-4 py-3 text-uppercase custom-button "
                                     type="submit">
-                                    {{ __('Sign in') }}</button>
+                                    {{ __('LOGIN') }}
+                                </button>
                             </div>
                         </form>
                     </div>
