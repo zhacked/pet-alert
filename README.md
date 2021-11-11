@@ -1,17 +1,21 @@
-# pet-alert
-thesis project
 
-To Run the system 
-Foolow this 
+## About Laravel
 
-#serve
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+
+## Set Up 
+npm install <br>
+composer install <br>
+php artisan passport:install
+
+## To Migrate database
+php artisan migrate 
+
+## To run
 php artisan serve
 
-#watch 
-npm run watch
+## To Watch/dev
+npm run dev
 
-#migrate database
-php artisan migrate
 
-#passport 
-php artisan passport:install
+
