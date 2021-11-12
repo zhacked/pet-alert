@@ -85,8 +85,9 @@ let routes = [
         path: '/profile', component: require('./components/Profile.vue').default
     },
     {
-        path: '/soa', component: require('./components/SOA.vue').default
+        path: '/clients', component: require('./components/Clients.vue').default
     },
+    
     {
         path: '*', component: require('./components/NotFound.vue').default
     },
