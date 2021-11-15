@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Client;
-
+use App\Models\Pet;
 class ClientController extends Controller
 {
     public function __construct()
@@ -29,9 +29,9 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function PetDetails()
     {
-        //
+        return Pet::latest()->paginate(10);
     }
 
     /**
@@ -42,11 +42,12 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+       
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'gender' => 'required|string',
-            'contactr' => 'required|numeric',
+            'contact' => 'required|numeric',
             'address' => 'required|string'
         ]);
 
@@ -65,9 +66,9 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function PetInfo($id)
     {
-        //
+        return Pet::Where('id', $id)->first();
     }
 
     /**

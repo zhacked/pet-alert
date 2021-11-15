@@ -76,7 +76,7 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 
 let routes = [
     {
-        path: '/dashboard', component: require('./components/Dashboard.vue').default
+        path: '/home', component: require('./components/Dashboard.vue').default
     },
     {
         path: '/users', component: require('./components/Users.vue').default
@@ -87,6 +87,10 @@ let routes = [
     {
         path: '/clients', component: require('./components/Clients.vue').default
     },
+    {
+        path: '/pet', component: require('./components/Pet.vue').default
+    },
+    
     
     {
         path: '*', component: require('./components/NotFound.vue').default

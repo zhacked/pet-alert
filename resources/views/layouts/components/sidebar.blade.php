@@ -18,17 +18,36 @@
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu" data-accordion="false">
 			<li class="nav-item">
-				<router-link to="/dashboard" class="nav-link text-white" >
+				<router-link to="/home" class="nav-link text-white" >
 					<i class="nav-icon fas fa-tachometer-alt text-gray "></i>
 					<p >Dashboard</p>
 				</router-link>
 			</li>
-			<li class="nav-item">
-				<router-link to="/clients" class="nav-link  text-white">
-					<i class="nav-icon fas fa-users  text-gray"></i>
-					<p>Clients</p>
-				</router-link>
+			<li class="nav-item has-treeview menu-close">
+				<a href="#" class="nav-link  text-white">
+				<i class="nav-icon fas fa-cog  text-gray"></i>
+				<p>
+					Clients Details
+					<i class="right fas fa-angle-left"></i>
+				</p>
+				</a>
+				<ul class="nav nav-treeview ">
+					<li class="nav-item">
+						<router-link to="/clients" class="nav-link  text-white">
+							<i class="fas fa-users  text-gray"></i>
+							<p>Clients</p>
+						</router-link>
+					</li>
+					<li class="nav-item">
+						<router-link to="/pet" class="nav-link  text-white">
+							<i class="fas fa-paw  text-gray"></i>
+							<p>Pet</p>
+						</router-link>
+					</li>
+
+				</ul>
 			</li>
+			
 			<li class="nav-item">
 				<router-link to="/report" class="nav-link  text-white">
 					<i class="nav-icon fas fa-clipboard text-gray"></i>
