@@ -92,8 +92,8 @@
 
 					</ul>
 				</li>
-			
 			@endif
+
 
             @can('isAdmin')
                 <li class="nav-item has-treeview menu-open">
