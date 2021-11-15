@@ -49,8 +49,6 @@
 		
 
 			@if(Gate::check('isEmployee') || Gate::check('isAdmin'))
-
-
 				<li class="nav-item">
 					<router-link to="/home" class="nav-link text-white" >
 						<i class="nav-icon fas fa-tachometer-alt text-gray "></i>
