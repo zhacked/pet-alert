@@ -43,6 +43,7 @@ Vue.filter('upText', function(text){
 Vue.filter('myDate',function(created){
     return moment(created).format('MMMM Do YYYY');
 });
+
 Vue.prototype.$gate = new Gate(window.user)
 
 Vue.use(VueRouter)
@@ -90,6 +91,13 @@ let routes = [
     {
         path: '/pet', component: require('./components/Pet.vue').default
     },
+    {
+        path: '/report', component: require('./components/Report.vue').default
+    },
+    {
+        path: '/employees', component: require('./components/Employees.vue').default
+    },
+    
     
     
     {

@@ -17,56 +17,85 @@
 
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu" data-accordion="false">
-			<li class="nav-item">
-				<router-link to="/home" class="nav-link text-white" >
-					<i class="nav-icon fas fa-tachometer-alt text-gray "></i>
-					<p >Dashboard</p>
-				</router-link>
-			</li>
-			<li class="nav-item has-treeview menu-close">
-				<a href="#" class="nav-link  text-white">
-				<i class="nav-icon fas fa-cog  text-gray"></i>
-				<p>
-					Clients Details
-					<i class="right fas fa-angle-left"></i>
-				</p>
-				</a>
-				<ul class="nav nav-treeview ">
-					<li class="nav-item">
-						<router-link to="/clients" class="nav-link  text-white">
-							<i class="fas fa-users  text-gray"></i>
-							<p>Clients</p>
-						</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link to="/pet" class="nav-link  text-white">
-							<i class="fas fa-paw  text-gray"></i>
-							<p>Pet</p>
-						</router-link>
-					</li>
-
-				</ul>
-			</li>
 			
-			<li class="nav-item">
-				<router-link to="/report" class="nav-link  text-white">
-					<i class="nav-icon fas fa-clipboard text-gray"></i>
-					<p>Report</p>
-				</router-link>
-			</li>
-			<li class="nav-item">
-				<router-link to="/schedule" class="nav-link  text-white">
-					<i class="nav-icon fas fa-calendar-alt  text-gray"></i>
-					<p>Schedule</p>
-				</router-link>
-			</li>
-			<li class="nav-item">
-				<router-link to="/employees" class="nav-link  text-white">
-					<i class="nav-icon fas fa-user-tie  text-gray"></i>
-					<p>Employees</p>
-				</router-link>
-			</li>
-           
+
+			{{-- client only --}}
+			@can('isClient')
+				<li class="nav-item">
+					<router-link to="/profile" class="nav-link text-white" >
+						<i class="nav-icon fas fa-user text-gray "></i>
+						<p >Profile</p>
+					</router-link>
+				</li>
+				<li class="nav-item">
+					<router-link to="/pet" class="nav-link text-white" >
+						<i class="nav-icon fas fa-paw text-gray "></i>
+						<p >Pet</p>
+					</router-link>
+				</li>
+				<li class="nav-item">
+					<router-link to="/appointment" class="nav-link text-white" >
+						<i class="nav-icon fas fa-calendar-alt text-gray "></i>
+						<p >Appointment</p>
+					</router-link>
+				</li>
+				<li class="nav-item">
+					<router-link to="/appointment" class="nav-link text-white" >
+						<i class="nav-icon fas fa-calendar-alt text-gray "></i>
+						<p >Pet Record</p>
+					</router-link>
+				</li>
+			@endcan
+		
+
+			@if(Gate::check('isEmployee') || Gate::check('isAdmin'))
+
+
+				<li class="nav-item">
+					<router-link to="/home" class="nav-link text-white" >
+						<i class="nav-icon fas fa-tachometer-alt text-gray "></i>
+						<p >Dashboard</p>
+					</router-link>
+				</li>
+				<li class="nav-item">
+					<router-link to="/report" class="nav-link  text-white">
+						<i class="nav-icon fas fa-clipboard text-gray"></i>
+						<p>Report</p>
+					</router-link>
+				</li>
+				<li class="nav-item">
+					<router-link to="/schedule" class="nav-link  text-white">
+						<i class="nav-icon fas fa-calendar-alt  text-gray"></i>
+						<p>Schedule</p>
+					</router-link>
+				</li>
+			
+				<li class="nav-item has-treeview menu-close">
+					<a href="#" class="nav-link  text-white">
+					<i class="nav-icon fas fa-cog  text-gray"></i>
+					<p>
+						Clients Details
+						<i class="right fas fa-angle-left"></i>
+					</p>
+					</a>
+					<ul class="nav nav-treeview ">
+						<li class="nav-item">
+							<router-link to="/clients" class="nav-link  text-white">
+								<i class="fas fa-users  text-gray"></i>
+								<p>Clients</p>
+							</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link to="/pet" class="nav-link  text-white">
+								<i class="fas fa-paw  text-gray"></i>
+								<p>Pet</p>
+							</router-link>
+						</li>
+
+					</ul>
+				</li>
+			
+			@endif
 
             @can('isAdmin')
                 <li class="nav-item has-treeview menu-open">
@@ -87,6 +116,12 @@
 
                     </ul>
                 </li>
+				<li class="nav-item">
+					<router-link to="/employees" class="nav-link  text-white">
+						<i class="nav-icon fas fa-user-tie  text-gray"></i>
+						<p>Employees</p>
+					</router-link>
+				</li>
             @endcan
 
 

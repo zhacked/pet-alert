@@ -35,7 +35,7 @@
                                         <td>{{clientData.email}}</td>
                                         <td>{{clientData.gender}}</td>
                                         <td>
-                                            <button class="btn btn-success btn-sm"  @click="openModelPet()">
+                                            <button class="btn btn-success btn-sm"  @click="openModelPet(clientData.id)">
 												<i class="fa fa-eye"></i> pet details
 											</button>
                                         </td>
@@ -140,11 +140,11 @@
                             <v-card class="mt-5">
                                 <v-data-table
                                     :headers="headers"
-                                    :items="pet.data"
-                                    :items-per-page="5"
+                                    :items="petView.data"
+                                    :items-per-page="3"
                                     class="elevation-1"
                                 >
-                               <template v-slot:item.actions="{ item }">
+                               <template v-slot:[`item.actions`]="{ item }">
                                 <v-btn class="btn btn-success btn-sm"  @click="ViewpetDetails(item)">
                                         	<i class="fa fa-paw pr-2">Pet</i>
                                 </v-btn>
@@ -170,17 +170,17 @@
                                                 ></v-img>
                                             </v-col>
                                             <v-col>
-                                                <span>Name : <span>{{petname}}</span> </span> 
+                                                <span> <strong> Name : </strong></span> <span>{{petname}}</span> 
                                                 <br>
-                                                <span>Species : <span>{{species}}</span> </span> 
+                                                <span> <strong>Species </strong> : <span>{{species}}</span> </span> 
                                                 <br>
-                                                <span>Breed : <span>{{breed}}</span></span> 
+                                                <span> <strong> Breed </strong> : <span>{{breed}}</span></span> 
                                                 <br>
-                                                <span>Color : <span>test</span></span> 
+                                                <span> <strong> Color </strong> : <span>test</span></span> 
                                                 <br>
-                                                <span>Gender :<span>{{gender}}</span> </span> 
+                                                <span><strong> Gender </strong> :<span>{{gender}}</span> </span> 
                                                 <br>
-                                                <span>Birth date : <span>{{bday}}</span></span>
+                                                <span><strong> Birth date  </strong> : <span>{{bday}}</span></span>
 
                                             </v-col>
                                         </v-row>
@@ -219,6 +219,7 @@
                 reveal: false,
                 client : {},
                 pet:{},
+                petView: {},
                 length: '',
                 form: new Form({
                     id:'',
@@ -315,9 +316,20 @@
                     axios.get("api/client").then(({ data }) => (this.client = data));
                 
             },
-            openModelPet(){
+            openModelPet($id){
+            
                 this.form.reset();
                 $('#petModel').modal('show');
+                this.reveal = true ;
+                axios.get('api/showpet/'+ $id)
+                .then((data) => {
+                    this.petView = data;
+                 
+                })
+                .catch(() => {
+                    this.$Progress.fail();
+                });
+                this.reveal = false ;
             },
             createClient(){
                 this.$Progress.start();

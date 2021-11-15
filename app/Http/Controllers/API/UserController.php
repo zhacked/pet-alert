@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
-
+use App\Models\Client;
+use App\Models\Report;
 
 
 class UserController extends Controller
@@ -105,9 +106,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function countuser()
     {
-        //
+        $client = Client::count();
+        $report = Report::count();
+
+
+        return response()->json([
+            'client' =>  $client, 
+             'report' => $report
+             ]);
+       
     }
 
     /**

@@ -13,45 +13,26 @@
 							</v-card-actions>
 						</v-card-title>
 
+                              <v-data-table
+                                    :headers="headers"
+                                    :items="pet.data"
+                                
+                                    class="elevation-1"
+                                >
+                               <template v-slot:[`item.actions`]="{ item }">
+                                    <button class="btn btn-primary  btn-sm"  @click="editModal(item)">
+                                                        <i class="fa fa-edit"></i> Update
+                                                    </button>
 
-							<v-simple-table class=" table-hover elevation-1">
-								<thead >
-									<tr class="text-center ">
-										<td>ID</td>
-                                        <td>Owner</td>
-										<td>Name</td>
-										<td>Species</td>
-										<td>Breed</td>
-                                        <td>Action</td>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- <tr v-if="users.data.length == 0">
-										<td colspan="7" class="text-center"> <h3>No Data Available</h3> </td>
-									</tr> -->
-									<tr  v-for="petDetails in pet.data" :key="petDetails.id" class="text-center">
-										<td>{{petDetails.id}}</td>
-                                        <td>{{petDetails.client_data.name}}</td>
-                                        <td>{{petDetails.Name}}</td>
-                                        <td>{{petDetails.species}}</td>
-                                        <td>{{petDetails.breed}}</td>
-                                       
-										<td>
-											<button class="btn btn-primary  btn-sm"  @click="editModal(petDetails)">
-												<i class="fa fa-edit"></i> Update
-											</button>
+                                                    <button class="btn btn-danger  btn-sm"  @click="deletePet(item.id)">
+                                                        <i class="fa fa-trash"></i> Delete
+                                        </button>
+                                </template>
+                                
+                             </v-data-table>
+							
 
-												<button class="btn btn-danger  btn-sm"  @click="deletePet(petDetails.id)">
-												<i class="fa fa-trash"></i> Delete
-											</button>
-										</td>
-									</tr>
-								</tbody>
-							</v-simple-table>
-
-						<v-card-title class="ma-0">
-							<pagination  :data="pet" @pagination-change-page="getResults"></pagination>
-						</v-card-title>
+	
 					</v-card>
 				</v-col>
 			</v-row>
@@ -87,10 +68,10 @@
 								<has-error :form="form" field="type"></has-error>
 							</div>
 							<div class="form-group">
-								<input v-model="form.name" type="text" name="name"
+								<input v-model="form.Name" type="text" name="Name"
 									placeholder="Name"
-									class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-								<has-error :form="form" field="name"></has-error>
+									class="form-control" :class="{ 'is-invalid': form.errors.has('Name') }">
+								<has-error :form="form" field="Name"></has-error>
 							</div>
                             <div class="form-group">
 								<input v-model="form.species" type="text" name="species"
@@ -99,6 +80,12 @@
 								<has-error :form="form" field="species"></has-error>
 							</div>
 							<div class="form-group">
+								<input v-model="form.color" type="text" name="color"
+									placeholder="Pet Color"
+									class="form-control" :class="{ 'is-invalid': form.errors.has('color') }">
+								<has-error :form="form" field="color"></has-error>
+							</div>
+                            <div class="form-group">
 								<input v-model="form.breed" type="breed" name="breed"
 									placeholder="breed type"
 									class="form-control" :class="{ 'is-invalid': form.errors.has('breed') }">
@@ -106,23 +93,58 @@
 							</div>
 
 							<div class="form-group">
-								<input v-model="form.gender" name="gender" id="gender"
-								placeholder="gender"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('gender') }">
+								<select name="type" v-model="form.gender" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('gender') }">
+									<option value="">Select Gender</option>
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+								
+								</select>
 								<has-error :form="form" field="gender"></has-error>
 							</div>
 
-                            <div class="form-group">
-								<input v-model="form.birthday" name="birthday" id="birthday"
-								placeholder="Pet's birthdate"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('birthday') }">
-								<has-error :form="form" field="birthday"></has-error>
-							</div>
-
-                        
-
-
-				
+                             
+                            <v-dialog
+                                ref="dialog"
+                                v-model="modal"
+                                :return-value.sync="form.birthday"
+                                persistent
+                                width="290px"
+                                :retain-focus="false"
+                                 >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        v-model="form.birthday"
+                                        label="Picker in dialog"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                      <has-error :form="form" field="birthday"></has-error>
+                                </template>
+                                <v-date-picker
+                                v-model="form.birthday"
+                                
+                                scrollable
+                                >
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    text
+                                    color="primary"
+                                    @click="modal = false"
+                                >
+                                    Cancel
+                                </v-btn>
+                                <v-btn
+                                    text
+                                    color="primary"
+                                    @click="$refs.dialog.save(form.birthday)"
+                                >
+                                    OK
+                                </v-btn>
+                                </v-date-picker>
+                            </v-dialog>
+                                     
 						</div>
 						<div class="modal-footer">
 							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
@@ -143,31 +165,39 @@
     export default {
         data() {
             return {
+                headers: [
+                { text: 'Pet Name', value: 'Name' },
+                { text: 'Owner', value: 'client_data.name' },
+                { text: 'Name', value: 'Name' },
+                { text: 'Species', value: 'species' },
+                { text: 'Breed', value: 'breed' },
+                { text: 'Color', value: 'color' },
+                { text: 'Gender', value: 'gender' },
+                { text: 'Actions', value: 'actions', sortable: false }
+                ],
                 editmode: false,
-                pet : {},
-                client:{},
+                modal: false,
+                pet : [],
+                client:[],
+                
                 length: '',
                 form: new Form({
                     client_id:'',
                     id:'',
-                    name : '',
+                    Name : '',
                     species :'',
+                    gender:'',
                     breed: '',
-                    birthday: '',
+                    birthday:'',
                     photo: '',
+                    color:''
                    
                 })
             }
         },
         methods: {
-            getResults(page = 1) {
-                        axios.get('api/pet?page=' + page)
-                            .then(response => {
-                                this.pet = response.data;
-                            });
-                },
             loadClient(){
-                    axios.get("api/client").then(({ data }) => (this.client = data));
+                    axios.get("api/client").then(({data}) => (this.client = data));
                 
             },
             updatepetProfile(){
@@ -189,8 +219,9 @@
                     reader.readAsDataURL(file);
             },
             updatePet(){
+
                 this.$Progress.start();
-                console.log('Editing data');
+                console.log(this.form.id);
                 this.form.put('api/pet/'+this.form.id)
                 .then(() => {
                     $('#addNew').modal('hide');
@@ -207,6 +238,7 @@
                 });
             },
             editModal(user){
+               console.log(user)
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
@@ -242,7 +274,7 @@
                     })
             },
             loadPet(){
-                    axios.get("api/pet").then(({ data }) => (this.pet = data));
+                    axios.get("api/pet").then(({data}) => (this.pet = data));
                 
             },
             createPet(){

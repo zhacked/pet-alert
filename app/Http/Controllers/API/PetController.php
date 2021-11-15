@@ -44,9 +44,10 @@ class PetController extends Controller
     {
         
         $this->validate($request,[
-            'name' => 'required|string|max:191',
+            'Name' => 'required|string|max:191',
             'species' => 'required|string',
             'breed' => 'required|string',
+            'color' => 'required|string',
             'gender' => 'required|string',
             'birthday' => 'required|string',
            
@@ -54,9 +55,10 @@ class PetController extends Controller
 
         return Pet::create([
             'client_id' =>  $request['client_id'],
-            'name' => $request['name'],
+            'name' => $request['Name'],
             'species' => $request['species'],
             'breed' =>$request['breed'],
+            'color'=> $request['color'],
             'gender' => $request['gender'],
             'birthday' => $request['birthday'],
             'photo' => $request['photo'],
@@ -95,7 +97,20 @@ class PetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pet = Pet::findOrFail($id);
+      
+        $this->validate($request,[
+            'Name' => 'required|string|max:191',
+            'species' => 'required|string',
+            'breed' => 'required|string',
+            'color' => 'required|string',
+            'gender' => 'required|string',
+            'birthday' => 'required|string',
+           
+        ]);
+
+        $pet->update($request->all());
+        return ['message' => 'Updated the Client info'];
     }
 
     /**

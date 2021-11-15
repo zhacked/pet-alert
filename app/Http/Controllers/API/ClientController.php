@@ -77,9 +77,9 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function showPet($id)
     {
-        //
+        return Pet::Where('client_id', $id)->latest()->get();
     }
 
     /**
