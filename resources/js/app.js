@@ -97,6 +97,9 @@ let routes = [
     {
         path: '/employees', component: require('./components/Employees.vue').default
     },
+    {
+        path: '/petrecord', component: require('./components/PetRecord.vue').default
+    },
     
     
     
@@ -118,9 +121,7 @@ const app = new Vue({
     el: '#app',
     vuetify,
     router,
-    data:{
-        search: ''
-    },
+  
     methods:{
         searchit: _.debounce(() => {
             Fire.$emit('searching');

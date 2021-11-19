@@ -4,8 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Employees;
-use App\Models\Pet;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 class EmployeeController extends Controller
 {
     /**
@@ -15,17 +16,16 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return Employees::all();
+        return User::where('type','employee')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function customemployees()
     {
-        //
+        
+        return User::where('position' ,'veterinarian')
+                    ->where('type','employee')
+                    ->get();
     }
 
     /**
@@ -43,16 +43,20 @@ class EmployeeController extends Controller
             'gender' => 'required|string',
             'number' => 'required|numeric',
             'position' => 'required|string',
-            'address' => 'required|string'
-        ]);
+            'address' => 'required|string',
+            'password' => 'required|string',
 
-        return Employees::create([
+        ]);
+     
+        return User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'number' =>$request['number'],
             'gender' => $request['gender'],
             'address' => $request['address'],
             'position'=>$request['position'],
+            'type'=>$request['type'],
+            'password' => Hash::make($request['password']),
         ]);
     }
 
@@ -87,15 +91,16 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $employee = Employees::findOrFail($id);
+        $employee = User::findOrFail($id);
       
         $this->validate($request,[
             'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:users',
+            'email' => 'required|string|email|max:191|unique:users,email,'.$employee->id,
             'gender' => 'required|string',
             'number' => 'required|numeric',
             'position' => 'required|string',
-            'address' => 'required|string'
+            'address' => 'required|string',
+            'password' => 'sometimes|min:6'
         ]);
 
         $employee->update($request->all());
@@ -110,6 +115,13 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->authorize('isAdmin');
+
+        $user = User::findOrFail($id);
+        // delete the user
+
+        $user->delete();
+
+        return ['message' => 'User Deleted'];
     }
 }

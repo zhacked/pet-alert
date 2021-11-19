@@ -11,7 +11,7 @@ class Pet extends Model
     protected $guarded = [];
 
     public function clientData(){
-        return $this->hasOne('App\Models\Client','id', 'client_id');
+        return $this->hasOne('App\Models\User','id', 'user_id');
     }
 
 }

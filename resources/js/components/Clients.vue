@@ -9,53 +9,32 @@
                             <v-spacer></v-spacer>
 							<v-card-actions class="card-tools">
 								<v-btn color="success"
-                                    elevation="2"  @click="newModal">New <i class="fas fa-user-plus fa-fw"></i></v-btn>
+                                    elevation="2"  @click="newModal">Register Client <i class="fas fa-user-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
 
-
-							<v-simple-table class=" table-hover elevation-1">
-								<thead >
-									<tr class="text-center ">
-										<td>ID</td>
-										<td>Name</td>
-										<td>Email</td>
-										<td>Gender</td>
-										<td>Pet</td>
-                                        <td>Action</td>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- <tr v-if="users.data.length == 0">
-										<td colspan="7" class="text-center"> <h3>No Data Available</h3> </td>
-									</tr> -->
-									<tr  v-for="clientData in client.data" :key="clientData.id" class="text-center">
-										<td>{{clientData.id}}</td>
-                                        <td>{{clientData.name}}</td>
-                                        <td>{{clientData.email}}</td>
-                                        <td>{{clientData.gender}}</td>
-                                        <td>
-                                            <button class="btn btn-success btn-sm"  @click="openModelPet(clientData.id)">
+                        <v-data-table
+                                    :headers="headers"
+                                    :items="client.data"
+                                    :search="search"
+                                    class="elevation-1"
+                                >
+                             
+                           
+                               <template v-slot:[`item.actions`]="{ item }">
+                                    <button class="btn btn-success btn-sm"  @click="openModelPet(item.id)">
 												<i class="fa fa-eye"></i> pet details
-											</button>
-                                        </td>
+									</button>
+                                   <button class="btn btn-primary  btn-sm"  @click="editModal(item)">
+										<i class="fa fa-edit"></i> Update
+									</button>
 
-										<td>
-											<button class="btn btn-primary  btn-sm"  @click="editModal(clientData)">
-												<i class="fa fa-edit"></i> Update
-											</button>
-
-												<button class="btn btn-danger  btn-sm"  @click="deleteClient(clientData.id)">
-												<i class="fa fa-trash"></i> Delete
-											</button>
-										</td>
-									</tr>
-								</tbody>
-							</v-simple-table>
-
-						<v-card-title class="ma-0">
-							<pagination  :data="client" @pagination-change-page="getResults"></pagination>
-						</v-card-title>
+									<button class="btn btn-danger  btn-sm"  @click="deleteClient(item.id)">
+										<i class="fa fa-trash"></i> Delete
+									</button>
+                                </template>
+                       </v-data-table>
+					
 					</v-card>
 				</v-col>
 			</v-row>
@@ -94,10 +73,10 @@
 							</div>
 
 							<div class="form-group">
-								<input v-model="form.contact" name="contact" id="contact"
+								<input v-model="form.number" name="number" id="number"
 								placeholder="contact"
-								class="form-control" :class="{ 'is-invalid': form.errors.has('contact') }">
-								<has-error :form="form" field="contact"></has-error>
+								class="form-control" :class="{ 'is-invalid': form.errors.has('number') }">
+								<has-error :form="form" field="number"></has-error>
 							</div>
 
 
@@ -110,7 +89,7 @@
 								</select>
 								<has-error :form="form" field="gender"></has-error>
 							</div>
-
+                         <p><v-icon class="text-danger">mdi-alert-decagram</v-icon><span class="text-danger">Noted : </span><span>The Default password is  <span class="text-success">petalert123</span> </span> </p>
 						</div>
 						<div class="modal-footer">
 							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
@@ -139,9 +118,10 @@
 						<div class="modal-body">
                             <v-card class="mt-5">
                                 <v-data-table
-                                    :headers="headers"
+                                    :headers="Pet_headers"
                                     :items="petView.data"
                                     :items-per-page="3"
+                                    :search="search"
                                     class="elevation-1"
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
@@ -176,7 +156,7 @@
                                                 <br>
                                                 <span> <strong> Breed </strong> : <span>{{breed}}</span></span> 
                                                 <br>
-                                                <span> <strong> Color </strong> : <span>test</span></span> 
+                                                <span> <strong> Color </strong> : <span>{{color}}</span></span> 
                                                 <br>
                                                 <span><strong> Gender </strong> :<span>{{gender}}</span> </span> 
                                                 <br>
@@ -204,7 +184,14 @@
         data() {
             return {
                 headers: [
-                { text: 'Pet Name', value: 'Name' },
+                { text: 'Name', value: 'name' },
+                { text: 'Email', value: 'email' },
+                { text: 'Gender', value: 'gender' },
+                { text: 'Actions', value: 'actions', sortable: false },
+                ],
+                Pet_headers: [
+                { text: 'Name', value: 'Name' },
+                { text: 'Breed', value: 'breed' },
                 { text: 'Species', value: 'species' },
                 { text: 'Actions', value: 'actions', sortable: false },
                 ],
@@ -220,30 +207,28 @@
                 client : {},
                 pet:{},
                 petView: {},
+                search: '',
                 length: '',
                 form: new Form({
                     id:'',
                     name : '',
                     address:'',
                     email: '',
-                    contact: '',
+                    number: '',
                     gender: '',
+                    password:'petalert123',
+                    type:'client',
                    
                 })
             }
         },
         methods: {
-            getResults(page = 1) {
-                        axios.get('api/client?page=' + page)
-                            .then(response => {
-                                this.client = response.data;
-                            });
-                },
             viewpet(){
                 axios.get("api/viewpet").then(({ data }) => (this.pet = data));
             },
             ViewpetDetails(item){
                 this.reveal = true ;
+                console.log(item)
                 axios.get('api/viewpetinfo/'+ item.id)
                 .then(({data}) => {
                     console.log(data);
@@ -253,6 +238,7 @@
                     this.gender = data.gender;
                     this.photo = data.photo;
                     this.bday = data.birthday;
+                    this.color = data.color;
                   
                 })
                 .catch(() => {
@@ -313,7 +299,7 @@
                     })
             },
             loadClient(){
-                    axios.get("api/client").then(({ data }) => (this.client = data));
+                    axios.get("api/client").then((data) => (this.client = data,console.log(data)));
                 
             },
             openModelPet($id){
@@ -324,6 +310,7 @@
                 axios.get('api/showpet/'+ $id)
                 .then((data) => {
                     this.petView = data;
+                    console.log(data)
                  
                 })
                 .catch(() => {

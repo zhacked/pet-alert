@@ -90,7 +90,8 @@
 								</select>
 								<has-error :form="form" field="position"></has-error>
 							</div>
-
+                            <p><v-icon class="text-danger">mdi-alert-decagram</v-icon><span class="text-danger">Noted : </span><span>The Default password is  <span class="text-success">petalert123</span> </span> </p>
+                            
 						</div>
 						<div class="modal-footer">
 							<v-btn type="button" color="error" elevation="2" data-dismiss="modal">Close</v-btn>
@@ -124,7 +125,6 @@
                 client : {},
                 pet:{},
                 employees:[],
-                client:{},
                 length: '',
                 form: new Form({
                     id:'',
@@ -134,7 +134,8 @@
                     number: '',
                     gender: '',
                     position:'',
-                   
+                    password:'petalert123',
+                    type:'employee',
                 })
             }
         },

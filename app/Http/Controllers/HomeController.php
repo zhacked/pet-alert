@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\URL;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $currentURL = URL::current();
+            return view('home', ['name' =>  $currentURL]);
+
     }
+
+  
+
 }

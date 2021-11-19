@@ -40,8 +40,8 @@
 					</router-link>
 				</li>
 				<li class="nav-item">
-					<router-link to="/appointment" class="nav-link text-white" >
-						<i class="nav-icon fas fa-calendar-alt text-gray "></i>
+					<router-link to="/petrecord" class="nav-link text-white" >
+						<i class="nav-icon fas fa-laptop-medical text-gray "></i>
 						<p >Pet Record</p>
 					</router-link>
 				</li>

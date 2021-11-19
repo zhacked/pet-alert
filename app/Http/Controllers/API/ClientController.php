@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Client;
+
 use App\Models\Pet;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 class ClientController extends Controller
 {
     public function __construct()
@@ -21,7 +23,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return Client::latest()->paginate(10);
+        return User::where('type','client')->get();
     }
 
     /**
@@ -42,21 +44,23 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-       
+     
         $this->validate($request,[
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'gender' => 'required|string',
-            'contact' => 'required|numeric',
+            'number' => 'required|numeric',
             'address' => 'required|string'
         ]);
 
-        return Client::create([
+        return User::create([
             'name' => $request['name'],
             'email' => $request['email'],
-            'contact' =>$request['contact'],
+            'number' =>$request['number'],
             'gender' => $request['gender'],
             'address' => $request['address'],
+            'type'=>$request['type'],
+            'password' => Hash::make($request['password']),
         ]);
     }
 
@@ -68,7 +72,7 @@ class ClientController extends Controller
      */
     public function PetInfo($id)
     {
-        return Pet::Where('id', $id)->first();
+        return Pet::where('id', $id)->first();
     }
 
     /**
@@ -79,7 +83,7 @@ class ClientController extends Controller
      */
     public function showPet($id)
     {
-        return Pet::Where('client_id', $id)->latest()->get();
+        return Pet::Where('user_id', $id)->latest()->get();
     }
 
     /**
@@ -91,13 +95,13 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = Client::findOrFail($id);
+        $client = User::findOrFail($id);
 
         $this->validate($request,[
             'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:users',
+            'email' => 'required|string|email|max:191|unique:users,email,'.$client->id,
             'gender' => 'required|string',
-            'contact' => 'required|numeric',
+            'number' => 'required|numeric',
             'address' => 'required|string'
         ]);
 
@@ -113,6 +117,12 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+       
+        $user = User::findOrFail($id);
+        // delete the user
+
+        $user->delete();
+
+        return ['message' => 'User Deleted'];
     }
 }

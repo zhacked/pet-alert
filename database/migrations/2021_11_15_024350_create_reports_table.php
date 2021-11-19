@@ -21,6 +21,7 @@ class CreateReportsTable extends Migration
             $table->string('pet_id');
             $table->string('note');
             $table->string('weight');
+            $table->string('finding');
             $table->string('due_date');
             $table->timestamps();
         });

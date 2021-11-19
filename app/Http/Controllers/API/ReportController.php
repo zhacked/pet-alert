@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Report;
-use App\Models\Employees;
 class ReportController extends Controller
 {
     /**
@@ -13,9 +12,16 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+
+        $this->middleware('auth:api');
+
+    }
     public function index()
     {
-        return Report::with(['clientData','petData','employeeData'])->latest()->paginate(10);
+        return Report::with(['clientData','petData'])->latest()->paginate(10);
     }
 
     /**
@@ -23,9 +29,9 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function petrecord()
     {
-        //
+        return Report::with(['clientData','petData'])->where('client_id',auth('api')->user()->id)->get();
     }
 
     /**
@@ -36,7 +42,7 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-      
+
         $this->validate($request,[
             'procedure' => 'required|string|max:191',
             'employee_id' => 'required|numeric',
@@ -46,7 +52,7 @@ class ReportController extends Controller
             'weight' => 'required|string',
             'due_date' => 'required|string',
         ]);
-
+  
         return Report::create([
             'procedure' =>  $request['procedure'],
             'employee_id' => $request['employee_id'],
@@ -54,8 +60,8 @@ class ReportController extends Controller
             'pet_id' =>$request['pet_id'],
             'note'=> $request['note'],
             'weight' => $request['weight'],
-            'due_date' => $request['due_date'],
-   
+            'due_date' => $request['due_date']
+       
         ]);
     }
 

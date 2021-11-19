@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pet;
+use Illuminate\Support\Facades\Auth;
 class PetController extends Controller
 {
     /**
@@ -14,6 +15,10 @@ class PetController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->type === 'client'){
+             return Pet::with('clientData')->where('user_id', Auth::user()->id)->latest()->paginate(10);
+        }
+
         return Pet::with('clientData')->latest()->paginate(10);
     }
 
@@ -29,9 +34,9 @@ class PetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function petRecord()
     {
-
+        return Pet::where('user_id',auth('api')->user()->id)->get();
     }
 
     /**
@@ -121,6 +126,11 @@ class PetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = Pet::findOrFail($id);
+        // delete the user
+
+        $user->delete();
+
+        return ['message' => 'User Deleted'];
     }
 }

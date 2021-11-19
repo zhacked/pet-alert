@@ -11,13 +11,11 @@ class Report extends Model
     protected $guarded = [];
 
     public function clientData(){
-        return $this->hasOne('App\Models\Client','id', 'client_id');
+        return $this->hasOne('App\Models\User','id', 'client_id');
     }
     public function petData(){
         return $this->hasOne('App\Models\Pet','id', 'pet_id');
     }
-    public function employeeData(){
-        return $this->hasOne('App\Models\Employees','id', 'pet_id');
-    }
+    
 
 }

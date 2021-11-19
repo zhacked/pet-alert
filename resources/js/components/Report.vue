@@ -12,11 +12,19 @@
                                     elevation="2"  @click="newModal">New <i class="fas fa-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
-
+                        <v-card-text>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                            ></v-text-field> 
+                        </v-card-text>
                               <v-data-table
                                     :headers="headers"
                                     :items="report.data"
-
+                                    :search="search"
                                     class="elevation-1 text-center"
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
@@ -197,6 +205,7 @@
                 ],
                 editmode: false,
                 pet : [],
+                search:'',
                 client:{},
                 employees:{},
                 modal:false,
@@ -222,11 +231,10 @@
                     axios.get("api/client").then(({ data }) => (this.client = data));
             },
             loadEmployees(){
-                    axios.get("api/employeess").then((data) => ( this.employees = data));
-                
+                    axios.get("api/custom_employee").then((data) => ( this.employees = data,console.log(data)));
             },
             loadReport(){
-                 axios.get("api/report").then(({data}) => ( this.report = data,console.log(data)));
+                 axios.get("api/report").then(({data}) => ( this.report = data));
             },
             createReport(){
                 this.$Progress.start();

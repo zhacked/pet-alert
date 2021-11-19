@@ -11,6 +11,7 @@ use App\Models\Client;
 use App\Models\Report;
 
 
+
 class UserController extends Controller
 {
 
@@ -108,7 +109,7 @@ class UserController extends Controller
      */
     public function countuser()
     {
-        $client = Client::count();
+        $client = User::where('type','client')->count();
         $report = Report::count();
 
 

@@ -7,16 +7,27 @@
 						<v-card-title class="card-header">
 							<strong> Pet List</strong>
                             <v-spacer></v-spacer>
-							<v-card-actions class="card-tools">
-								<v-btn color="success"
-                                    elevation="2"  @click="newModal">New <i class="fas fa-plus fa-fw"></i></v-btn>
-							</v-card-actions>
+                             <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Search"
+                                single-line
+                                hide-details
+                            ></v-text-field>
 						</v-card-title>
-
+                        <v-card-text>
+                            <v-card-actions class="card-tool"> 
+								<v-btn color="success"   v-show="$gate.isAdminOrisEmployee()"
+                                    elevation="2"  @click="newModal">Register Pet <i class="fas fa-plus fa-fw">
+                                </i></v-btn>
+							</v-card-actions>
+                            
+                        </v-card-text>
+                                  
                               <v-data-table
                                     :headers="headers"
                                     :items="pet.data"
-                                
+                                    :search="search"
                                     class="elevation-1"
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
@@ -173,13 +184,13 @@
                 { text: 'Breed', value: 'breed' },
                 { text: 'Color', value: 'color' },
                 { text: 'Gender', value: 'gender' },
-                { text: 'Actions', value: 'actions', sortable: false }
+                { text: '', value: 'actions' , sortable: false }
                 ],
                 editmode: false,
                 modal: false,
                 pet : [],
                 client:[],
-                
+                search:'',
                 length: '',
                 form: new Form({
                     client_id:'',
@@ -274,7 +285,7 @@
                     })
             },
             loadPet(){
-                    axios.get("api/pet").then(({data}) => (this.pet = data));
+                    axios.get("api/pet").then(({data}) => (this.pet = data,console.log(data)));
                 
             },
             createPet(){
