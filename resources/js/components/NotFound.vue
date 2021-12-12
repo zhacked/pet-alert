@@ -6,7 +6,7 @@
                 <v-img src="/image/404.png" alt="" srcset="" width="100%" >
                 </v-img>
                 <h1>
-                    Oppss . soory page not found!!
+                    Oppss.. Sorry page not found!!
                 </h1>
             </v-col>
         </v-row>

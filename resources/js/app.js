@@ -44,6 +44,10 @@ Vue.filter('myDate',function(created){
     return moment(created).format('MMMM Do YYYY');
 });
 
+Vue.filter('format',function(date){
+    return moment(date).format('LL');
+});
+
 Vue.prototype.$gate = new Gate(window.user)
 
 Vue.use(VueRouter)
@@ -99,6 +103,9 @@ let routes = [
     },
     {
         path: '/petrecord', component: require('./components/PetRecord.vue').default
+    },
+    {
+        path: '/schedule', component: require('./components/Schedule.vue').default
     },
     
     

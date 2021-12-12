@@ -38,6 +38,7 @@ Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updatePr
 Route::get('findUser', [App\Http\Controllers\API\UserController::class, 'search']);
 Route::get('countdata', [App\Http\Controllers\API\UserController::class, 'countuser'])->name('countuser');
 Route::get('record', [App\Http\Controllers\API\ReportController::class, 'petrecord']);
+Route::get('schedule', [App\Http\Controllers\API\ScheduleController::class, 'schedule'])->name('Schedule');
 
 Route::get('custom_employee', [App\Http\Controllers\API\EmployeeController::class, 'customemployees'])->name('customemployees');
 

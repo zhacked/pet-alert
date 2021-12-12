@@ -914,6 +914,30 @@
     "preact" "^10.0.5"
     "tslib" "^2.1.0"
 
+"@fullcalendar/daygrid@^5.10.1":
+  "integrity" "sha512-sfUMP+rew0krsBffgNcWWKhBCiyytGfRKZJoc64E8ohX7VWjPcPZuB1xgO5U4wPLmNkT0rZiHoGeQGTXw1+ZKg=="
+  "resolved" "https://registry.npmjs.org/@fullcalendar/daygrid/-/daygrid-5.10.1.tgz"
+  "version" "5.10.1"
+  dependencies:
+    "@fullcalendar/common" "~5.10.1"
+    "tslib" "^2.1.0"
+
+"@fullcalendar/interaction@^5.10.1":
+  "integrity" "sha512-H1g1QeXg7yXtUcKmVtfg7uzm5R5ElFTvYniiXU+8kJda69IDg7Lee+Y7UDv5dvLb5/HxO86RhPVxRtcOQ8XdXw=="
+  "resolved" "https://registry.npmjs.org/@fullcalendar/interaction/-/interaction-5.10.1.tgz"
+  "version" "5.10.1"
+  dependencies:
+    "@fullcalendar/common" "~5.10.1"
+    "tslib" "^2.1.0"
+
+"@fullcalendar/list@^5.10.1":
+  "integrity" "sha512-sB+AzM9P1nzGIzwVFNN8Zbocg5lkVQftyuJAZtULgu9o9e1rH/Aqsxt9Itf00N3WmMOh8H1LlnRpZF5kGu/j2w=="
+  "resolved" "https://registry.npmjs.org/@fullcalendar/list/-/list-5.10.1.tgz"
+  "version" "5.10.1"
+  dependencies:
+    "@fullcalendar/common" "~5.10.1"
+    "tslib" "^2.1.0"
+
 "@fullcalendar/vue@^5.10.1":
   "integrity" "sha512-fzWa76ztn4w6pWUHDGQnedrWeHaBUQ3uTuGT3nM7jr3NOKdufAfzh8y4UHRFN2P2pIWpcEV3wji6DZcHmqhyYw=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/vue/-/vue-5.10.1.tgz"
