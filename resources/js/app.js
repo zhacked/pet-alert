@@ -36,6 +36,18 @@ const toast = swal.mixin({
     timer: 3000
   });
 
+const Toast = swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', swal.stopTimer)
+      toast.addEventListener('mouseleave',swal.resumeTimer)
+    }
+  });
+
 Vue.filter('upText', function(text){
     return text.charAt(0).toUpperCase() + text.slice(1)
 });
@@ -65,6 +77,7 @@ window.Fire =  new Vue();
 
 
 window.toast = toast;
+window.Toast = Toast;
 
 Vue.component(
     'not-found',

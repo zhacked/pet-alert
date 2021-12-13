@@ -37,9 +37,16 @@
                                     class="elevation-1 text-center"
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
-                                    <button class="btn btn-primary  btn-sm"  @click="editModal(item)">
-                                            <i class="fa fa-edit"></i> Update
-                                        </button>
+                                    <v-btn
+                                        small
+                                        color="primary"
+                                        dark
+                                        outlined
+                                        @click="editModal(item)"
+                                        >
+                                        <i class="fa fa-edit"></i>   Update
+                                    </v-btn>
+                                        
                                 </template>
                                 
                              </v-data-table>

@@ -87,7 +87,13 @@
 								<has-error :form="form" field="number"></has-error>
 							</div>
 
-
+                            <!-- <div class="form-group">
+								<input v-model="form.color" name="color" id="color" type="color"
+								placeholder="color"
+								class="form-control" :class="{ 'is-invalid': form.errors.has('color') }">
+								<has-error :form="form" field="color"></has-error>
+							</div>
+                         -->
 							<div class="form-group">
 								<select name="type" v-model="form.gender" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('gender') }">
 									<option value="">Select Gender</option>

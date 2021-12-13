@@ -15,6 +15,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mt-3">
+                
                 <div class="card card-widget widget-user">
                 <div class="widget-user-header text-bold text-white" style="background-image:url('./image/user-cover.jpg')">
                     <h1 class="widget-user-username ">{{this.form.name}}</h1>
@@ -22,29 +23,30 @@
                 </div>
 
                 <div class="widget-user-image">
-                       <!-- <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar"> -->
+                   
+                       <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
                 </div>
-                <div class="card-footer">
-                    <div class="row">
+                <div class="card-footer" >
+                    <!-- <div class="row">
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
-                        <h5 class="description-header">0</h5>
-                        <span class="description-text">Activity</span>
+                        <h5 class="description-header">{{import_count}}</h5>
+                        <span class="description-text">On Going</span>
                         </div>
                     </div>
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
-                        <h5 class="description-header">0</h5>
-                        <span class="description-text">Pending</span>
+                        <h5 class="description-header">{{arena}}</h5>
+                        <span class="description-text">Arena</span>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="description-block">
-                        <h5 class="description-header">0</h5>
+                        <h5 class="description-header">{{user}}</h5>
                         <span class="description-text">Users</span>
                         </div>
                     </div>
-                    </div>
+                    </div> -->
                 </div>
                 </div>
             </div>
@@ -59,11 +61,17 @@
                         <li class="nav-item"><a class="nav-link active show" href="#settings" data-toggle="tab">Settings</a></li>
                         </ul>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="background-color: #BFBFBF;">
                         <div class="tab-content">
 
-                            <div class="tab-pane" id="activity">
-                                <h3 class="text-center">Display User Activity   </h3>
+                            <div class="tab-pane  w-100" id="activity">
+                                    <v-img
+                                        class="mx-auto"
+                                        lazy-src="https://picsum.photos/id/11/10/6"
+                                        max-height="500"
+                                        max-width="2500"
+                                        :src="getcomming()"
+                                    ></v-img>
                             </div>
 
                             <div class="tab-pane active show" id="settings">
@@ -80,7 +88,7 @@
                                     <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                                     <div class="col-sm-12">
-                                    <input type="email" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email"  :class="{ 'is-invalid': form.errors.has('email') }">
+                                    <input type="text" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email"  :class="{ 'is-invalid': form.errors.has('email') }">
                                      <has-error :form="form" field="email"></has-error>
                                     </div>
                                 </div>
@@ -96,7 +104,7 @@
                                 <div class="form-group">
                                     <label for="photo" class="col-sm-2 control-label">Profile Photo</label>
                                     <div class="col-sm-12">
-                                        <input type="file" @change="updateProfile" name="photo" class="form-input">
+                                        <input type="file" style="color:white; border:1px solid black"  @change="updateProfile" name="photo" class="form-input">
                                     </div>
 
                                 </div>
@@ -137,7 +145,10 @@
     export default {
         data(){
             return {
-                 form: new Form({
+                arena:'',
+                import_count:'',
+                user:'',
+                form: new Form({
                     id:'',
                     name : '',
                     email: '',
@@ -149,22 +160,26 @@
             }
         },
         methods:{
-            // getProfilePhoto(){
-            //     let photo = (this.form.photo.length > 200) ? this.form.photo : "image/profile/"+ this.form.photo ;
-            //     return photo;
-
-
-            // },
+            getProfilePhoto(){
+                if(this.form.photo != null){
+                    return (this.form.photo.length > 200) ? this.form.photo : "/image/profile/"+ this.form.photo ;
+                }else{
+                    return "image/profile.png"
+                }
+                
+            },
+            getcomming(){
+                  return "image/coming.jpg"
+            },
+           
             updateInfo(){
-
                 this.$Progress.start();
                 if(this.form.password == ''){
                     this.form.password = undefined;
                 }
                 this.form.put('api/profile')
-                .then(({data})=>{
-
-                    Fire.$emit('AfterCreate');
+                .then(()=>{
+                     Fire.$emit('AfterCreate');
                     this.$Progress.finish();
                 })
                 .catch(() => {
@@ -175,9 +190,8 @@
                 let file = e.target.files[0];
                 let reader = new FileReader();
                 let limit = 1024 * 1024 * 2;
-
                 if(file['size'] > limit){
-                    swal.fire({
+                    swal({
                         type: 'error',
                         title: 'Oops...',
                         text: 'You are uploading a large file',
@@ -192,9 +206,8 @@
         },
         created() {
             axios.get("api/profile")
-            .then(({ data }) => (
-                this.form.fill(data))
-            );
+                .then(({ data }) => (this.form.fill(data)));
+           
         }
     }
 </script>

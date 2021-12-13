@@ -31,13 +31,24 @@
                                     class="elevation-1"
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
-                                    <button class="btn btn-primary  btn-sm"  @click="editModal(item)">
-                                                        <i class="fa fa-edit"></i> Update
-                                                    </button>
-
-                                                    <button class="btn btn-danger  btn-sm"  @click="deletePet(item.id)">
-                                                        <i class="fa fa-trash"></i> Delete
-                                        </button>
+                                     <v-btn
+                                        small
+                                        color="primary"
+                                        dark
+                                        outlined
+                                        @click="editModal(item)"
+                                        >
+                                        <i class="fa fa-edit"></i>   Update
+                                    </v-btn>
+                                      <v-btn
+                                        small
+                                        color="red"
+                                        dark
+                                        outlined
+                                       @click="deletePet(item.id)"
+                                        >
+                                        <i class="fa fa-trash"></i> Delete
+                                    </v-btn>
                                 </template>
                                 
                              </v-data-table>
@@ -52,7 +63,7 @@
 					<!-- Modal -->
 			<div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
+					<div class="modal-content modal-lg">
 					<div class="modal-header sidebar-blue text-white">
 						<h5 class="modal-title" v-show="!editmode" id="addNewLabel">Insert Pet Record</h5>
 						<h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Pet Info</h5>
@@ -63,10 +74,16 @@
 					<form @submit.prevent="editmode ? updatePet() : createPet()">
 						<div class="modal-body">
                              <div class="form-group">
-                                    <label for="photo" class="col-sm-2 control-label">Profile Photo</label>
-                                    <div class="col-sm-12">
-                                        <input type="file" @change="updatepetProfile" name="photo" class="form-input">
+                                    <label for="photo" class="col-sm-12 control-label text-center"><h1>Profile Photo</h1> </label>
+                                    
+                                    <div class="widget-user-image">
+                                        <img class="img-fluid img-thumbnail mx-auto d-block"  :src="getPetProfilePhoto()" alt="User Avatar">
                                     </div>
+                                    
+                                    <div class="col-sm-12">
+                                        <input type="file" style="color:white; border:1px solid black"  @change="updatePetProfile" name="photo" class="form-input">
+                                    </div>
+                                 
 
                             </div>
 
@@ -125,7 +142,7 @@
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
                                         v-model="form.birthday"
-                                        label="Picker in dialog"
+                                        label="Choose birthday"
                                         prepend-icon="mdi-calendar"
                                         readonly
                                         v-bind="attrs"
@@ -208,10 +225,18 @@
         },
         methods: {
             loadClient(){
-                    axios.get("api/client").then(({data}) => (this.client = data));
+                    axios.get("api/client").then((data) => (this.client = data, console.log(data)));
                 
             },
-            updatepetProfile(){
+            getPetProfilePhoto(){
+                if(this.form.photo != null){
+                    return (this.form.photo.length > 200) ? this.form.photo : "/image/pet/"+ this.form.photo ;
+                }else{
+                    return "image/dog.png"
+                }
+                
+            },
+            updatePetProfile(e){
                     let file = e.target.files[0];
                     let reader = new FileReader();
                     let limit = 1024 * 1024 * 2;
@@ -229,6 +254,10 @@
                     }
                     reader.readAsDataURL(file);
             },
+            getcomming(){
+                  return "image/coming.jpg"
+            },
+           
             updatePet(){
 
                 this.$Progress.start();
@@ -294,10 +323,11 @@
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                    toast({
-                        type: 'success',
-                        title: 'User Created in successfully'
-                        })
+                     Toast.fire({
+                                icon: 'success',
+                                title: 'Successfully Deleted'
+                                
+                                })
                     this.$Progress.finish();
                 })
                 .catch(()=>{

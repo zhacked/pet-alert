@@ -13,41 +13,42 @@
 							</v-card-actions>
 						</v-card-title>
 
+                            <v-card class="mt-5">
+                                <v-data-table
+                                    :headers="headers"
+                                    :items="users.data"
+                                    :items-per-page="3"
+                                    :search="search"
+                                    class="elevation-1"
+                                >
+                               <template v-slot:[`item.actions`]="{ item }">
+                                    <v-btn
+                                        small
+                                        color="primary"
+                                        dark
+                                        outlined
+                                        @click="editModal(item)"
+                                        >
+                                        <i class="fa fa-edit"></i>   Update
+                                    </v-btn>
 
-							<v-simple-table class=" table-hover elevation-1">
-								<thead >
-									<tr class="text-center ">
-										<td>ID</td>
-										<td>Name</td>
-										<td>Email</td>
-										<td>Type</td>
-										<td>Modify</td>
-                                        <td>Action</td>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- <tr v-if="users.data.length == 0">
-										<td colspan="7" class="text-center"> <h3>No Data Available</h3> </td>
-									</tr> -->
-									<tr  v-for="user in users.data" :key="user.id" class="text-center">
-										<td>{{user.id}}</td>
-										<td>{{user.name}}</td>
-										<td>{{user.email}}</td>
-										<td>{{user.type | upText}}</td>
-										<td>{{user.created_at | myDate}}</td>
+                                    <v-btn
+                                        small
+                                        color="red"
+                                        dark
+                                        outlined
+                                        @click="deleteUser(item.id)"
+                                        >
+                                        <i class="fa fa-trash"></i> Delete
+                                    </v-btn>
+                                    
 
-										<td>
-											<button class="btn btn-primary"  @click="editModal(user)">
-												<i class="fa fa-edit"></i> Update
-											</button>
-
-												<button class="btn btn-danger"  @click="deleteUser(user.id)">
-												<i class="fa fa-trash"></i> Delete
-											</button>
-										</td>
-									</tr>
-								</tbody>
-							</v-simple-table>
+					
+                                </template>
+                                
+                                </v-data-table>
+                            </v-card>
+							
 
 						<v-card-title class="ma-0">
 							<pagination  :data="users" @pagination-change-page="getResults"></pagination>
@@ -128,9 +129,18 @@
     export default {
         data() {
             return {
+                headers: [
+                { text: 'ID', value: 'id' },
+                { text: 'Name', value: 'name' },
+                { text: 'Email', value: 'email' },
+                { text: 'Gender', value: 'gender' },
+                { text: 'Modify', value: 'created_at' },
+                { text: 'Actions', value: 'actions', sortable: false },
+                ],
                 editmode: false,
                 users : {},
                 length: '',
+                search:'',
                 form: new Form({
                     id:'',
                     name : '',

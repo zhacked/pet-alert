@@ -92,7 +92,7 @@ class UserController extends Controller
         }
 
 
-        // $user->update($request->all());
+        $user->update($request->all());
         return ['message' => "Success"];
     }
 

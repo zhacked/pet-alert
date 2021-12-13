@@ -35,16 +35,33 @@
                                     </v-row>
                                 </template>
                                 <template v-slot:[`item.actions`]="{ item }">
-                                    <button class="btn btn-success btn-sm"  @click="openModelPet(item.id)">
-												<i class="fa fa-eye"></i> pet details
-									</button>
-                                   <button class="btn btn-primary  btn-sm"  @click="editModal(item)">
-										<i class="fa fa-edit"></i> Update
-									</button>
-
-									<button class="btn btn-danger  btn-sm"  @click="deleteClient(item.id)">
-										<i class="fa fa-trash"></i> Delete
-									</button>
+                                      <v-btn
+                                        small
+                                        color="green"
+                                        dark
+                                        outlined
+                                        @click="openModelPet(item.id)"
+                                        >
+                                        <i class="fa fa-eye"></i> pet details
+                                    </v-btn>
+                                    <v-btn
+                                        small
+                                        color="blue"
+                                        dark
+                                        outlined
+                                        @click="editModal(item)"
+                                        >
+                                        <i class="fa fa-edit"></i> Update
+                                    </v-btn>
+                                    <v-btn
+                                        small
+                                        color="red"
+                                        dark
+                                        outlined
+                                         @click="deleteClient(item.id)"
+                                        >
+                                        <i class="fa fa-trash"></i> Delete
+                                    </v-btn>
                                 </template>
                        </v-data-table>
 					
@@ -157,9 +174,9 @@
                                                 class="mt-3"
                                                 style="border:1px solid black;"
                                                 lazy-src="https://picsum.photos/id/11/10/6"
-                                                max-height="127"
-                                                max-width="220"
-                                                src="https://picsum.photos/id/11/500/300"
+                                                max-height="120"
+                                                max-width="200"
+                                                :src=" photo == null ? '/image/dog.png' : '/image/pet/'+ photo"
                                                 ></v-img>
                                             </v-col>
                                             <v-col>
@@ -291,7 +308,7 @@
                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -337,10 +354,10 @@
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                    toast({
-                        type: 'success',
-                        title: 'User Created in successfully'
-                        })
+                     Toast.fire({
+                                icon: 'success',
+                                title: 'Successfully Added'
+                                })
                     this.$Progress.finish();
                 })
                 .catch(()=>{

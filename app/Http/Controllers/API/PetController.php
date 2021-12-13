@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Pet;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+
 class PetController extends Controller
 {
     /**
@@ -47,7 +49,7 @@ class PetController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // dd($request->all());
         $this->validate($request,[
             'Name' => 'required|string|max:191',
             'species' => 'required|string',
@@ -58,16 +60,35 @@ class PetController extends Controller
            
         ]);
 
+       
+            $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+
+            Image::make($request->photo)->save(public_path('image/pet/').$name);
+            $request->merge(['photo' => $name]);
+
+            $userPhoto = public_path('image/pet/').$request->photo;
+           
+
+       
+
         return Pet::create([
-            'client_id' =>  $request['client_id'],
+            'user_id' =>  $request['client_id'],
             'name' => $request['Name'],
             'species' => $request['species'],
             'breed' =>$request['breed'],
             'color'=> $request['color'],
             'gender' => $request['gender'],
             'birthday' => $request['birthday'],
-            'photo' => $request['photo'],
+            'photo' =>  $name ,
+
         ]);
+
+
+
+      
+
+
+
         
     }
 
@@ -113,6 +134,26 @@ class PetController extends Controller
             'birthday' => 'required|string',
            
         ]);
+
+   
+    
+        $currentPhoto = $pet->photo;
+
+
+        if($request->photo != $currentPhoto){
+            $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+
+            Image::make($request->photo)->save(public_path('image/pet/').$name);
+            $request->merge(['photo' => $name]);
+
+            $userPhoto = public_path('image/pet/').$currentPhoto;
+            if(file_exists($userPhoto)){
+                @unlink($userPhoto);
+            }
+
+        }
+
+
 
         $pet->update($request->all());
         return ['message' => 'Updated the Client info'];
