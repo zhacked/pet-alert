@@ -12,7 +12,7 @@
                                     elevation="2"  @click="newModal">Register Client <i class="fas fa-user-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
-
+                        
                         <v-data-table
                                     :headers="headers"
                                     :items="client.data"
@@ -20,8 +20,21 @@
                                     class="elevation-1"
                                 >
                              
-                           
-                               <template v-slot:[`item.actions`]="{ item }">
+                                <template v-slot:top>
+                                    <v-row>
+                                        <v-col>
+
+                                        </v-col>
+                                        <v-col>
+                                            <v-text-field
+                                            v-model="search"
+                                            label="Search Client.."
+                                            class="mx-4"
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </template>
+                                <template v-slot:[`item.actions`]="{ item }">
                                     <button class="btn btn-success btn-sm"  @click="openModelPet(item.id)">
 												<i class="fa fa-eye"></i> pet details
 									</button>

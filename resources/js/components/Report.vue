@@ -12,15 +12,24 @@
                                     elevation="2"  @click="newModal">New <i class="fas fa-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
-                        <v-card-text>
-                            <v-text-field
-                                v-model="search"
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                single-line
-                                hide-details
-                            ></v-text-field> 
-                        </v-card-text>
+
+                            <v-card-text>
+                                <v-row>
+                                    <v-col>
+
+                                    </v-col>
+                                    <v-col>
+                                <v-text-field
+                                    v-model="search"
+                                    append-icon="mdi-magnify"
+                                    label="Search Report..."
+                                    single-line
+                                    hide-details
+                                ></v-text-field> 
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+
                               <v-data-table
                                     :headers="headers"
                                     :items="report.data"

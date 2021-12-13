@@ -12,12 +12,28 @@
                                     elevation="2"  @click="newModal">Register New Employee<i class="fas fa-plus fa-fw"></i></v-btn>
 							</v-card-actions>
 						</v-card-title>
+                            <v-card-text>
+                                <v-row>
+                                    <v-col>
 
+                                    </v-col>
+                                    <v-col>
+                                <v-text-field
+                                    v-model="search"
+                                    append-icon="mdi-magnify"
+                                    label="Search Veterinarian"
+                                    single-line
+                                    hide-details
+                                ></v-text-field> 
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
                               <v-data-table
                                     :headers="headers"
                                     :items="employees.data"
                                     :items-per-page="10"
                                     class="elevation-1 text-center"
+                                    :search="search"
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
                                     <button class="btn btn-primary  btn-sm"  @click="editModal(item)">
@@ -126,6 +142,7 @@
                 pet:{},
                 employees:[],
                 length: '',
+                search:'',
                 form: new Form({
                     id:'',
                     name : '',
