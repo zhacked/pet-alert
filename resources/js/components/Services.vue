@@ -5,7 +5,7 @@
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
-							<strong> Consultation</strong>
+							<strong> Service Offered</strong>
                             <v-spacer></v-spacer>
 							<v-card-actions class="card-tools">
 								<v-btn color="success"
@@ -32,7 +32,7 @@
 
                               <v-data-table
                                     :headers="headers"
-                                    :items="report.data"
+                                    :items="service"
                                     :search="search"
                                     class="elevation-1 text-center"
                                 >
@@ -46,6 +46,17 @@
                                         >
                                         <i class="fa fa-edit"></i>   Update
                                     </v-btn>
+                                     <v-btn
+                                        small
+                                        color="red"
+                                        dark
+                                        outlined
+                                        @click="deleteService(item.id)"
+                                        >
+                                        <i class="fa fa-trash"></i> Delete
+                                    </v-btn>
+                                        
+
                                         
                                 </template>
                                 
@@ -67,19 +78,19 @@
 						<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<form @submit.prevent="editmode ? updateReport() : createReport()">
+					<form @submit.prevent="editmode ? updateService() : createService()">
 						<div class="modal-body">
                              <div class="form-group">
                                 <v-row class="no-gutters">
                                     <v-col  class="col-sm-4">
-                                        <label for="weight" class="col-sm-2 control-label">Service&nbsp;name</label>
+                                        <label for="name" class="col-sm-2 control-label">Service&nbsp;name</label>
                                     </v-col>
                                     <v-col class="col-sm-8">
                                         	<div class="form-group">
-                                                <input v-model="form.weight" name="serviceName" id="serviceName"
+                                                <input v-model="form.name" name="serviceName" id="serviceName"
                                                 placeholder="Deworming"
-                                                class="form-control" :class="{ 'is-invalid': form.errors.has('weight') }">              
-                                                <has-error :form="form" field="weight"></has-error>
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">              
+                                                <has-error :form="form" field="name"></has-error>
                                             </div>
                                     </v-col>
                                 </v-row>
@@ -87,15 +98,15 @@
                               
                                 <v-row class="no-gutters">
                                     <v-col  class="col-sm-4">
-                                        <label for="note" class="col-sm-2 control-label">Description </label>
+                                        <label for="description" class="col-sm-2 control-label">Description </label>
                                     </v-col>
                                     <v-col class="col-sm-8">
                                         	<div class="form-group">
-                                                <textarea v-model="form.note" name="description" id="description"
+                                                <textarea v-model="form.description" name="description" id="description"
                                                 placeholder="Deworming is an important preventative care regime for reducing parasites..."
-                                                class="form-control" :class="{ 'is-invalid': form.errors.has('note') }">
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('description') }">
                                                 </textarea>
-                                                <has-error :form="form" field="note"></has-error>
+                                                <has-error :form="form" field="description"></has-error>
                                             </div>
                                     </v-col>
                                 </v-row>
@@ -123,35 +134,41 @@
         data() {
             return {
                 headers: [
-                { text: ' Name', value: 'client_data.name' },
-                { text: 'Description', value: 'pet_data.Name' },
-                { text: 'Duration', value: 'weight' },              
+                { text: 'Name', value: 'name' },
+                { text: 'Description', value: 'description' },       
                 { text: '', value: 'actions', sortable: false }
                 ],
                 editmode: false,
-                pet : [],
                 search:'',
-                client:{},
-                employees:{},
                 modal:false,
-                report:[],
+                service: [],
                 form: new Form({
                     id:'',
-                    procedure : '',
-                    employee_id :'',
-                    client_id:'',
-                    pet_id: '',
-                    note: '',
-                    weight: '',
-                    due_date:''
-                   
+                    name:'',
+                   description:''
                 })
             }
         },
         methods: {
+            loadService(){
+                 axios.get("api/service").then(({data}) => (this.service = data,console.log(data)));
+            },
+            createService(){
+                this.$Progress.start();
+                this.form.post('api/service')
+                .then(()=>{
+                    Fire.$emit('AfterCreate');
+                    $('#addNew').modal('hide')
+                    toast({
+                        type: 'success',
+                        title: 'Service Save successfully'
+                        })
+                    this.$Progress.finish();
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
          
-            createReport(){
-             
             },
              newModal(){
                 this.editmode = false;
@@ -165,12 +182,54 @@
                 $('#addNew').modal('show');
                 this.form.fill(user);
             },
-            updateReport(){
-              
+            updateService(){
+                this.$Progress.start();
+                console.log(this.form.id);
+                this.form.put('api/service/'+this.form.id)
+                .then(() => {
+                    $('#addNew').modal('hide');
+                     swal.fire(
+                        'Updated!',
+                        'Information has been updated.',
+                        'success'
+                        )
+                        this.$Progress.finish();
+                         Fire.$emit('AfterCreate');
+                })
+                .catch(() => {
+                    this.$Progress.fail();
+                });
+            },
+            deleteService(id){
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                         if (result.value) {
+                                this.form.delete('api/service/'+id).then(()=>{
+                                        swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                        )
+                                    Fire.$emit('AfterCreate');
+                                }).catch(()=> {
+                                    swal.fire("Failed!", "There was something wrong.", "warning");
+                                });
+                         }
+                    })
             },
         },
         created() {
-         
+            this.loadService();
+             Fire.$on('AfterCreate',() => {
+               this.loadService();
+           });
         }
     }
 </script>

@@ -19,7 +19,7 @@ class ServiceController extends Controller
     {
        
 
-        return [];
+        return Service::all();
     }
 
     public function __construct()
@@ -48,6 +48,11 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
      
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'description' => 'required|numeric'
+        ]);
+
         return Service::create([
             'name' =>  $request['description'],
             'description' => $request['description'],
@@ -92,7 +97,17 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
+        $Service = Service::findOrFail($id);
+      
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'description' => 'required|numeric'
+        ]);
+
+
+        $Service->update($request->all());
+        return ['message' => 'Updated the Client info'];
+
     }
 
     /**
@@ -103,6 +118,11 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-      
+        $Service = Service::findOrFail($id);
+        // delete the user
+
+        $Service->delete();
+
+        return ['message' => 'User Deleted'];
     }
 }

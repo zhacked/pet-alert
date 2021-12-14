@@ -121,6 +121,11 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $service = User::findOrFail($id);
+        // delete the user
+
+        $service->delete();
+
+        return ['message' => 'User Deleted'];
     }
 }

@@ -244,7 +244,7 @@
                     axios.get("api/pet").then(({data}) => (this.pet = data));
             },
             loadClient(){
-                    axios.get("api/client").then(({ data }) => (this.client = data));
+                    axios.get("api/client").then((data) => (this.client = data));
             },
             loadEmployees(){
                     axios.get("api/custom_employee").then((data) => ( this.employees = data,console.log(data)));

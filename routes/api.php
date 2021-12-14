@@ -24,7 +24,7 @@ Route::apiResources(['client' => App\Http\Controllers\API\ClientController::clas
 Route::apiResources(['pet' => App\Http\Controllers\API\PetController::class]);
 Route::apiResources(['employeess' => App\Http\Controllers\API\EmployeeController::class]);
 Route::apiResources(['report' => App\Http\Controllers\API\ReportController::class]);
-
+Route::apiResources(['service' => App\Http\Controllers\API\ServiceController::class]);
 
 // custom route
 Route::get('viewpet', [App\Http\Controllers\API\ClientController::class, 'PetDetails'])->name('PetDetails');
