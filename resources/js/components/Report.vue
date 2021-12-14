@@ -77,8 +77,8 @@
                                      <v-col class="col-sm-8">
                                     <select name="type" v-model="form.procedure" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('procedure') }">
                                         <option value="">Select Treatment</option>
-                                        <option value="consultation">Consultation</option>
-                                        <option value="treatment">treatment</option>
+                                        <option  v-for="services in service.data" :key="services.id" :value="services.id">{{services.name}}</option>
+                               
 								    </select>
                                     <has-error :form="form" field="procedure"></has-error>
                                      </v-col>
@@ -224,6 +224,7 @@
                 search:'',
                 client:{},
                 employees:{},
+                service:[],
                 modal:false,
                 report:[],
                 form: new Form({
@@ -251,6 +252,9 @@
             },
             loadReport(){
                  axios.get("api/report").then(({data}) => ( this.report = data));
+            },
+            loadService(){
+                 axios.get("api/service").then((data) => (this.service = data,console.log(data)));
             },
             createReport(){
                 this.$Progress.start();
@@ -303,6 +307,7 @@
             this.loadEmployees();
             this.loadPet();
             this.loadReport();
+            this.loadService();
             Fire.$on('AfterCreate',() => {
                this.loadReport();
            });
