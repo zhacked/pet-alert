@@ -28,6 +28,8 @@ import swal from 'sweetalert2'
 
 import VueProgressBar from 'vue-progressbar'
 
+import FullCalendar from "@fullcalendar/vue";
+
 
 const toast = swal.mixin({
     toast: true,
@@ -91,6 +93,8 @@ Vue.component(AlertErrors.name, AlertErrors)
 Vue.component(AlertSuccess.name, AlertSuccess)
 Vue.component('pagination', require('laravel-vue-pagination'));
 
+Vue.component('full-calendar', FullCalendar)
+
 
 let routes = [
     {
@@ -119,6 +123,9 @@ let routes = [
     },
     {
         path: '/schedule', component: require('./components/Schedule.vue').default
+    },
+    {
+        path: '/services', component: require('./components/Services.vue').default
     },
     
     

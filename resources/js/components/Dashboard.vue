@@ -46,7 +46,6 @@
 
         </v-row>
         <v-row>
-      
           <div class="col-md-3">
             <div class="sticky-top mb-3">
               <div class="card">
@@ -68,6 +67,22 @@
               </div>
             </div>
           </div>
+             <div class="col-md-9">
+            <div class="sticky-top mb-3">
+              <div class="card">
+               
+                <div class="card-body">
+                  <!-- the events -->
+                   <full-calendar
+                      id="calendar"
+                      :options="calendarOptions"
+                     
+                  ></full-calendar>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+          </div>
           <!-- /.col -->
         </v-row>
       
@@ -77,6 +92,42 @@
 <script>
 import moment from 'moment';
 import { formatDate } from '@fullcalendar/vue';
+import { dayGridPlugin,
+    interactionPlugin,
+    listPlugin
+    } from '../fullcalendarPlugins'
+
+
+const eventData = [
+    {
+        title: "1st Vaccine: Aso ni Enan",
+        start: "2021-12-12T14:30:00",
+        end: "2021-12-12T15:30:00",
+        description: "Bakuna para sa aso ni Enan",
+        extendedProps: {
+            status: "ongoing",
+            vet: 'Bill',
+            bg: "#FAAA8D"
+        },
+    },
+     {
+        title: "2nd vaccine: Aso ni Enan",
+        start: "2022-01-01T14:30:00",
+        end: "2022-01-01T15:30:00",
+        description: "Bakuna para sa aso ni Enan",
+        extendedProps: {
+            status: "ongoing",
+            vet: 'Bill',
+            bg: "#FAAA8D"
+        },
+    },
+    {
+        title: "Birthday Party",
+        start: "2021-12-18T07:00:00",
+        backgroundColor: "green",
+        borderColor: "green",
+    },
+];
 
     export default {
       
@@ -84,7 +135,34 @@ import { formatDate } from '@fullcalendar/vue';
             return {
                 date: '',
                 time: '',
-                count:{}
+                count:{},
+                calendarOptions: {
+                  plugins: [dayGridPlugin, interactionPlugin, listPlugin],
+                  initialView: "dayGridMonth",
+                  headerToolbar: {
+                      left: "prev,next today",
+                      center: "title",
+                      right: "dayGridMonth,listWeek",
+                  },
+                    eventDidMount: function (info) {
+                  
+                        info.el.style.backgroundColor = info.event.extendedProps.bg;
+                        info.el.style.color = "#111";
+
+                        // Change color of dot marker
+                        const dotEl =
+                            info.el.getElementsByClassName("fc-event-dot")[0];
+                        if (dotEl) {
+                            dotEl.style.backgroundColor = "white";
+                        }
+                },
+
+                  dayMaxEvents: true,
+                  dayMaxEventRows: true,
+                  eventSources: [{events: eventData}],
+             
+            
+            },
             }
         },
         methods: {

@@ -196,7 +196,6 @@
                 headers: [
                 { text: 'Pet Name', value: 'Name' },
                 { text: 'Owner', value: 'client_data.name' },
-                { text: 'Name', value: 'Name' },
                 { text: 'Species', value: 'species' },
                 { text: 'Breed', value: 'breed' },
                 { text: 'Color', value: 'color' },
@@ -325,7 +324,7 @@
                     $('#addNew').modal('hide')
                      Toast.fire({
                                 icon: 'success',
-                                title: 'Successfully Deleted'
+                                title: 'New pet added'
                                 
                                 })
                     this.$Progress.finish();

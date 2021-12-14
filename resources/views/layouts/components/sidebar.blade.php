@@ -96,6 +96,12 @@
 
 
             @can('isAdmin')
+				<li class="nav-item">
+					<router-link to="/services" class="nav-link text-white" >
+						<i class="nav-icon fas fa-tachometer-alt text-gray "></i>
+						<p>Services</p>
+					</router-link>
+				</li>
                 <li class="nav-item has-treeview menu-close">
                     <a href="#" class="nav-link  text-white">
                     <i class="nav-icon fas fa-cog  text-gray"></i>
@@ -119,6 +125,8 @@
 						</li>
                     </ul>
                 </li>
+
+			
 				
             @endcan
 

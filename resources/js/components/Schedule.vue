@@ -104,28 +104,34 @@
 </template>
 <script>
 import "@fullcalendar/core/vdom"; // solves problem with Vite
-import FullCalendar from "@fullcalendar/vue";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
+// import FullCalendar from "@fullcalendar/vue";
+import { dayGridPlugin,
+    interactionPlugin,
+    listPlugin
+    } from '../fullcalendarPlugins'
+
 import moment from 'moment'
 const eventData = [
     {
-        title: "Aso ni Enan",
+        title: "1st Vaccine: Aso ni Enan",
         start: "2021-12-12T14:30:00",
         end: "2021-12-12T15:30:00",
         description: "Bakuna para sa aso ni Enan",
         extendedProps: {
-            status: "done",
+            status: "ongoing",
+            vet: 'Bill',
+            bg: "#FAAA8D"
         },
     },
      {
-        title: "Pusa ni Enan",
-        start: "2021-12-12T15:30:00",
-        end: "2021-12-12T16:30:00",
-        description: "Bakuna para sa pusa ni Enan",
+        title: "2nd vaccine: Aso ni Enan",
+        start: "2022-01-01T14:30:00",
+        end: "2022-01-01T15:30:00",
+        description: "Bakuna para sa aso ni Enan",
         extendedProps: {
             status: "ongoing",
+            vet: 'Bill',
+            bg: "#FAAA8D"
         },
     },
     {
@@ -138,7 +144,7 @@ const eventData = [
 
 export default {
     components: {
-        FullCalendar, // make the <FullCalendar> tag available
+        // FullCalendar, // make the <FullCalendar> tag available
     },
     data() {
         return {
@@ -182,9 +188,11 @@ export default {
                 dayMaxEvents: true,
                 dayMaxEventRows: true,
                 eventDidMount: function (info) {
-                    if (info.event.extendedProps.status === "done") {
-                        // Change background color of row
-                        info.el.style.backgroundColor = "#FAAA8D";
+                    // if (info.event.extendedProps.status === "done") {
+                    //     // Change background color of row
+                       
+                    // }
+                        info.el.style.backgroundColor = info.event.extendedProps.bg;
                         info.el.style.color = "#111";
 
                         // Change color of dot marker
@@ -193,7 +201,6 @@ export default {
                         if (dotEl) {
                             dotEl.style.backgroundColor = "white";
                         }
-                    }
                 },
                 eventAllow: this.eventAllow,
                 eventDrop: this.eventDrop,
@@ -202,7 +209,7 @@ export default {
                 // selectable: true,
                 // selectMirror: true,
                 // dayMaxEvents: true,
-                events: eventData,
+                eventSources: [{events: eventData}],
                 dateClick: this.handleDateClick,
             },
         };
