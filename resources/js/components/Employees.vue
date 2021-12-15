@@ -36,9 +36,24 @@
                                     :search="search"
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
-                                    <button class="btn btn-primary  btn-sm"  @click="editModal(item)">
-                                            <i class="fa fa-edit"></i> Update
-                                        </button>
+                                   <v-btn
+                                        small
+                                        color="primary"
+                                        dark
+                                        outlined
+                                        @click="editModal(item)"
+                                        >
+                                        <i class="fa fa-edit"></i>   Update
+                                    </v-btn>
+                                      <v-btn
+                                        small
+                                        color="red"
+                                        dark
+                                        outlined
+                                       @click="deleteEmployees(item.id)"
+                                        >
+                                        <i class="fa fa-trash"></i> Delete
+                                    </v-btn>
                                 </template>
                                 
                              </v-data-table>
@@ -200,7 +215,7 @@
                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',

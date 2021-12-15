@@ -88,7 +88,7 @@
                             </div>
 
                             <div class="form-group">
-								<select name="type" v-model="form.client_id" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+								<select name="type" v-model="form.user_id" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
 									<option value="">Select Owner Name</option>
 									<option v-for="owner in client.data" :key="owner.id" :value="owner.id">{{owner.name}}</option>
 								
@@ -209,7 +209,7 @@
                 search:'',
                 length: '',
                 form: new Form({
-                    client_id:'',
+                    user_id:'',
                     id:'',
                     Name : '',
                     species :'',

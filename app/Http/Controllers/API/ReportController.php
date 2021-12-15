@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Pet;
 use App\Models\Report;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 class ReportController extends Controller
 {
     /**
@@ -44,13 +46,13 @@ class ReportController extends Controller
     {
 
         $this->validate($request,[
-            'procedure' => 'required|string|max:191',
+            'procedure' => 'required|max:191',
             'employee_id' => 'required|numeric',
             'client_id' => 'required|numeric',
             'pet_id' => 'required|numeric',
-            'note' => 'required|string',
-            'weight' => 'required|string',
-            'due_date' => 'required|string',
+            'note' => 'required',
+            'weight' => 'required',
+            'due_date' => 'required',
         ]);
   
         return Report::create([
@@ -121,11 +123,10 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        $service = User::findOrFail($id);
-        // delete the user
+        //
+    }
 
-        $service->delete();
-
-        return ['message' => 'User Deleted'];
+    public function OnwerBasePet($id){
+        return Pet::where('user_id', $id)->get();
     }
 }

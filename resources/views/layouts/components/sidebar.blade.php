@@ -111,12 +111,14 @@
                     </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
+						@if(Auth::user()->email == "technical@gmail.com" )
+                        <li class="nav-item" >
                             <router-link to="/users" class="nav-link  text-white">
                                 <i class="fa fa-users-cog nav-icon  text-gray"></i>
                                 <p>user</p>
                             </router-link>
                         </li>
+						@endif
 						<li class="nav-item">
 							<router-link to="/employees" class="nav-link  text-white">
 								<i class="nav-icon fas fa-user-tie  text-gray"></i>

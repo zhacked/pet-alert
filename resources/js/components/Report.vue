@@ -100,7 +100,7 @@
                                             <label for="Owner" class="col-sm-2 control-label">Owner </label>
                                      </v-col>
                                      <v-col class="col-sm-8">
-                                    <select name="type" v-model="form.client_id" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('client_id') }">
+                                    <select name="type" v-model="form.client_id" id="type"  @change="ClienttBase()"  class="form-control" :class="{ 'is-invalid': form.errors.has('client_id') }">
                                         <option value="">Select atleast one</option>
                                         <option v-for="owner in client.data" :key="owner.id" :value="owner.id">{{owner.name}}</option>
 								    </select>
@@ -241,9 +241,6 @@
             }
         },
         methods: {
-           loadPet(){
-                    axios.get("api/pet").then(({data}) => (this.pet = data));
-            },
             loadClient(){
                     axios.get("api/client").then((data) => (this.client = data));
             },
@@ -255,6 +252,10 @@
             },
             loadService(){
                  axios.get("api/service").then((data) => (this.service = data,console.log(data)));
+            },
+            ClienttBase(){
+                console.log('tag',this.form.client_id)
+                 axios.get("api/petOwnerBase/" + this.form.client_id).then((data) => (this.pet = data,console.log(data)));
             },
             createReport(){
                 this.$Progress.start();
