@@ -50,7 +50,7 @@ class ServiceController extends Controller
      
         $this->validate($request,[
             'name' => 'required|string|max:191',
-            'description' => 'required|numeric'
+            'description' => 'required|max:191'
         ]);
 
         return Service::create([
