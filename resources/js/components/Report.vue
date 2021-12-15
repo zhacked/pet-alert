@@ -306,7 +306,6 @@
         created() {
             this.loadClient();
             this.loadEmployees();
-            this.loadPet();
             this.loadReport();
             this.loadService();
             Fire.$on('AfterCreate',() => {
