@@ -34,10 +34,7 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function serviceRecord()
-    {
-        
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -49,12 +46,12 @@ class ServiceController extends Controller
     {
      
         $this->validate($request,[
-            'name' => 'required|string|max:191',
-            'description' => 'required|max:191'
+            'name' => 'required|string',
+            'description' => 'required'
         ]);
 
         return Service::create([
-            'name' =>  $request['description'],
+            'name' =>  $request['name'],
             'description' => $request['description'],
            
         ]);
@@ -100,8 +97,8 @@ class ServiceController extends Controller
         $Service = Service::findOrFail($id);
       
         $this->validate($request,[
-            'name' => 'required|string|max:191',
-            'description' => 'required|numeric'
+            'name' => 'required',
+            'description' => 'required'
         ]);
 
 
@@ -119,8 +116,6 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $Service = Service::findOrFail($id);
-        // delete the user
-
         $Service->delete();
 
         return ['message' => 'User Deleted'];

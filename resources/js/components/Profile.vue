@@ -18,12 +18,27 @@
                 
                 <div class="card card-widget widget-user">
                 <div class="widget-user-header text-bold text-white" style="background-image:url('./image/user-cover.jpg')">
-                    <h1 class="widget-user-username ">{{this.form.name}}</h1>
-                    <h5 class="widget-user-desc">{{this.form.type}}</h5>
+                    <h1 class="widget-user-username text-dark" 
+                        style="
+                            font-family: Aclonica, sans-serif;
+                            text-transform: uppercase;
+                            text-align: center;
+                            font-size: 35px;
+                            color: rgb(0, 41, 41);
+                            text-shadow: rgb(254, 255, 250) 3px 4px 8px;
+                        ">{{this.form.name}}</h1>
+                    <h5 class="widget-user-desc"
+                        style="
+                            font-family: Aclonica, sans-serif;
+                            text-transform: uppercase;
+                            text-align: center;
+                            font-size: 15px;
+                            color: rgb(0, 41, 41);
+                            text-shadow: rgb(254, 255, 250) 3px 4px 8px;
+                        ">{{this.form.type}}</h5>
                 </div>
 
                 <div class="widget-user-image">
-                   
                        <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
                 </div>
                 <div class="card-footer" >
@@ -178,8 +193,13 @@
                     this.form.password = undefined;
                 }
                 this.form.put('api/profile')
-                .then(()=>{
-                     Fire.$emit('AfterCreate');
+                .then((data)=>{
+                    
+                    toast.fire({
+                        icon: 'success',
+                        title: 'Profile Update successfully'
+                        })
+                    Fire.$emit('AfterCreate');
                     this.$Progress.finish();
                 })
                 .catch(() => {

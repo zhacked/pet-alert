@@ -10,7 +10,7 @@
 				<img  src="{{Auth::user()->photo == null ? 'image/profile.png' : 'image/profile/'. Auth::user()->photo}}" class="img-circle elevation-2" alt="User Image">
 			</div>
 			<div class="info">
-			<a href="#" class="text-white">{{Auth::user()->email}}</a>
+			<a href="/profile" class="text-white">{{Auth::user()->email}}</a>
 			</div>
 		</div>
 
