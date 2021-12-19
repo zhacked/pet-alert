@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Schedule;
-use App\Http\Requests\StoreScheduleRequest;
-use App\Http\Requests\UpdateScheduleRequest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ScheduleController extends Controller
 {
@@ -13,9 +13,16 @@ class ScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+
+        $this->middleware('auth:api');
+
+    }
     public function index()
     {
-        //
+        return Schedule::all();
     }
 
     /**
@@ -23,29 +30,51 @@ class ScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+    public function scheduleEvent()
     {
-        //
+        return Report::with(['clientData','employeeData'])->get();
     }
+   
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreScheduleRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreScheduleRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        // $this->validate($request,[
+        //     'procedure' => 'required|max:191',
+        //     'employee_id' => 'required|numeric',
+        //     'client_id' => 'required|numeric',
+        //     'pet_id' => 'required|numeric',
+        //     'note' => 'required',
+        //     'weight' => 'required',
+        //     'due_date' => 'required',
+        // ]);
+  
+        return Schedule::create([
+           
+            'employee_id' => $request['employeeId'],
+            'client_id' => $request['clientId'],
+            // 'service_id' => $request['serviceId'],
+            'start' =>$request['start'],
+            'end'=> $request['end'],
+           
+       
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Schedule  $schedule
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Schedule $schedule)
+    public function show($id)
     {
         //
     }
@@ -53,10 +82,10 @@ class ScheduleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Schedule  $schedule
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Schedule $schedule)
+    public function edit($id)
     {
         //
     }
@@ -64,23 +93,25 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateScheduleRequest  $request
-     * @param  \App\Models\Schedule  $schedule
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateScheduleRequest $request, Schedule $schedule)
+    public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Schedule  $schedule
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Schedule $schedule)
+    public function destroy($id)
     {
         //
     }
+
+   
 }
