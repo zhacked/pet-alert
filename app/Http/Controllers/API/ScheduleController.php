@@ -31,9 +31,9 @@ class ScheduleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function scheduleEvent()
+    public function eventSchedule()
     {
-        return Report::with(['clientData','employeeData'])->get();
+        return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->get();
     }
    
 
@@ -55,14 +55,16 @@ class ScheduleController extends Controller
         //     'weight' => 'required',
         //     'due_date' => 'required',
         // ]);
-  
+            
         return Schedule::create([
            
             'employee_id' => $request['employeeId'],
             'client_id' => $request['clientId'],
-            // 'service_id' => $request['serviceId'],
+            'service_id' => $request['serviceId'],
+            'pet_id' => $request['petId'],
             'start' =>$request['start'],
             'end'=> $request['end'],
+            'details' => $request['details'],
            
        
         ]);

@@ -14,8 +14,16 @@ class Schedule extends Model
     public function clientData(){
         return $this->hasOne('App\Models\User','id', 'client_id');
     }
+
+      public function petData(){
+        return $this->hasOne('App\Models\Pet', 'id', 'pet_id');
+    }
+
+    public function serviceData(){
+        return $this->hasOne('App\Models\Service', 'id', 'service_id');
+    }
  
     public function employeeData(){
-        return $this->hasOne('App\Models\Employee','id', 'employee_id');
+        return $this->hasOne('App\Models\User','id', 'employee_id');
     }
 }
