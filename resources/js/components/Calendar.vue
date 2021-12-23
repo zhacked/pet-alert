@@ -66,8 +66,8 @@
                         ref="calendar"
                         v-model="focus"
                         color="primary"
-                        :events="events"
-                        :event-color="getEventColor"
+                        :events="events"            
+                       :event-text-color="isLight"
                         :type="type"
                         :min-date='new Date()'
                         @click:event="showEvent"
@@ -247,7 +247,7 @@
 <script>
 
 import moment from "moment";
-
+import tinycolor from 'tinycolor2';
 export default {
    props: {
        viewing: Boolean,
@@ -299,6 +299,7 @@ export default {
                     end: "",
                     color:"",
                     timed: "",
+                    textColor: "",
                     details: "",
             },
             timeAvailable: [],
@@ -308,7 +309,6 @@ export default {
 
     methods: {
         viewDay(info) {
-            
             this.focus = info.start || info.date;
             this.type = "day";
             this.selectedOpen = false;
@@ -321,8 +321,8 @@ export default {
         }
       },
         showAppointment(info) {
-      
-            if(!this.viewing) {
+           
+            if(!this.viewing && (info.present || info.future)) {
                 this.overlay = !this.overlay;
                 this.evt.start = info.date;
 
@@ -362,7 +362,7 @@ export default {
          
         },
         getEventColor(event) {
-            console.log(event)
+            this.evt.textColor = event.color
             return event.color;
         },
         setToday() {
@@ -377,7 +377,8 @@ export default {
         showEvent({ nativeEvent, event }) {
             const open = () => {
                 this.selectedEvent = event;
-                this.selectedElement = nativeEvent.target;
+             
+                console.log(nativeEvent.target)
                 requestAnimationFrame(() =>
                     requestAnimationFrame(() => (this.selectedOpen = true))
                 );
@@ -404,6 +405,7 @@ export default {
         selectTime(time) {
             this.time = moment(time, "h:mm:ss A").format("HH:mm:ss");
         },
+      
 
         makeAppointment() {
             const clientId = this.selectClient.id;
@@ -482,6 +484,7 @@ export default {
                     end: event.end,
                     color: event.employee_data.color || "#f1f1f1",
                     timed: !allDay,
+                   
                     details: "test description\nok",
                     
                 };
@@ -498,6 +501,10 @@ export default {
             this.selectClient = null;
             this.selectVet = null;
         },
+          isLight: function (event) {
+            const color1 = tinycolor(event.color);
+            return color1.isLight() ? '#000' : '#fff';
+          },
     },
 
     created() {
