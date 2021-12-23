@@ -73,11 +73,12 @@
                
                 <div class="card-body">
                   <!-- the events -->
-                   <full-calendar
+                   <!-- <full-calendar
                       id="calendar"
                       :options="calendarOptions"
                      
-                  ></full-calendar>
+                  ></full-calendar> -->
+                  <calendar :viewing="true"></calendar>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -90,79 +91,47 @@
 </template>
 
 <script>
-import moment from 'moment';
-import { formatDate } from '@fullcalendar/vue';
-import { dayGridPlugin,
-    interactionPlugin,
-    listPlugin
-    } from '../fullcalendarPlugins'
+import Calendar from './Calendar.vue';
 
-
-const eventData = [
-    {
-        title: "1st Vaccine: Aso ni Enan",
-        start: "2021-12-12T14:30:00",
-        end: "2021-12-12T15:30:00",
-        description: "Bakuna para sa aso ni Enan",
-        extendedProps: {
-            status: "ongoing",
-            vet: 'Bill',
-            bg: "#FAAA8D"
-        },
-    },
-     {
-        title: "2nd vaccine: Aso ni Enan",
-        start: "2022-01-01T14:30:00",
-        end: "2022-01-01T15:30:00",
-        description: "Bakuna para sa aso ni Enan",
-        extendedProps: {
-            status: "ongoing",
-            vet: 'Bill',
-            bg: "#FAAA8D"
-        },
-    },
-    {
-        title: "Birthday Party",
-        start: "2021-12-18T07:00:00",
-        backgroundColor: "green",
-        borderColor: "green",
-    },
-];
+import moment from "moment";
 
     export default {
-      
+        components: {
+
+        Calendar
+    },
           data() {
             return {
                 date: '',
                 time: '',
                 count:{},
-                calendarOptions: {
-                  plugins: [dayGridPlugin, interactionPlugin, listPlugin],
-                  initialView: "dayGridMonth",
-                  headerToolbar: {
-                      left: "prev,next today",
-                      center: "title",
-                      right: "dayGridMonth,listWeek",
-                  },
-                    eventDidMount: function (info) {
+            //     calendarOptions: {
+            //       plugins: [dayGridPlugin, interactionPlugin, listPlugin],
+            //       initialView: "dayGridMonth",
+            //       headerToolbar: {
+            //           left: "prev,next today",
+            //           center: "title",
+            //           right: "dayGridMonth,listWeek",
+            //       },
+            //         eventDidMount: function (info) {
                   
-                        info.el.style.backgroundColor = info.event.extendedProps.bg;
-                        info.el.style.color = "#111";
+            //             info.el.style.backgroundColor = info.event.extendedProps.bg;
+            //             info.el.style.color = "#111";
 
-                        // Change color of dot marker
-                        const dotEl =
-                            info.el.getElementsByClassName("fc-event-dot")[0];
-                        if (dotEl) {
-                            dotEl.style.backgroundColor = "white";
-                        }
-                },
+            //             // Change color of dot marker
+            //             const dotEl =
+            //                 info.el.getElementsByClassName("fc-event-dot")[0];
+            //             if (dotEl) {
+            //                 dotEl.style.backgroundColor = "white";
+            //             }
+            //     },
 
-                  dayMaxEvents: true,
-                  dayMaxEventRows: true,
-                  eventSources: [{events: eventData}],
+            //       dayMaxEvents: true,
+            //       dayMaxEventRows: true,
+            //       eventSources: [{events: eventData}],
              
             
-            },
+            // },
             }
         },
         methods: {

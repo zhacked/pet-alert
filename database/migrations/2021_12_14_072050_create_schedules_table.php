@@ -30,7 +30,7 @@ class CreateSchedulesTable extends Migration
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             
             $table->boolean('status')->default(0);
-            $table->text('details');
+            $table->text('details')->nullable();
             $table->timestamps();
         });
     }
