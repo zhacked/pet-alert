@@ -56,6 +56,7 @@ class EmployeeController extends Controller
             'address' => $request['address'],
             'position'=>$request['position'],
             'type'=>$request['type'],
+            'color' => $request['color'],
             'password' => Hash::make($request['password']),
         ]);
     }

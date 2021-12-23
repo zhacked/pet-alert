@@ -69,9 +69,11 @@
                         :events="events"
                         :event-color="getEventColor"
                         :type="type"
+                        :min-date='new Date()'
                         @click:event="showEvent"
                         @click:more="viewDay"
                         @click:date="showAppointment"
+                        @mousedown:event="startDrag"
                     ></v-calendar>
                     <v-menu
                         v-model="selectedOpen"
@@ -311,7 +313,15 @@ export default {
             this.type = "day";
             this.selectedOpen = false;
         },
+        startDrag ({ event, timed }) {
+        if (event && timed) {
+          this.dragEvent = event
+          this.dragTime = null
+          this.extendOriginal = null
+        }
+      },
         showAppointment(info) {
+      
             if(!this.viewing) {
                 this.overlay = !this.overlay;
                 this.evt.start = info.date;
@@ -352,6 +362,7 @@ export default {
          
         },
         getEventColor(event) {
+            console.log(event)
             return event.color;
         },
         setToday() {
@@ -466,13 +477,13 @@ export default {
             await eventSchedule.data.forEach((event) => {
                 const allDay = this.rnd(0, 3) === 0;
                 const evt = {
-                  
                     name: `${event.service_data.name} | ${event.pet_data?.Name}(${event.client_data?.name})`,
                     start: event.start,
                     end: event.end,
                     color: event.employee_data.color || "#f1f1f1",
                     timed: !allDay,
                     details: "test description\nok",
+                    
                 };
 
                 events.push(evt);

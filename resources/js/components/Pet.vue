@@ -317,6 +317,7 @@
                 
             },
             createPet(){
+                console.log(this.form.user_id)
                 this.$Progress.start();
                 this.form.post('api/pet')
                 .then(()=>{

@@ -54,11 +54,8 @@
                 </div>
                 <div class="card-body">
                   <!-- the events -->
-                  <div id="external-events">
-                    <div class="external-event bg-success">Sharlene</div>
-                    <div class="external-event bg-warning">Ann Canimo</div>
-                    <div class="external-event bg-info">Janel PEralta</div>
-                    <div class="external-event bg-primary">Nathan Belza</div>
+                  <div  id="external-events">
+                    <div v-for="item in this.employees" :key="item.id" class="external-event" :style="{backgroundColor: item.color, color: isLight(item.color) ? '#000' : '#fff'}">{{item.name}}</div>
                    
 
                   </div>
@@ -72,12 +69,7 @@
               <div class="card">
                
                 <div class="card-body">
-                  <!-- the events -->
-                   <!-- <full-calendar
-                      id="calendar"
-                      :options="calendarOptions"
-                     
-                  ></full-calendar> -->
+              
                   <calendar :viewing="true"></calendar>
                 </div>
                 <!-- /.card-body -->
@@ -94,6 +86,7 @@
 import Calendar from './Calendar.vue';
 
 import moment from "moment";
+import tinycolor from 'tinycolor2';
 
     export default {
         components: {
@@ -105,33 +98,7 @@ import moment from "moment";
                 date: '',
                 time: '',
                 count:{},
-            //     calendarOptions: {
-            //       plugins: [dayGridPlugin, interactionPlugin, listPlugin],
-            //       initialView: "dayGridMonth",
-            //       headerToolbar: {
-            //           left: "prev,next today",
-            //           center: "title",
-            //           right: "dayGridMonth,listWeek",
-            //       },
-            //         eventDidMount: function (info) {
-                  
-            //             info.el.style.backgroundColor = info.event.extendedProps.bg;
-            //             info.el.style.color = "#111";
-
-            //             // Change color of dot marker
-            //             const dotEl =
-            //                 info.el.getElementsByClassName("fc-event-dot")[0];
-            //             if (dotEl) {
-            //                 dotEl.style.backgroundColor = "white";
-            //             }
-            //     },
-
-            //       dayMaxEvents: true,
-            //       dayMaxEventRows: true,
-            //       eventSources: [{events: eventData}],
-             
-            
-            // },
+                employees: []
             }
         },
         methods: {
@@ -148,16 +115,16 @@ import moment from "moment";
                 ));
                 
             },
-        test(){
-          let str = formatDate(new Date(), {
-            month: 'long',
-            year: 'numeric',
-            day: 'numeric'
-          });
+  
+            loadEmployees() {
+            axios.get("api/employeess").then(({data}) => (this.employees = data));
+          },
 
-        console.log(str);
-
-        }         
+          isLight: function (hex) {
+            const color1 = tinycolor(hex);
+             console.log(color1.isLight())
+            return color1.isLight();
+          }
             
        
         },
@@ -165,6 +132,8 @@ import moment from "moment";
          this.date = this.printDate();
           this.time = this.printTime();
           this.counting();
+          this.loadEmployees();
+        
           
         }
     }

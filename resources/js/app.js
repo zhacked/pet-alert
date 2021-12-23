@@ -28,7 +28,7 @@ import swal from 'sweetalert2'
 
 import VueProgressBar from 'vue-progressbar'
 
-import FullCalendar from "@fullcalendar/vue";
+
 
 
 const toast = swal.mixin({
@@ -62,6 +62,8 @@ Vue.filter('format',function(date){
     return moment(date).format('LL');
 });
 
+
+
 Vue.prototype.$gate = new Gate(window.user)
 
 Vue.use(VueRouter)
@@ -93,7 +95,7 @@ Vue.component(AlertErrors.name, AlertErrors)
 Vue.component(AlertSuccess.name, AlertSuccess)
 Vue.component('pagination', require('laravel-vue-pagination'));
 
-Vue.component('full-calendar', FullCalendar)
+
 
 
 let routes = [

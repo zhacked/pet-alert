@@ -72,7 +72,7 @@ class PetController extends Controller
        
 
         return Pet::create([
-            'user_id' =>  $request['client_id'],
+            'user_id' =>  $request['user_id'],
             'name' => $request['Name'],
             'species' => $request['species'],
             'breed' =>$request['breed'],
