@@ -40,6 +40,11 @@
                                 @enderror
 
                             </div>
+                            @if (Route::has('password.request'))
+                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                {{ __('Forgot Your Password?') }}
+                            </a>
+                            @endif
 
                             <div class="d-grid col-6 float-right ">
                                 <button class="btn btn-block btn-primary mt-4 py-3 text-uppercase custom-button "
