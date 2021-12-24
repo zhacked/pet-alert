@@ -41,6 +41,12 @@ class PetController extends Controller
         return Pet::where('user_id',auth('api')->user()->id)->get();
     }
 
+    // get pet base in client id
+    public function getPet($id)
+    {
+        return Pet::where('user_id',$id)->get();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -35,11 +35,11 @@ Route::get('profile', [App\Http\Controllers\API\UserController::class, 'profile'
 Route::put('profile', [App\Http\Controllers\API\UserController::class, 'updateProfile'])->name('updateProfile');
 Route::get('userLoginDetails', [App\Http\Controllers\API\UserController::class, 'userLogin']);
 Route::get('countdata', [App\Http\Controllers\API\UserController::class, 'countuser'])->name('countuser');
-Route::get('record', [App\Http\Controllers\API\ReportController::class, 'petrecord']);
-Route::get('ownerPet', [App\Http\Controllers\API\ScheduleController::class, 'petRecord'])->name('petRecord');
+Route::get('record', [App\Http\Controllers\API\ScheduleController::class, 'petrecord']);
+Route::get('ownerPet', [App\Http\Controllers\API\PetController::class, 'petRecord'])->name('petRecord');
 Route::get('eventSchedule', [App\Http\Controllers\API\ScheduleController::class, 'eventSchedule'])->name('eventSchedule');
 Route::get('custom_employee', [App\Http\Controllers\API\EmployeeController::class, 'customemployees'])->name('customemployees');
-Route::get('petOwnerBase/{id}', [App\Http\Controllers\API\ReportController::class, 'OnwerBasePet']);
+Route::get('getPet/{id}', [App\Http\Controllers\API\PetController::class, 'getPet']);
 Route::get('reportAcceptance/{id}/{status}', [App\Http\Controllers\API\ScheduleController::class, 'acceptancereport']);
 
 ?>

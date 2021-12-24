@@ -255,7 +255,8 @@ import tinycolor from 'tinycolor2';
 export default {
    props: {
        viewing: Boolean,
-       users: Object
+       users: Object,
+       status: String
    },
     data() {
         return {
@@ -325,9 +326,10 @@ export default {
           this.extendOriginal = null
         }
       },
+        
         showAppointment(info) {
      
-            this.petsOwner(this.users.id);
+            this.petsOwner();
             if(!this.viewing && (info.present || info.future)) {
                 this.overlay = !this.overlay;
                 this.evt.start = info.date;
@@ -414,13 +416,13 @@ export default {
       
 
         makeAppointment() {
-            const clientId = this.selectClient.id;
+            const clientId = this.selectClient?.id || this.users.id;
             const employeeId = this.selectVet.id;
             const petId = this.selectPet.id;
             const serviceId = this.selectService.id;
             const details = this.details;
 
-            console.log(details)
+            console.log('status',this.status)
 
             const start = `${this.evt.start}T${this.time}`;
 
@@ -438,6 +440,7 @@ export default {
                     petId,
                     serviceId,
                     details,
+                    status: this.status
                 })
                 .then(() => {
                     Fire.$emit("AfterCreate");
@@ -473,12 +476,19 @@ export default {
 
             this.services = services.data;
         },
+
         async petsOwner(id) {
-            // var ids = id ? id : this.users.id;
-            console.log(this.id);
-            const pets = await axios.get("api/petOwnerBase/" + id);
-            this.pets = pets.data;
+            if(id){
+                const pets = await axios.get("api/getPet/" + id);
+                this.pets = pets.data;
+            }else {
+                const pets = await axios.get("api/ownerPet/");
+                console.log(pets.data)
+                this.pets = pets.data;
+            }
+           
         },
+  
         async loadEvents() {
             let events = [];
 

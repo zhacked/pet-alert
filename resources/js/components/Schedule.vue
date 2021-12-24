@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <calendar :viewing="false"></calendar>
+        <calendar :viewing="false" :status="'accept'"></calendar>
     </v-app>
 </template>
 <script>
@@ -8,7 +8,7 @@
 import Calendar from './Calendar.vue';
 
 import moment from "moment";
-import tinycolor from "tinycolor2";
+
 
 export default {
     components: {
