@@ -30,7 +30,7 @@ class CreateSchedulesTable extends Migration
             $table->unsignedBigInteger('service_id')->unsigned()->index()->nullable();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             
-            $table->boolean('status')->default(0);
+            $table->string('status')->nullable();
             $table->text('details')->nullable();
             $table->timestamps();
         });

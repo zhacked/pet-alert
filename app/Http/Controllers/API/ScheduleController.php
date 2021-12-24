@@ -22,7 +22,7 @@ class ScheduleController extends Controller
     }
     public function index()
     {
-        return Schedule::all();
+        return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->get();
     }
 
     /**
