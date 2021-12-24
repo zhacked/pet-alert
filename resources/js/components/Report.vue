@@ -27,22 +27,24 @@
                                 </template>
                                <template v-slot:[`item.actions`]="{ item }">
                                     <v-btn
+                                        v-show="item.status=='declined' || item.status=='pending'"
                                         small
                                         color="primary"
                                         dark
                                         outlined
-                                        @click="editModal(item)"
+                                        @click="Status(item,'accept')"
                                         >
                                         <i class="fa fa-edit">
                                             Accept
                                         </i>
                                     </v-btn>
                                     <v-btn
+                                        v-show="item.status=='accept' || item.status=='pending'"
                                         small
                                         color="red"
                                         dark
                                         outlined
-                                        @click="editModal(item)"
+                                        @click="Status(item,'declined')"
                                         >
                                         <i class="fa fa-edit">
                                             Declined
@@ -95,22 +97,14 @@
             }
         },
         methods: {
-            // loadClient(){
-            //         axios.get("api/client").then((data) => (this.client = data));
-            // },
-            // loadEmployees(){
-            //         axios.get("api/custom_employee").then((data) => ( this.employees = data,console.log(data)));
-            // },
             loadReport(){
                  axios.get("api/schedule").then(({data}) => ( this.report = data,console.log(data)));
             },
-            // loadService(){
-            //      axios.get("api/service").then((data) => (this.service = data,console.log(data)));
-            // },
-            // ClienttBase(){
-            //     console.log('tag',this.form.client_id)
-            //      axios.get("api/petOwnerBase/" + this.form.client_id).then((data) => (this.pet = data,console.log(data)));
-            // },
+            Status(data,status){
+                axios.get('api/reportAcceptance/'+data.id+'/'+status).then((data)=>{
+                      Fire.$emit("AfterCreate");
+                });
+            }
         },
         created() {
             // this.loadClient();

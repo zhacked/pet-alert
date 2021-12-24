@@ -105,44 +105,6 @@ export default {
         rnd(a, b) {
             return Math.floor((b - a + 1) * Math.random()) + a;
         },
-
-        //---------------------------------//
-     
-        handleDateClick: async function (arg) {
-            // this.overlay = !this.overlay;
-            // this.evt.start = arg.dateStr;
-
-            // // console.log(moment().hour())
-            // let existingTime = [];
-
-            // const checkTimeForDay = this.calendarOptions.events.filter((e) => {
-            //     return e.start.includes(arg.dateStr);
-            // });
-
-            // checkTimeForDay.forEach((ctfd) => {
-            //     existingTime.push(
-            //         moment({ hour: ctfd.start.split("T")[1] }).format("h:mm A")
-            //     );
-            // });
-
-            // console.log(existingTime);
-            // function timeAvail(start = 8, end = 17) {
-            //     const locale = "en"; // or whatever you want...
-            //     const hours = [];
-
-            //     moment.locale(locale); // optional - can remove if you are only dealing with one locale
-
-            //     for (let hour = start; hour <= end; hour++) {
-            //         hours.push(moment({ hour }).format("h:mm A"));
-            //     }
-            //     const newSetTime = hours.filter(
-            //         (t) => !existingTime.includes(t)
-            //     );
-            //     return newSetTime;
-            // }
-
-            // this.timeAvailable = timeAvail();
-        },
         eventDrop: (info) => {
             console.log(info.event.title);
             console.log(info.event.start);
@@ -151,18 +113,6 @@ export default {
             if (new Date(dropInfo.startStr).getTime() < new Date().getTime())
                 return false;
             return true;
-        },
-        eventClick: (info) => {
-            // let calendar = this.$parent.$parent.$refs.fullCalendar.getApi()
-            // this.popover({
-            //     animation:true,
-            //   delay: 300,
-            //   content: '<b>Inicio</b>:'+info.start+"<b>Fin</b>:"+info.end,
-            //   trigger: 'click'
-            // })
-            // info.backgroundColor = 'yellow';
-            // document.getElementById("calendar").fullCalendar( 'rerenderEvents' );
-            // $(this).css('background-color','yellow');
         },
         selectTime(time) {
             this.time = moment(time, "h:mm:ss A").format("HH:mm:ss");

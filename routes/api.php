@@ -40,5 +40,6 @@ Route::get('ownerPet', [App\Http\Controllers\API\ScheduleController::class, 'pet
 Route::get('eventSchedule', [App\Http\Controllers\API\ScheduleController::class, 'eventSchedule'])->name('eventSchedule');
 Route::get('custom_employee', [App\Http\Controllers\API\EmployeeController::class, 'customemployees'])->name('customemployees');
 Route::get('petOwnerBase/{id}', [App\Http\Controllers\API\ReportController::class, 'OnwerBasePet']);
+Route::get('reportAcceptance/{id}/{status}', [App\Http\Controllers\API\ScheduleController::class, 'acceptancereport']);
 
 ?>

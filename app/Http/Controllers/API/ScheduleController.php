@@ -40,7 +40,14 @@ class ScheduleController extends Controller
     {
         return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->where('client_id',auth('api')->user()->id)->get();
     }
-   
+    public function acceptancereport($id,$status){
+  
+        $report = Schedule::where('id',$id)->update([
+            'status' => $status
+        ]);
+
+        return $report;
+    }
 
     /**
      * Store a newly created resource in storage.
