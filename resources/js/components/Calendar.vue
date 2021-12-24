@@ -63,6 +63,7 @@
                 </v-sheet>
                 <v-sheet height="600">
                     <v-calendar
+                    
                         ref="calendar"
                         v-model="focus"
                         color="primary"
@@ -149,7 +150,9 @@
 
                 <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
+                        
                         <v-select
+                            v-show="$gate.isAdmin()"
                             v-model="selectClient"
                             :items="client.data"
                             name="client"
@@ -170,6 +173,7 @@
                             label="Pet"
                             required
                             return-object
+
                         ></v-select>
 
                         <v-select
@@ -251,6 +255,7 @@ import tinycolor from 'tinycolor2';
 export default {
    props: {
        viewing: Boolean,
+       users: Object
    },
     data() {
         return {
@@ -321,7 +326,8 @@ export default {
         }
       },
         showAppointment(info) {
-           
+     
+            this.petsOwner(this.users.id);
             if(!this.viewing && (info.present || info.future)) {
                 this.overlay = !this.overlay;
                 this.evt.start = info.date;
@@ -431,7 +437,7 @@ export default {
                     employeeId,
                     petId,
                     serviceId,
-                    details
+                    details,
                 })
                 .then(() => {
                     Fire.$emit("AfterCreate");
@@ -468,6 +474,8 @@ export default {
             this.services = services.data;
         },
         async petsOwner(id) {
+            // var ids = id ? id : this.users.id;
+            console.log(this.id);
             const pets = await axios.get("api/petOwnerBase/" + id);
             this.pets = pets.data;
         },

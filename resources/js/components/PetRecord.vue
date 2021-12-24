@@ -17,13 +17,15 @@
 						</v-card-title>
 
                               <v-data-table
-                                
                                     :headers="headers"
-                                    :items="report.data"
+                                    :items="petRecord"
                                     :search="search"
                                     class="elevation-1"
                                 >
-                             
+                                <template v-slot:[`item.status`]="{ item }">
+                      
+                                    <span class="overline" :class="item.status == 'accept' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status}}</span>
+                                </template>
                                 
                              </v-data-table>
 					</v-card>
@@ -39,37 +41,23 @@
             return {
                 headers: [
                 { text: 'Pet Name', value: 'pet_data.Name' },
-                { text: 'Findings', value: 'finding = null ? "yes" : "None"' },
-                { text: 'Date', value: 'due_date' },
-                { text: 'Treatment Done', value: 'procedure' },
+                { text: 'Findings', value: 'details' },
+                // { text: 'Date', value: 'due_date' },
+                { text: 'Treatment Done', value: 'service_data.name' },
                 { text: 'Vet Incharge Name', value: 'client_data.name' },
+                { text: 'status', value: 'status' },
                 ],
-                editmode: false,
-                modal: false,
-                report : [],
-                client:[],
+                petRecord : [],
                 search:'',
-                form: new Form({
-                    client_id:'',
-                    id:'',
-                    Name : '',
-                    species :'',
-                    gender:'',
-                    breed: '',
-                    birthday:'',
-                    photo: '',
-                    color:''
-                   
-                })
             }
         },
         methods: {
-            loadClient(){
-                    axios.get("api/client").then(({data}) => (this.client = data));
-            },
+           
             loadRecord(){
-                    axios.get("api/record").then((data) => (this.report = data,console.log(data)));
-
+                    axios.get("api/ownerPet").then(({data}) => {
+                        this.petRecord = data;
+                        console.log(this.petRecord);
+                        });
             },
            
         },

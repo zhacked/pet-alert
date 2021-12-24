@@ -129,6 +129,9 @@ let routes = [
     {
         path: '/services', component: require('./components/Services.vue').default
     },
+    {
+        path: '/appointment', component: require('./components/Appointment.vue').default
+    },
     
     
     

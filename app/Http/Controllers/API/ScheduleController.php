@@ -35,6 +35,11 @@ class ScheduleController extends Controller
     {
         return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->get();
     }
+
+    public function petrecord()
+    {
+        return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->where('client_id',auth('api')->user()->id)->get();
+    }
    
 
     /**
@@ -65,7 +70,7 @@ class ScheduleController extends Controller
             'start' =>$request['start'],
             'end'=> $request['end'],
             'details' => $request['details'],
-           
+            'status' => 'pending'
        
         ]);
     }

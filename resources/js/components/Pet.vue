@@ -313,7 +313,7 @@
                     })
             },
             loadPet(){
-                    axios.get("api/pet").then(({data}) => (this.pet = data,console.log(data)));
+                    axios.get("api/pet").then(({data}) => (this.pet = data));
                 
             },
             createPet(){

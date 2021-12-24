@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
 use App\Models\Client;
 use App\Models\Report;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 
 
 
@@ -32,7 +33,9 @@ class UserController extends Controller
 
         return User::latest()->paginate(10);
     }
-
+    public function userLogin(){
+        return User::Where('id', Auth::user()->id)->first();
+    }
     /**
      * Store a newly created resource in storage.
      *
