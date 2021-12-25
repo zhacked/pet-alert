@@ -18,10 +18,10 @@ class PetController extends Controller
     public function index()
     {
         if(Auth::user()->type === 'client'){
-             return Pet::with('clientData')->where('user_id', Auth::user()->id)->latest()->paginate(10);
+             return Pet::with('clientData')->where('user_id', Auth::user()->id)->get();
         }
 
-        return Pet::with('clientData')->latest()->paginate(10);
+        return Pet::with('clientData')->latest()->get();
     }
 
     public function __construct()
@@ -55,6 +55,8 @@ class PetController extends Controller
      */
     public function store(Request $request)
     {
+
+ 
         // dd($request->all());
         $this->validate($request,[
             'Name' => 'required|string|max:191',
@@ -78,7 +80,7 @@ class PetController extends Controller
        
 
         return Pet::create([
-            'user_id' =>  $request['user_id'],
+            'user_id' => Auth::user()->type == 'client' ? Auth::user()->id :  $request['user_id'],
             'name' => $request['Name'],
             'species' => $request['species'],
             'breed' =>$request['breed'],

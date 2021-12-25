@@ -17,7 +17,7 @@
 						</v-card-title>
                         <v-card-text>
                             <v-card-actions class="card-tool"> 
-								<v-btn color="success"   v-show="$gate.isAdminOrisEmployee()"
+								<v-btn color="success"   
                                     elevation="2"  @click="newModal">Register Pet <i class="fas fa-plus fa-fw">
                                 </i></v-btn>
 							</v-card-actions>
@@ -74,10 +74,10 @@
 					<form @submit.prevent="editmode ? updatePet() : createPet()">
 						<div class="modal-body">
                              <div class="form-group">
-                                    <label for="photo" class="col-sm-12 control-label text-center"><h1>Profile Photo</h1> </label>
+                                    <label for="photo" class="col-sm-12 control-label text-center"><h3>Profile Photo</h3> </label>
                                     
                                     <div class="widget-user-image">
-                                        <img class="img-fluid img-thumbnail mx-auto d-block"  :src="getPetProfilePhoto()" alt="User Avatar">
+                                        <img class="img-fluid img-thumbnal mx-auto d-block"  style="border:1px solid black;" width="100" :src="getPetProfilePhoto()" alt="User Avatar">
                                     </div>
                                     
                                     <div class="col-sm-12">
@@ -88,10 +88,9 @@
                             </div>
 
                             <div class="form-group">
-								<select name="type" v-model="form.user_id" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+								<select name="type" v-model="form.user_id" v-show="$gate.isAdminOrisEmployee()" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
 									<option value="">Select Owner Name</option>
 									<option v-for="owner in client.data" :key="owner.id" :value="owner.id">{{owner.name}}</option>
-								
 								</select>
 								<has-error :form="form" field="type"></has-error>
 							</div>
@@ -227,11 +226,15 @@
                     axios.get("api/client").then((data) => (this.client = data, console.log(data)));
                 
             },
+            loadPet(){
+                    axios.get("api/pet").then((data) => (this.pet = data));
+                
+            },
             getPetProfilePhoto(){
-                if(this.form.photo != null){
+                if(this.form.photo != ''){
                     return (this.form.photo.length > 200) ? this.form.photo : "/image/pet/"+ this.form.photo ;
                 }else{
-                    return "image/dog.png"
+                    return "/image/dog.png"
                 }
                 
             },
@@ -311,10 +314,6 @@
                                 });
                          }
                     })
-            },
-            loadPet(){
-                    axios.get("api/pet").then(({data}) => (this.pet = data));
-                
             },
             createPet(){
                 console.log(this.form.user_id)

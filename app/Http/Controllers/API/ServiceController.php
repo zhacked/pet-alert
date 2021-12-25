@@ -53,7 +53,7 @@ class ServiceController extends Controller
         return Service::create([
             'name' =>  $request['name'],
             'description' => $request['description'],
-           
+           'due_date' => $request['due_date']
         ]);
 
 

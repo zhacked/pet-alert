@@ -40,11 +40,9 @@ class ScheduleController extends Controller
     {
         return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->where('client_id',auth('api')->user()->id)->get();
     }
-
- 
     
     public function acceptancereport($id,$status){
-  
+
         $report = Schedule::where('id',$id)->update([
             'status' => $status
         ]);
@@ -80,7 +78,7 @@ class ScheduleController extends Controller
             'start' =>$request['start'],
             'end'=> $request['end'],
             'details' => $request['details'],
-            'status' => $request['status']
+            'status' => 'pending'
        
         ]);
     }

@@ -55,9 +55,6 @@
                                         >
                                         <i class="fa fa-trash"></i> Delete
                                     </v-btn>
-                                        
-
-                                        
                                 </template>
                                 
                              </v-data-table>
@@ -110,6 +107,20 @@
                                             </div>
                                     </v-col>
                                 </v-row>
+
+                                 <v-row class="no-gutters">
+                                    <v-col  class="col-sm-4">
+                                        <label for="name" class="col-sm-2 control-label">Validation</label>
+                                    </v-col>
+                                    <v-col class="col-sm-8">
+                                        	<div class="form-group">
+                                                <input v-model="form.due_date" name="due_date" id="due_date"
+                                                placeholder="no. weeks ..."
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('due_date') }">              
+                                                <has-error :form="form" field="due_date"></has-error>
+                                            </div>
+                                    </v-col>
+                                </v-row>
                              
                                 
 							</div>
@@ -135,7 +146,8 @@
             return {
                 headers: [
                 { text: 'Name', value: 'name' },
-                { text: 'Description', value: 'description' },       
+                { text: 'Description', value: 'description' },
+                { text: 'Weeks', value: 'due_date' },  
                 { text: '', value: 'actions', sortable: false }
                 ],
                 editmode: false,
@@ -145,7 +157,8 @@
                 form: new Form({
                     id:'',
                     name:'',
-                   description:''
+                   description:'',
+                   due_date:''
                 })
             }
         },
@@ -159,8 +172,8 @@
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
-                    toast({
-                        type: 'success',
+                    Toast.fire({
+                        icon: 'success',
                         title: 'Service Save successfully'
                         })
                     this.$Progress.finish();

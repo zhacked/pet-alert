@@ -179,7 +179,7 @@
                 if(this.form.photo != null){
                     return (this.form.photo.length > 200) ? this.form.photo : "/image/profile/"+ this.form.photo ;
                 }else{
-                    return "image/profile.png"
+                    return "/image/profile.png"
                 }
                 
             },

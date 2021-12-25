@@ -101,8 +101,13 @@
                  axios.get("api/schedule").then(({data}) => ( this.report = data,console.log(data)));
             },
             Status(data,status){
-                axios.get('api/reportAcceptance/'+data.id+'/'+status).then((data)=>{
+                axios.get('api/reportAcceptance/'+data.id+'/'+status).then(({data})=>{
                       Fire.$emit("AfterCreate");
+                 
+                        Toast.fire({
+                                icon: 'success',
+                                title: 'Appointment Successfully  ' + status
+                        })
                 });
             }
         },

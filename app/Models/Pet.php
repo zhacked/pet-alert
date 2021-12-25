@@ -13,5 +13,6 @@ class Pet extends Model
     public function clientData(){
         return $this->hasOne('App\Models\User','id', 'user_id');
     }
+  
 
 }

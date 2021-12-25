@@ -5,7 +5,7 @@
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
-							<strong> My Pet Record</strong>
+							<strong>Pet Record</strong>
                             <v-spacer></v-spacer>
                             <v-text-field
                                 v-model="search"
@@ -18,7 +18,7 @@
 
                               <v-data-table
                                     :headers="headers"
-                                    :items="petRecord"
+                                    :items="petRecord.data"
                                     :search="search"
                                     class="elevation-1"
                                 >
@@ -42,7 +42,7 @@
                 headers: [
                 { text: 'Pet Name', value: 'pet_data.Name' },
                 { text: 'Findings', value: 'details' },
-                // { text: 'Date', value: 'due_date' },
+                { text: 'Date', value: 'due_date' },
                 { text: 'Treatment Done', value: 'service_data.name' },
                 { text: 'Vet Incharge Name', value: 'client_data.name' },
                 { text: 'status', value: 'status' },
@@ -54,7 +54,7 @@
         methods: {
            
             loadRecord(){
-                    axios.get("api/ownerPet").then(({data}) => {
+                    axios.get("api/record").then((data) => {
                         this.petRecord = data;
                         console.log(this.petRecord);
                         });
