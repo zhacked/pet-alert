@@ -422,19 +422,26 @@ export default {
             const serviceId = this.selectService.id;
             const details = this.details;
 
-            console.log('status',this.status)
+            // console.log('status',this.selectService)
 
-            const start = `${this.evt.start}T${this.time}`;
+            // const start = `${this.evt.start}T${this.time}`;
 
             const timeEnd = moment(this.time, "h:mm:ss A")
                 .add(1, "h")
                 .format("HH:mm:ss");
             const end = `${this.evt.start}T${timeEnd}`;
+    
+            for(let i = 0; i<=parseInt(this.selectService.count); i++){
+                const a = parseInt(this.selectService.due_date) * i
+                const start = moment(this.evt.start).add(a, 'w').format('YYYY-MM-DD');
+                const appointStart = `${start}T${this.time}`;
+                const appointEnd = `${start}T${timeEnd}`;
 
-            axios
+
+                 axios
                 .post("api/schedule", {
-                    start,
-                    end,
+                    start: appointStart,
+                    end: appointEnd,
                     clientId,
                     employeeId,
                     petId,
@@ -447,6 +454,11 @@ export default {
                     $("#addNew").modal("hide");
                     this.loadEvents();
                 });
+
+            }
+            
+
+           
 
             this.overlay = !this.overlay;
             this.selectClient = null;
