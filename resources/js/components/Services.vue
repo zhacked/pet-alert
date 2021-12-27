@@ -121,6 +121,19 @@
                                             </div>
                                     </v-col>
                                 </v-row>
+                                <v-row class="no-gutters">
+                                    <v-col  class="col-sm-4">
+                                        <label for="name" class="col-sm-2 control-label">Count</label>
+                                    </v-col>
+                                    <v-col class="col-sm-8">
+                                        	<div class="form-group">
+                                                <input v-model="form.count" name="count" id="count"
+                                                placeholder="service count..."
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('count') }">              
+                                                <has-error :form="form" field="count"></has-error>
+                                            </div>
+                                    </v-col>
+                                </v-row>
                              
                                 
 							</div>
@@ -148,6 +161,7 @@
                 { text: 'Name', value: 'name' },
                 { text: 'Description', value: 'description' },
                 { text: 'Weeks', value: 'due_date' },  
+                { text: 'Count', value: 'count' },  
                 { text: '', value: 'actions', sortable: false }
                 ],
                 editmode: false,
@@ -158,7 +172,8 @@
                     id:'',
                     name:'',
                    description:'',
-                   due_date:''
+                   due_date:'',
+                   count:'',
                 })
             }
         },
