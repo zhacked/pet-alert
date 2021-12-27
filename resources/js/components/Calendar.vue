@@ -515,7 +515,7 @@ export default {
                     color: event.employee_data.color || "#f1f1f1",
                     timed: !allDay,
                    
-                    details: "test description\nok",
+                    details: event.details,
                     
                 };
 
