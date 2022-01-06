@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Pet;
+use App\Models\User;
+use App\Models\Client;
+use App\Models\Service;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class ScheduleController extends Controller
 {
@@ -58,19 +63,24 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
+        $client = User::findOrFail($request['clientId']); 
+        $service = Service::findOrFail($request['serviceId']);
+        $pet = Pet::findOrFail($request['petId']);
+        $employee = User::findOrFail($request['employeeId']);
 
-        // $this->validate($request,[
-        //     'procedure' => 'required|max:191',
-        //     'employee_id' => 'required|numeric',
-        //     'client_id' => 'required|numeric',
-        //     'pet_id' => 'required|numeric',
-        //     'note' => 'required',
-        //     'weight' => 'required',
-        //     'due_date' => 'required',
-        // ]);
-            
-        return Schedule::create([
-           
+        $data=[
+            'client'=>$client,
+            'employee' => $employee,
+            'service' => $service,
+            'pet' => $pet,
+            'messages'=> $request['details'],
+            'date_start' => $request['start'],
+            'date_end' => $request['end'],
+            'status' => 'pending'
+        ];
+        
+        
+        $create =  Schedule::create([
             'employee_id' => $request['employeeId'],
             'client_id' => $request['clientId'],
             'service_id' => $request['serviceId'],
@@ -79,8 +89,16 @@ class ScheduleController extends Controller
             'end'=> $request['end'],
             'details' => $request['details'],
             'status' => 'pending'
-       
         ]);
+
+        Mail::send('mail',$data,function($messages) use ($client){
+
+            $messages->to($client->email);
+            $messages->subject('Hi There');
+        });
+
+        return $create;
+
     }
 
     /**
