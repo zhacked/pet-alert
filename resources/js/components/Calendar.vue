@@ -436,8 +436,9 @@ export default {
 
 
             const trimmedServiceName = this.selectService.name.substring(0, 15);
-            const message = `Good day! Your schedule for ${trimmedServiceName} starts at ${moment(this.evt.start).format("MMM D YYYY hh:mm a")} -Pet Alert`
-        
+          
+            const message = `Good day Ma'am/Sir! Your schedule for ${trimmedServiceName} starts at ${moment(this.evt.start).format("MMM D YYYY hh:mm a")} -Pet Alert`
+          
             axios.post("api/smsSend",{
                 clientNumber,
                 message
@@ -473,11 +474,6 @@ export default {
                 });
 
             }
-          
-        
-            
-
-           
 
             this.overlay = !this.overlay;
             this.selectClient = null;

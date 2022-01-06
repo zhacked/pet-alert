@@ -5,8 +5,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-// use Nexmo\Laravel\Facade\Nexmo;
-use Twilio\Rest\Client;
+
 
 class SmsController extends Controller
 {
@@ -35,22 +34,34 @@ class SmsController extends Controller
 
     public function smsSend(Request $request)
     {
-//   dd($request['clientNumber'])
+ 
 //   dd(getenv("ITXTMO_CODE"));
-        $ch = curl_init();
-		$itexmo = array('1' => $request['clientNumber'], '2' => $request['message'], '3' => getenv("ITXTMO_CODE"), 'passwd' => getenv("ITXTMO_PASS"));
-		curl_setopt($ch, CURLOPT_URL,"https://www.itexmo.com/php_api/api.php");
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, 
-			http_build_query($itexmo));
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		return curl_exec ($ch);
-		curl_close ($ch);
+        // $ch = curl_init();
+		// $itexmo = array("1" => $request['clientNumber'], "2" => $request['message'], "3" => getenv("ITXTMO_CODE"), 'passwd' => getenv("ITXTMO_PASS"));
+		// curl_setopt($ch, CURLOPT_URL,"https://www.itexmo.com/php_api/api.php");
+		// curl_setopt($ch, CURLOPT_POST, 1);
+		// curl_setopt($ch, CURLOPT_POSTFIELDS, 
+		// 	http_build_query($itexmo));
+	    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		// return curl_exec ($ch);
+		// curl_close ($ch);
+
+        $apiCode = getenv("ITXTMO_CODE");
+        $apiPass = getenv("ITXTMO_PASS");
+
+        $url = 'https://www.itexmo.com/php_api/api.php';
+		$itexmo = array("1" => $request['clientNumber'], "2" => $request['message'], "3" => $apiCode, 'passwd' => $apiPass);
+
+		$param = array(
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($itexmo),
+			),
+		);
+		$context  = stream_context_create($param);
+		return file_get_contents($url, false, $context);
     }
-
-  
-
-   
 
     /**
      * Store a newly created resource in storage.
