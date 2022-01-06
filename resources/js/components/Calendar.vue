@@ -417,25 +417,41 @@ export default {
 
         makeAppointment() {
             const clientId = this.selectClient?.id || this.users.id;
+            const clientNumber = this.selectClient.number;
             const employeeId = this.selectVet.id;
             const petId = this.selectPet.id;
             const serviceId = this.selectService.id;
             const details = this.details;
 
-            // console.log('status',this.selectService)
-
-            // const start = `${this.evt.start}T${this.time}`;
-
+           
             const timeEnd = moment(this.time, "h:mm:ss A")
                 .add(1, "h")
                 .format("HH:mm:ss");
-            const end = `${this.evt.start}T${timeEnd}`;
+            // const end = `${this.evt.start}T${timeEnd}`;
+
+          
+
+            let appointStartEvent = [];
+            let appointEndEvent = [];
+
+
+            const trimmedServiceName = this.selectService.name.substring(0, 15);
+            const message = `Good day! Your schedule for ${trimmedServiceName} starts at ${moment(this.evt.start).format("MMM D YYYY hh:mm a")} -Pet Alert`
+        
+            axios.post("api/smsSend",{
+                clientNumber,
+                message
+            }).then(() => (console.log('Message sent')));
+
     
             for(let i = 0; i<=parseInt(this.selectService.count); i++){
                 const a = parseInt(this.selectService.due_date) * i
                 const start = moment(this.evt.start).add(a, 'w').format('YYYY-MM-DD');
                 const appointStart = `${start}T${this.time}`;
                 const appointEnd = `${start}T${timeEnd}`;
+                
+                appointStartEvent.push(appointStart)
+                appointEndEvent.push(appointEnd)
 
 
                  axios
@@ -443,6 +459,7 @@ export default {
                     start: appointStart,
                     end: appointEnd,
                     clientId,
+                    clientNumber,
                     employeeId,
                     petId,
                     serviceId,
@@ -456,6 +473,8 @@ export default {
                 });
 
             }
+          
+        
             
 
            
@@ -470,7 +489,7 @@ export default {
                 .get("api/client")
                 .then(
                     (data) => (
-                        (this.client = data), console.log("CLIENT", data)
+                        (this.client = data)
                     )
                 );
         },

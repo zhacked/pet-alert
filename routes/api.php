@@ -26,6 +26,7 @@ Route::apiResources(['employeess' => App\Http\Controllers\API\EmployeeController
 Route::apiResources(['report' => App\Http\Controllers\API\ReportController::class]);
 Route::apiResources(['service' => App\Http\Controllers\API\ServiceController::class]);
 Route::apiResources(['schedule' => App\Http\Controllers\API\ScheduleController::class]);
+// Route::apiResources(['sms' => App\Http\Controllers\API\SmsController::class]);
 
 // custom route
 Route::get('viewpet', [App\Http\Controllers\API\ClientController::class, 'PetDetails'])->name('PetDetails');
@@ -41,5 +42,5 @@ Route::get('eventSchedule', [App\Http\Controllers\API\ScheduleController::class,
 Route::get('custom_employee', [App\Http\Controllers\API\EmployeeController::class, 'customemployees'])->name('customemployees');
 Route::get('getPet/{id}', [App\Http\Controllers\API\PetController::class, 'getPet']);
 Route::get('reportAcceptance/{id}/{status}', [App\Http\Controllers\API\ScheduleController::class, 'acceptancereport']);
-
+Route::post('smsSend', [App\Http\Controllers\API\SmsController::class, 'smsSend']);
 ?>
