@@ -502,7 +502,7 @@ export default {
         makeAppointment() {
             this.loading = true;
             const clientId = this.selectClient?.id || this.users.id;
-            const clientNumber = this.selectClient.number;
+            const clientNumber = this.selectClient.number || this.users.number;
             const employeeId = this.selectVet.id;
             const petId = this.selectPet.id;
             const serviceId = this.selectService.id;
