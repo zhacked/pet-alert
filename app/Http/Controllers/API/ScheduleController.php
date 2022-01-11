@@ -81,6 +81,7 @@ class ScheduleController extends Controller
         
         
         $create =  Schedule::create([
+            'appointHash' => $request['appointHash'],
             'employee_id' => $request['employeeId'],
             'client_id' => $request['clientId'],
             'service_id' => $request['serviceId'],
@@ -141,10 +142,15 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroySched(Request $request)
     {
         //
+  
+        Schedule::where('appointHash', $request['appointHash'])->delete();
+        return true;
+        
     }
+  
 
    
 }
