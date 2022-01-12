@@ -501,8 +501,9 @@ export default {
 
         makeAppointment() {
             this.loading = true;
+            console.log(this.users)
             const clientId = this.selectClient?.id || this.users.id;
-            const clientNumber = this.selectClient.number || this.users.number;
+            const clientNumber = this.selectClient?.number || this.users.number;
             const employeeId = this.selectVet.id;
             const petId = this.selectPet.id;
             const serviceId = this.selectService.id;
