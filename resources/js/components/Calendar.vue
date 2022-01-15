@@ -239,7 +239,7 @@
                 <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
                         <v-select
-                            v-show="$gate.isAdmin()"
+                            v-show="$gate.isAdminOrisEmployee()"
                             v-model="selectClient"
                             :items="client.data"
                             name="client"

@@ -70,9 +70,9 @@
                 { text: 'Name', value: 'client_data.name' },
                 { text: 'Pet', value: 'pet_data.Name' },
                 { text: 'Procedure', value: 'service_data.name' },
-                { text: 'Notes(other treatement/impormatant operation)', value: 'details' },
+                { text: 'Notes(other treatment/important operation)', value: 'details' },
                 // { text: 'Next Due date', value: 'due_date ' },
-                { text: 'status', value: 'status' },
+                { text: 'Status', value: 'status' },
                 { text: 'Actions', value: 'actions', sortable: false }
                 ],
                 editmode: false,
