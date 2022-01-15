@@ -83,7 +83,11 @@
                         <v-card color="grey lighten-4" min-width="350px" flat>
                             <v-toolbar
                                 :color="selectedEvent.color"
-                                dark
+                                :dark="
+                                    isLight(selectedEvent) === '#fff'
+                                        ? true
+                                        : false
+                                "
                                 dense
                                 flat
                             >
@@ -116,8 +120,12 @@
                             <v-card-actions>
                                 <v-spacer></v-spacer>
 
-                                <v-btn icon>
-                                    <v-icon>mdi-share-variant</v-icon>
+                                <v-btn
+                                    icon
+                                    color="primary"
+                                    @click="showEditAppointment(selectedEvent)"
+                                >
+                                    <v-icon>mdi-calendar-edit</v-icon>
                                 </v-btn>
                                 <v-tooltip bottom>
                                     <template v-slot:activator="{ on, attrs }">
@@ -144,9 +152,7 @@
         <v-dialog v-model="dialogDelete" max-width="320">
             <v-card>
                 <v-card-title class="text-h6">
-                    {{
-                        `Remove schedule for ${selectedEvent.pet}?`
-                    }}
+                    {{ `Remove schedule for ${selectedEvent.pet}?` }}
                 </v-card-title>
 
                 <v-card-text>
@@ -156,30 +162,40 @@
                         <v-list-item>
                             <v-list-item-content>
                                 <v-list-item-title>
-                                    <v-chip class="ma-2" small>
-                                        Client
-                                    </v-chip>
-                                    {{selectedEvent.client}}
+                                    <v-chip class="ma-2" small> Client </v-chip>
+                                    {{
+                                        selectedEvent.client &&
+                                        selectedEvent.client.name
+                                    }}
                                 </v-list-item-title>
-                                 <v-list-item-title>
+                                <v-list-item-title>
+                                    <v-chip class="ma-2" small> Pet </v-chip>
+                                    {{
+                                        selectedEvent.pet &&
+                                        selectedEvent.pet.Name
+                                    }}
+                                </v-list-item-title>
+                                <v-list-item-title>
                                     <v-chip class="ma-2" small>
                                         Service
                                     </v-chip>
-                                    {{selectedEvent.service}}
+                                    {{
+                                        selectedEvent.service &&
+                                        selectedEvent.service.name
+                                    }}
                                 </v-list-item-title>
-                                 <v-list-item-title>
-                                    <v-chip class="ma-2" small>
-                                        Date
-                                    </v-chip>
-                                     {{moment(selectedEvent.start).format('LL')}}
+                                <v-list-item-title>
+                                    <v-chip class="ma-2" small> Date </v-chip>
+                                    {{
+                                        moment(selectedEvent.start).format("LL")
+                                    }}
                                 </v-list-item-title>
-                                 <v-list-item-title>
-                                    <v-chip class="ma-2" small>
-                                        Time
-                                    </v-chip>
-                                    {{moment(selectedEvent.start).format('LT')}}
+                                <v-list-item-title>
+                                    <v-chip class="ma-2" small> Time </v-chip>
+                                    {{
+                                        moment(selectedEvent.start).format("LT")
+                                    }}
                                 </v-list-item-title>
-
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -212,7 +228,7 @@
             <v-card
                 :loading="loading"
                 class="mx-auto my-12"
-                max-width="374"
+                width="400"
                 light
                 :disabled="loading"
             >
@@ -239,7 +255,7 @@
                 <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
                         <v-select
-                            v-show="$gate.isAdminOrisEmployee()"
+                            v-show="$gate.isAdmin()"
                             v-model="selectClient"
                             :items="client.data"
                             name="client"
@@ -288,9 +304,10 @@
 
                         <v-btn-toggle
                             tile
-                            color="deep-purple accent-3"
+                            :color="'deep-purple accent-3'"
                             rounded
                             class="d-flex flex-wrap justify-between"
+                            :value="time"
                         >
                             <v-btn
                                 v-for="(item, index) in this.timeAvailable"
@@ -301,6 +318,8 @@
                                 rounded
                                 x-small
                                 class="timeRounded m-1"
+                               
+                               
                             >
                                 {{ item }}
                             </v-btn>
@@ -323,10 +342,10 @@
                             class="btn-success"
                             color="#fff"
                             text
-                            @click="makeAppointment"
+                            @click="editAppoint ? updateAppointment() : makeAppointment()"
                             :disabled="loading"
                         >
-                            Make Appointment
+                           {{editAppoint ? `Update Appointment` : 'Make Appointment'}} 
                         </v-btn>
                     </v-card-actions>
                 </v-form>
@@ -375,10 +394,10 @@ export default {
                     "Title must be less than 10 characters",
             ],
 
-            selectClient: null,
-            selectVet: null,
-            selectService: null,
-            selectPet: null,
+            selectClient: {},
+            selectVet: {},
+            selectService: {},
+            selectPet: {},
             details: "",
             client: {},
             vets: {},
@@ -395,6 +414,7 @@ export default {
                 details: "",
             },
             timeAvailable: [],
+            editAppoint: false,
         };
     },
 
@@ -411,6 +431,30 @@ export default {
                 this.extendOriginal = null;
             }
         },
+        timeAvail(start = 8, end = 17, events, date, filterTime = true) {
+            const locale = "en"; // or whatever you want...
+            const hours = [];
+            let existingTime = [];
+
+            const checkTimeForDay = events.filter((e) => {
+                return e.start.includes(date);
+            });
+
+            checkTimeForDay.forEach((ctfd) => {
+                existingTime.push(
+                    moment({ hour: ctfd.start.split("T")[1] }).format("h:mm A")
+                );
+            });
+
+            moment.locale(locale); // optional - can remove if you are only dealing with one locale
+
+            for (let hour = start; hour <= end; hour++) {
+                hours.push(moment({ hour }).format("h:mm A"));
+            }
+            console.log('HOURS', hours)
+            const newSetTime = filterTime ? hours.filter((t) => !existingTime.includes(t)) : hours;
+            return newSetTime;
+        },
 
         showAppointment(info) {
             this.petsOwner();
@@ -418,37 +462,14 @@ export default {
                 this.overlay = !this.overlay;
                 this.evt.start = info.date;
 
-                let existingTime = [];
+                console.log("INFODATE", info.date);
 
-                const checkTimeForDay = this.events.filter((e) => {
-                    return e.start.includes(info.date);
-                });
-
-                checkTimeForDay.forEach((ctfd) => {
-                    existingTime.push(
-                        moment({ hour: ctfd.start.split("T")[1] }).format(
-                            "h:mm A"
-                        )
-                    );
-                });
-
-        
-                function timeAvail(start = 8, end = 17) {
-                    const locale = "en"; // or whatever you want...
-                    const hours = [];
-
-                    moment.locale(locale); // optional - can remove if you are only dealing with one locale
-
-                    for (let hour = start; hour <= end; hour++) {
-                        hours.push(moment({ hour }).format("h:mm A"));
-                    }
-                    const newSetTime = hours.filter(
-                        (t) => !existingTime.includes(t)
-                    );
-                    return newSetTime;
-                }
-
-                this.timeAvailable = timeAvail();
+                this.timeAvailable = this.timeAvail(
+                    8,
+                    17,
+                    this.events,
+                    info.date
+                );
             } else {
                 this.focus = info.start || info.date;
                 this.type = "day";
@@ -501,7 +522,7 @@ export default {
 
         makeAppointment() {
             this.loading = true;
-            console.log(this.users)
+            console.log(this.users);
             const clientId = this.selectClient?.id || this.users.id;
             const clientNumber = this.selectClient?.number || this.users.number;
             const employeeId = this.selectVet.id;
@@ -528,22 +549,30 @@ export default {
             //     message
             // }).then(() => (console.log('Message sent')));
 
-           
-            const cyrb53 = function(str, seed = 0) {
-                    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
-                    for (let i = 0, ch; i < str.length; i++) {
-                        ch = str.charCodeAt(i);
-                        h1 = Math.imul(h1 ^ ch, 2654435761);
-                        h2 = Math.imul(h2 ^ ch, 1597334677);
-                    }
-                    h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
-                    h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
-                    return 4294967296 * (2097151 & h2) + (h1>>>0);
-                };
-            
-            const appointHash = Math.random(moment(this.evt.start).format('x') + cyrb53(this.selectService.name)).toString(36).substring(2);
+            const cyrb53 = function (str, seed = 0) {
+                let h1 = 0xdeadbeef ^ seed,
+                    h2 = 0x41c6ce57 ^ seed;
+                for (let i = 0, ch; i < str.length; i++) {
+                    ch = str.charCodeAt(i);
+                    h1 = Math.imul(h1 ^ ch, 2654435761);
+                    h2 = Math.imul(h2 ^ ch, 1597334677);
+                }
+                h1 =
+                    Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
+                    Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+                h2 =
+                    Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
+                    Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+                return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+            };
 
-        
+            const appointHash = Math.random(
+                moment(this.evt.start).format("x") +
+                    cyrb53(this.selectService.name)
+            )
+                .toString(36)
+                .substring(2);
+
             for (let i = 0; i <= parseInt(this.selectService.count); i++) {
                 const a = parseInt(this.selectService.due_date) * i;
                 const start = moment(this.evt.start)
@@ -554,8 +583,6 @@ export default {
 
                 appointStartEvent.push(appointStart);
                 appointEndEvent.push(appointEnd);
-
-                
 
                 axios
                     .post("api/schedule", {
@@ -582,17 +609,40 @@ export default {
             this.selectVet = null;
             this.loading = false;
         },
-        deleteAppointment(event){
-          
-           axios.post('api/destroySched',{
-               appointHash: event.appointHash
-           }).then(() => {
-               console.log('deleted');
-               this.loadEvents();
-               this.dialogDelete = false
-           });
+        showEditAppointment(event) {
+            this.overlay = true;
+            this.petsOwner(event.client.id);
+            this.evt.start = event.start;
+            this.selectClient = event.client;
+            this.selectVet = event.vet;
+            this.selectService = event.service;
+            this.selectPet = event.pet;
+            this.timeAvailable = this.timeAvail(
+                8,
+                17,
+                this.events,
+                moment(event.start).format("YYYY-MM-DD"),
+                false
+            );
+            this.time = moment(event.start).format("LT")
+            this.editAppoint = true;
+            
 
-
+            // console.log(this.timeAvail(8, 17, this.events, moment(event.start).format('YYYY-MM-DD')), false)
+        },
+        updateAppointment(){
+            console.log(this.selectVet)
+        },
+        deleteAppointment(event) {
+            axios
+                .post("api/destroySched", {
+                    appointHash: event.appointHash,
+                })
+                .then(() => {
+                    console.log("deleted");
+                    this.loadEvents();
+                    this.dialogDelete = false;
+                });
         },
 
         loadClient() {
@@ -628,20 +678,29 @@ export default {
             let events = [];
 
             const eventSchedule = await axios.get("api/eventSchedule");
-    
+
             await eventSchedule.data.forEach((event) => {
                 const allDay = this.rnd(0, 3) === 0;
                 const evt = {
-                    name: `${event.service_data.name} | ${event.pet_data?.Name}`,
-                    client: event.client_data?.name,
-                    pet: event.pet_data?.Name,
-                    service: event.service_data.name,
+                    name: `${event.service_data.name} | ${
+                        event.status === "pending"
+                            ? "PENDING"
+                            : event.pet_data?.Name
+                    }`,
+                    client: event.client_data,
+                    pet: event.pet_data,
+                    service: event.service_data,
+                    vet: event.employee_data,
                     start: event.start,
                     end: event.end,
-                    color: event.employee_data.color || "#f1f1f1",
+                    color:
+                        event.status === "pending"
+                            ? "#696773"
+                            : event.employee_data.color,
                     timed: !allDay,
                     appointHash: event.appointHash,
                     details: event.details,
+                    status: event.status,
                 };
 
                 events.push(evt);
@@ -655,6 +714,11 @@ export default {
             this.overlay = !this.overlay;
             this.selectClient = null;
             this.selectVet = null;
+            this.selectService = null
+            this.time = null;
+            this.selectPet = null;
+            this.details = ""
+
         },
         isLight: function (event) {
             const color1 = tinycolor(event.color);

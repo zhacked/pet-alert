@@ -76,7 +76,7 @@ class ScheduleController extends Controller
             'messages'=> $request['details'],
             'date_start' => $request['start'],
             'date_end' => $request['end'],
-            'status' => 'pending'
+            'status' => $request['status']
         ];
         
         
@@ -89,14 +89,14 @@ class ScheduleController extends Controller
             'start' =>$request['start'],
             'end'=> $request['end'],
             'details' => $request['details'],
-            'status' => 'pending'
+            'status' => $request['status']
         ]);
 
-        Mail::send('mail',$data,function($messages) use ($client){
+        // Mail::send('mail',$data,function($messages) use ($client){
 
-            $messages->to($client->email);
-            $messages->subject('Hi There');
-        });
+        //     $messages->to($client->email);
+        //     $messages->subject('Hi There');
+        // });
 
         return $create;
 

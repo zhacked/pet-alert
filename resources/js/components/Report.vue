@@ -26,30 +26,51 @@
                                     <span class="overline" :class="item.status == 'accept' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status}}</span>
                                 </template>
                                <template v-slot:[`item.actions`]="{ item }">
-                                    <v-btn
+                                   <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                  
+
+                                        <v-btn
+                                        icon
                                         v-show="item.status=='declined' || item.status=='pending'"
                                         small
-                                        color="primary"
+                                        color="green"
                                         dark
-                                        outlined
+                                    v-bind="attrs"
+                                        v-on="on"
                                         @click="Status(item,'accept')"
                                         >
-                                        <i class="fa fa-edit">
-                                            Accept
-                                        </i>
+                                         <v-icon
+                                                    >mdi-calendar-check</v-icon
+                                                >
                                     </v-btn>
+                                    </template>
+                                    <span>Approve Appointment</span>
+                                    </v-tooltip>
+
+
+                                       <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                  
+
                                     <v-btn
+                                    icon
                                         v-show="item.status=='accept' || item.status=='pending'"
                                         small
                                         color="red"
                                         dark
-                                        outlined
+                                      v-bind="attrs"
+                                        v-on="on"
                                         @click="Status(item,'declined')"
                                         >
-                                        <i class="fa fa-edit">
-                                            Declined
-                                        </i>
+                                        <v-icon
+                                                    >mdi-calendar-remove</v-icon
+                                                >
                                     </v-btn>
+                                    </template>
+                                    <span>Decline Appointment</span>
+                                    </v-tooltip>
+
                                         
                                 </template>
                                 
@@ -63,15 +84,17 @@
 </template>
 
 <script>
+import moment from 'moment';
     export default {
         data() {
             return {
                 headers: [
+                { text: 'Date', value: 'start' },
                 { text: 'Name', value: 'client_data.name' },
                 { text: 'Pet', value: 'pet_data.Name' },
                 { text: 'Procedure', value: 'service_data.name' },
-                { text: 'Notes(other treatment/important operation)', value: 'details' },
-                // { text: 'Next Due date', value: 'due_date ' },
+                { text: 'Notes', value: 'details' },
+               
                 { text: 'Status', value: 'status' },
                 { text: 'Actions', value: 'actions', sortable: false }
                 ],
@@ -98,7 +121,18 @@
         },
         methods: {
             loadReport(){
-                 axios.get("api/schedule").then(({data}) => ( this.report = data,console.log(data)));
+                 axios.get("api/schedule").then(({data}) => {
+                     let newSet = [];
+                     data.forEach(d => {
+                         console.log(moment(d.start).format("MM/DD/YY hh:mm a"))
+                         newSet.push({ ...d,start: moment(d.start).format("MM/DD/YY hh:mm a")})
+                     })
+                     this.report = newSet;
+                    //  this.report = {
+                    //      ...data,
+                    //      start: moment(data.start).format("LL LT")
+                    //  }
+                 } );
             },
             Status(data,status){
                 axios.get('api/reportAcceptance/'+data.id+'/'+status).then(({data})=>{

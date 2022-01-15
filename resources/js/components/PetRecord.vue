@@ -18,7 +18,7 @@
 
                               <v-data-table
                                     :headers="headers"
-                                    :items="petRecord.data"
+                                    :items="petRecord"
                                     :search="search"
                                     class="elevation-1"
                                 >
@@ -36,13 +36,14 @@
 </template>
 
 <script>
+import moment from "moment";
     export default {
         data() {
             return {
                 headers: [
                 { text: 'Pet Name', value: 'pet_data.Name' },
                 { text: 'Findings', value: 'details' },
-                { text: 'Date', value: 'due_date' },
+                { text: 'Date', value: 'start' },
                 { text: 'Treatment Done', value: 'service_data.name' },
                 { text: 'Vet Incharge Name', value: 'client_data.name' },
                 { text: 'status', value: 'status' },
@@ -54,8 +55,15 @@
         methods: {
            
             loadRecord(){
-                    axios.get("api/record").then((data) => {
-                        this.petRecord = data;
+                    axios.get("api/schedule").then(({data}) => {
+                        const eventData = []
+                        data.forEach(e => {
+                            eventData.push({
+                                ...e,
+                                start: moment(e.start).format('LL LT')
+                            }) 
+                        })
+                        this.petRecord = eventData;
                         console.log(this.petRecord);
                         });
             },
