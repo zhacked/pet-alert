@@ -134,6 +134,12 @@ class ScheduleController extends Controller
     public function update(Request $request, $id)
     {
 
+        $schedule = Schedule::findOrFail($id);
+
+        $schedule->update($request->all());
+        return $schedule;
+
+
     }
 
     /**

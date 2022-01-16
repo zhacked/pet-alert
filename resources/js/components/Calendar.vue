@@ -117,7 +117,7 @@
                             <v-card-text>
                                 {{ selectedEvent.details }}
                             </v-card-text>
-                            <v-card-actions>
+                            <v-card-actions v-show='checkUser(selectedEvent)'>
                                 <v-spacer></v-spacer>
 
                                 <v-btn
@@ -301,8 +301,27 @@
                         ></v-select>
 
                         <v-card-title>Today's availability</v-card-title>
+                    
+                          <v-chip-group
+                                active-class="primary--text"
+                                column
+                                
+                                v-model="time"
+                            >
+                                <v-chip
+                                    filter
+                               
+                                v-for="(item, index) in this.timeAvailable"
+                                :key="index"
+                                :value="item"
+                                 @click="selectTime(item)"
+                                >
+                                {{ item }}
+                                </v-chip>
+                            </v-chip-group>
 
-                        <v-btn-toggle
+
+                        <!-- <v-btn-toggle
                             tile
                             :color="'deep-purple accent-3'"
                             rounded
@@ -323,7 +342,7 @@
                             >
                                 {{ item }}
                             </v-btn>
-                        </v-btn-toggle>
+                        </v-btn-toggle> -->
                     </v-card-text>
                     <v-divider class="mx-4"></v-divider>
                     <v-card-text>
@@ -379,7 +398,7 @@ export default {
             overlay: false,
             dialogDelete: false,
             //-----------------------------------//
-
+            selection: '4:00 PM',
             zIndex: 9999,
             valid: true,
             loading: false,
@@ -403,7 +422,7 @@ export default {
             vets: {},
             services: [],
             pets: [],
-            time: null,
+            time: '',
             evt: {
                 name: "",
                 start: "",
@@ -492,7 +511,8 @@ export default {
             const open = () => {
                 this.selectedEvent = event;
 
-                console.log(nativeEvent.target);
+
+              
                 requestAnimationFrame(() =>
                     requestAnimationFrame(() => (this.selectedOpen = true))
                 );
@@ -517,22 +537,30 @@ export default {
         //---------------------------------//
 
         selectTime(time) {
-            this.time = moment(time, "h:mm:ss A").format("HH:mm:ss");
+           
+            this.time = moment(time, "h:mm A").format("HH:mm:ss");
         },
-
+        timeEnd(time) {
+               return moment(time, "h:mm A")
+                .add(1, "h")
+                .format("HH:mm:ss");
+        },
         makeAppointment() {
             this.loading = true;
-            console.log(this.users);
+         
             const clientId = this.selectClient?.id || this.users.id;
             const clientNumber = this.selectClient?.number || this.users.number;
             const employeeId = this.selectVet.id;
             const petId = this.selectPet.id;
             const serviceId = this.selectService.id;
             const details = this.details;
+            const startTime = moment(this.time, 'LT').format('HH:mm:ss');
+            const timeEnd = this.timeEnd(this.time)
 
-            const timeEnd = moment(this.time, "h:mm:ss A")
-                .add(1, "h")
-                .format("HH:mm:ss");
+            console.log('dsdsd',this.evt.start);
+            console.log('time', this.time)
+            console.log('timeEnd', timeEnd)
+           
             // const end = `${this.evt.start}T${timeEnd}`;
 
             let appointStartEvent = [];
@@ -578,7 +606,7 @@ export default {
                 const start = moment(this.evt.start)
                     .add(a, "w")
                     .format("YYYY-MM-DD");
-                const appointStart = `${start}T${this.time}`;
+                const appointStart = `${start}T${startTime}`;
                 const appointEnd = `${start}T${timeEnd}`;
 
                 appointStartEvent.push(appointStart);
@@ -610,6 +638,7 @@ export default {
             this.loading = false;
         },
         showEditAppointment(event) {
+            console.log(event)
             this.overlay = true;
             this.petsOwner(event.client.id);
             this.evt.start = event.start;
@@ -624,6 +653,9 @@ export default {
                 moment(event.start).format("YYYY-MM-DD"),
                 false
             );
+
+            console.log('||',event.start)
+            console.log('>>>>>>',moment(event.start).format("LT"))
             this.time = moment(event.start).format("LT")
             this.editAppoint = true;
             
@@ -631,7 +663,25 @@ export default {
             // console.log(this.timeAvail(8, 17, this.events, moment(event.start).format('YYYY-MM-DD')), false)
         },
         updateAppointment(){
-            console.log(this.selectVet)
+           
+            const dateStart = moment(this.evt.start).format("YYYY-MM-DD")
+            const start = `${dateStart}T${moment(this.time, 'LT').format('HH:mm:ss')}`;
+            const end = `${dateStart}T${this.timeEnd(this.time)}`;
+    
+            
+            axios.put('api/schedule/'+this.selectedEvent.eventId, {
+                start,
+                end,
+                client_id: this.selectClient.id,
+                employee_id: this.selectVet.id,
+                service_id: this.selectService.id,
+                details: this.details
+
+            }).then(() => {
+                        Fire.$emit("AfterCreate");
+                        this.overlay = false;
+                        this.loadEvents();
+                    });
         },
         deleteAppointment(event) {
             axios
@@ -682,6 +732,7 @@ export default {
             await eventSchedule.data.forEach((event) => {
                 const allDay = this.rnd(0, 3) === 0;
                 const evt = {
+                    eventId: event.id,
                     name: `${event.service_data.name} | ${
                         event.status === "pending"
                             ? "PENDING"
@@ -708,6 +759,16 @@ export default {
 
             this.events = events;
             // this.calendarOptions.events = events;
+        },
+
+        checkUser(selectedEvent){
+            const isAdmin = this.$gate.isAdmin();
+            if(this.selectedOpen) {
+              
+                 return user.id === selectedEvent.client.id || isAdmin ? true : false
+            }
+           
+           
         },
 
         closeModalAppoint() {
