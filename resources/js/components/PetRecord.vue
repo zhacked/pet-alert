@@ -55,7 +55,7 @@ import moment from "moment";
         methods: {
            
             loadRecord(){
-                    axios.get("api/schedule").then(({data}) => {
+                    axios.get("api/record").then(({data}) => {
                         const eventData = []
                         data.forEach(e => {
                             eventData.push({

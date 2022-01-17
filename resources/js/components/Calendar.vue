@@ -1,8 +1,8 @@
 <template>
     <v-app>
-        <v-row class="fill-height">
+        <v-row class="pa-10">
             <v-col>
-                <v-sheet height="64">
+                <v-sheet>
                     <v-toolbar flat>
                         <v-btn
                             outlined
@@ -60,7 +60,7 @@
                         </v-menu>
                     </v-toolbar>
                 </v-sheet>
-                <v-sheet height="600">
+                <v-card height="80%">
                     <v-calendar
                         ref="calendar"
                         v-model="focus"
@@ -117,7 +117,7 @@
                             <v-card-text>
                                 {{ selectedEvent.details }}
                             </v-card-text>
-                            <v-card-actions v-show='checkUser(selectedEvent)'>
+                            <v-card-actions v-show="checkUser(selectedEvent)">
                                 <v-spacer></v-spacer>
 
                                 <v-btn
@@ -144,7 +144,7 @@
                             </v-card-actions>
                         </v-card>
                     </v-menu>
-                </v-sheet>
+                </v-card>
             </v-col>
         </v-row>
 
@@ -224,13 +224,20 @@
         </v-dialog>
         <!-- DIALOG DELETE APPOINTMENT -->
 
-        <v-overlay :z-index="zIndex" :value="overlay">
+        <v-overlay
+            :z-index="zIndex"
+            :value="overlay"
+            style="overflow-y: hidden !important; height: 100vh !important"
+        >
             <v-card
                 :loading="loading"
-                class="mx-auto my-12"
-                width="400"
+                class="mx-auto"
+                width="90%"
                 light
                 :disabled="loading"
+                height="90%"
+                style="overflow-y: auto !important;"
+               
             >
                 <template slot="progress">
                     <v-progress-linear
@@ -254,117 +261,122 @@
 
                 <v-form ref="form" v-model="valid" lazy-validation>
                     <v-card-text>
-                        <v-select
-                            v-show="$gate.isAdmin()"
-                            v-model="selectClient"
-                            :items="client.data"
-                            name="client"
-                            item-text="name"
-                            :rules="[(v) => !!v || 'Client is required']"
-                            label="Client"
-                            required
-                            return-object
-                            @change="petsOwner(selectClient.id)"
-                        ></v-select>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" md="6">
+                                    <v-select
+                                        dense
+                                        v-show="$gate.isAdmin()"
+                                        v-model="selectClient"
+                                        :items="client.data"
+                                        name="client"
+                                        item-text="name"
+                                        :rules="[
+                                            (v) => !!v || 'Client is required',
+                                        ]"
+                                        label="Client"
+                                        required
+                                        return-object
+                                        @change="petsOwner(selectClient.id)"
+                                    ></v-select>
 
-                        <v-select
-                            v-model="selectPet"
-                            :items="pets"
-                            name="pet"
-                            item-text="Name"
-                            :rules="[(v) => !!v || 'Client is required']"
-                            label="Pet"
-                            required
-                            return-object
-                        ></v-select>
+                                    <v-select
+                                        dense
+                                        v-model="selectPet"
+                                        :items="pets"
+                                        name="pet"
+                                        item-text="Name"
+                                        :rules="[
+                                            (v) => !!v || 'Client is required',
+                                        ]"
+                                        label="Pet"
+                                        required
+                                        return-object
+                                    ></v-select>
 
-                        <v-select
-                            v-model="selectVet"
-                            :items="vets"
-                            name="vets"
-                            item-text="name"
-                            :rules="[(v) => !!v || 'Item is required']"
-                            label="Veterinarian"
-                            required
-                            return-object
-                        ></v-select>
+                                    <v-select
+                                        dense
+                                        v-model="selectVet"
+                                        :items="vets"
+                                        name="vets"
+                                        item-text="name"
+                                        :rules="[
+                                            (v) => !!v || 'Item is required',
+                                        ]"
+                                        label="Veterinarian"
+                                        required
+                                        return-object
+                                    ></v-select>
 
-                        <v-select
-                            v-model="selectService"
-                            :items="services"
-                            name="services"
-                            item-text="name"
-                            :rules="[(v) => !!v || 'Item is required']"
-                            label="Service"
-                            required
-                            return-object
-                        ></v-select>
+                                    <v-select
+                                        dense
+                                        v-model="selectService"
+                                        :items="services"
+                                        name="services"
+                                        item-text="name"
+                                        :rules="[
+                                            (v) => !!v || 'Item is required',
+                                        ]"
+                                        label="Service"
+                                        required
+                                        return-object
+                                    ></v-select>
+                                </v-col>
+                                <v-col cols="12" md="6">
+                                    <v-card-title
+                                        >Today's availability</v-card-title
+                                    >
 
-                        <v-card-title>Today's availability</v-card-title>
-                    
-                          <v-chip-group
-                                active-class="primary--text"
-                                column
-                                
-                                v-model="time"
-                            >
-                                <v-chip
-                                    filter
-                               
-                                v-for="(item, index) in this.timeAvailable"
-                                :key="index"
-                                :value="item"
-                                 @click="selectTime(item)"
-                                >
-                                {{ item }}
-                                </v-chip>
-                            </v-chip-group>
-
-
-                        <!-- <v-btn-toggle
-                            tile
-                            :color="'deep-purple accent-3'"
-                            rounded
-                            class="d-flex flex-wrap justify-between"
-                            :value="time"
-                        >
-                            <v-btn
-                                v-for="(item, index) in this.timeAvailable"
-                                :key="index"
-                                :value="item"
-                                @click="selectTime(item)"
-                                elevation="0"
-                                rounded
-                                x-small
-                                class="timeRounded m-1"
-                               
-                               
-                            >
-                                {{ item }}
-                            </v-btn>
-                        </v-btn-toggle> -->
-                    </v-card-text>
-                    <v-divider class="mx-4"></v-divider>
-                    <v-card-text>
-                        <v-textarea
+                                    <v-chip-group
+                                        active-class="primary--text"
+                                        column
+                                        v-model="time"
+                                    >
+                                        <v-chip
+                                            small
+                                            filter
+                                            v-for="(item, index) in this
+                                                .timeAvailable"
+                                            :key="index"
+                                            :value="item"
+                                            @click="selectTime(item)"
+                                        >
+                                            {{ item }}
+                                        </v-chip>
+                                    </v-chip-group>
+                                </v-col>
+                            </v-row>
+                            <v-divider class="mx-2"></v-divider>
+                            <v-row class="mt-2">
+                                   <v-textarea
                             v-model="details"
                             outlined
                             name="description"
                             label="Description..."
-                            rows="3"
+                            rows="2"
                         ></v-textarea>
+                            </v-row>
+                        </v-container>
                     </v-card-text>
-
-                    <v-card-actions>
+                  
+                    <v-card-actions class="my-0">
                         <v-spacer></v-spacer>
                         <v-btn
                             class="btn-success"
                             color="#fff"
                             text
-                            @click="editAppoint ? updateAppointment() : makeAppointment()"
+                            @click="
+                                editAppoint
+                                    ? updateAppointment()
+                                    : makeAppointment()
+                            "
                             :disabled="loading"
                         >
-                           {{editAppoint ? `Update Appointment` : 'Make Appointment'}} 
+                            {{
+                                editAppoint
+                                    ? `Update Appointment`
+                                    : "Make Appointment"
+                            }}
                         </v-btn>
                     </v-card-actions>
                 </v-form>
@@ -398,8 +410,8 @@ export default {
             overlay: false,
             dialogDelete: false,
             //-----------------------------------//
-            selection: '4:00 PM',
-            zIndex: 9999,
+            selection: "4:00 PM",
+            zIndex: 99999,
             valid: true,
             loading: false,
             value: {
@@ -422,7 +434,7 @@ export default {
             vets: {},
             services: [],
             pets: [],
-            time: '',
+            time: "",
             evt: {
                 name: "",
                 start: "",
@@ -470,8 +482,10 @@ export default {
             for (let hour = start; hour <= end; hour++) {
                 hours.push(moment({ hour }).format("h:mm A"));
             }
-            console.log('HOURS', hours)
-            const newSetTime = filterTime ? hours.filter((t) => !existingTime.includes(t)) : hours;
+            console.log("HOURS", hours);
+            const newSetTime = filterTime
+                ? hours.filter((t) => !existingTime.includes(t))
+                : hours;
             return newSetTime;
         },
 
@@ -511,8 +525,6 @@ export default {
             const open = () => {
                 this.selectedEvent = event;
 
-
-              
                 requestAnimationFrame(() =>
                     requestAnimationFrame(() => (this.selectedOpen = true))
                 );
@@ -537,30 +549,27 @@ export default {
         //---------------------------------//
 
         selectTime(time) {
-           
             this.time = moment(time, "h:mm A").format("HH:mm:ss");
         },
         timeEnd(time) {
-               return moment(time, "h:mm A")
-                .add(1, "h")
-                .format("HH:mm:ss");
+            return moment(time, "h:mm A").add(1, "h").format("HH:mm:ss");
         },
         makeAppointment() {
             this.loading = true;
-         
+
             const clientId = this.selectClient?.id || this.users.id;
             const clientNumber = this.selectClient?.number || this.users.number;
             const employeeId = this.selectVet.id;
             const petId = this.selectPet.id;
             const serviceId = this.selectService.id;
             const details = this.details;
-            const startTime = moment(this.time, 'LT').format('HH:mm:ss');
-            const timeEnd = this.timeEnd(this.time)
+            const startTime = moment(this.time, "LT").format("HH:mm:ss");
+            const timeEnd = this.timeEnd(this.time);
 
-            console.log('dsdsd',this.evt.start);
-            console.log('time', this.time)
-            console.log('timeEnd', timeEnd)
-           
+            console.log("dsdsd", this.evt.start);
+            console.log("time", this.time);
+            console.log("timeEnd", timeEnd);
+
             // const end = `${this.evt.start}T${timeEnd}`;
 
             let appointStartEvent = [];
@@ -636,9 +645,13 @@ export default {
             this.selectClient = null;
             this.selectVet = null;
             this.loading = false;
+            this.selectService = null;
+            this.time = "";
+            this.selectPet = null;
+            this.details = "";
         },
         showEditAppointment(event) {
-            console.log(event)
+            console.log(event);
             this.overlay = true;
             this.petsOwner(event.client.id);
             this.evt.start = event.start;
@@ -654,34 +667,34 @@ export default {
                 false
             );
 
-            console.log('||',event.start)
-            console.log('>>>>>>',moment(event.start).format("LT"))
-            this.time = moment(event.start).format("LT")
+            console.log("||", event.start);
+            console.log(">>>>>>", moment(event.start).format("LT"));
+            this.time = moment(event.start).format("LT");
             this.editAppoint = true;
-            
 
             // console.log(this.timeAvail(8, 17, this.events, moment(event.start).format('YYYY-MM-DD')), false)
         },
-        updateAppointment(){
-           
-            const dateStart = moment(this.evt.start).format("YYYY-MM-DD")
-            const start = `${dateStart}T${moment(this.time, 'LT').format('HH:mm:ss')}`;
+        updateAppointment() {
+            const dateStart = moment(this.evt.start).format("YYYY-MM-DD");
+            const start = `${dateStart}T${moment(this.time, "LT").format(
+                "HH:mm:ss"
+            )}`;
             const end = `${dateStart}T${this.timeEnd(this.time)}`;
-    
-            
-            axios.put('api/schedule/'+this.selectedEvent.eventId, {
-                start,
-                end,
-                client_id: this.selectClient.id,
-                employee_id: this.selectVet.id,
-                service_id: this.selectService.id,
-                details: this.details
 
-            }).then(() => {
-                        Fire.$emit("AfterCreate");
-                        this.overlay = false;
-                        this.loadEvents();
-                    });
+            axios
+                .put("api/schedule/" + this.selectedEvent.eventId, {
+                    start,
+                    end,
+                    client_id: this.selectClient.id,
+                    employee_id: this.selectVet.id,
+                    service_id: this.selectService.id,
+                    details: this.details,
+                })
+                .then(() => {
+                    Fire.$emit("AfterCreate");
+                    this.overlay = false;
+                    this.loadEvents();
+                });
         },
         deleteAppointment(event) {
             axios
@@ -761,25 +774,23 @@ export default {
             // this.calendarOptions.events = events;
         },
 
-        checkUser(selectedEvent){
+        checkUser(selectedEvent) {
             const isAdmin = this.$gate.isAdmin();
-            if(this.selectedOpen) {
-              
-                 return user.id === selectedEvent.client.id || isAdmin ? true : false
+            if (this.selectedOpen) {
+                return user.id === selectedEvent.client.id || isAdmin
+                    ? true
+                    : false;
             }
-           
-           
         },
 
         closeModalAppoint() {
             this.overlay = !this.overlay;
             this.selectClient = null;
             this.selectVet = null;
-            this.selectService = null
-            this.time = null;
+            this.selectService = null;
+            this.time = "";
             this.selectPet = null;
-            this.details = ""
-
+            this.details = "";
         },
         isLight: function (event) {
             const color1 = tinycolor(event.color);

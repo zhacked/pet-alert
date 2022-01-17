@@ -43,6 +43,7 @@ class ScheduleController extends Controller
 
     public function petrecord()
     {
+       
         return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->where('client_id',auth('api')->user()->id)->get();
     }
     
