@@ -152,7 +152,8 @@
         <v-dialog v-model="dialogDelete" max-width="320">
             <v-card>
                 <v-card-title class="text-h6">
-                    {{ `Remove schedule for ${selectedEvent.pet}?` }}
+                    {{ `Remove schedule for ${selectedEvent.pet && selectedEvent.pet.Name}?` }}
+              
                 </v-card-title>
 
                 <v-card-text>
@@ -775,9 +776,10 @@ export default {
         },
 
         checkUser(selectedEvent) {
-            const isAdmin = this.$gate.isAdmin();
+            const isAdminOrisEmployee = this.$gate.isAdminOrisEmployee();
             if (this.selectedOpen) {
-                return user.id === selectedEvent.client.id || isAdmin
+                return user.id === selectedEvent.client.id || isAdminOrisEmployee
+
                     ? true
                     : false;
             }
