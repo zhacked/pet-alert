@@ -266,7 +266,7 @@
                                 <v-col cols="12" md="6">
                                     <v-select
                                         dense
-                                        v-show="$gate.isAdmin()"
+                                        v-show="$gate.isAdminOrisEmployee()"
                                         v-model="selectClient"
                                         :items="client.data"
                                         name="client"
