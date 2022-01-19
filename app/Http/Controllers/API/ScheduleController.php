@@ -64,42 +64,54 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
+
+    
+        $schedule = Schedule::where('start',$request->start)
+                            ->where('client_id',$request->client_id)
+                            ->where('employee_id',$request->employee_id)
+                            ->exists();
         $client = User::findOrFail($request['clientId']); 
         $service = Service::findOrFail($request['serviceId']);
         $pet = Pet::findOrFail($request['petId']);
         $employee = User::findOrFail($request['employeeId']);
+        if($schedule  == false){
+            $data=[
+                'client'=>$client,
+                'employee' => $employee,
+                'service' => $service,
+                'pet' => $pet,
+                'messages'=> $request['details'],
+                'date_start' => $request['start'],
+                'date_end' => $request['end'],
+                'status' => $request['status']
+            ];
+            
+            
 
-        $data=[
-            'client'=>$client,
-            'employee' => $employee,
-            'service' => $service,
-            'pet' => $pet,
-            'messages'=> $request['details'],
-            'date_start' => $request['start'],
-            'date_end' => $request['end'],
-            'status' => $request['status']
-        ];
-        
-        
-        $create =  Schedule::create([
-            'appointHash' => $request['appointHash'],
-            'employee_id' => $request['employeeId'],
-            'client_id' => $request['clientId'],
-            'service_id' => $request['serviceId'],
-            'pet_id' => $request['petId'],
-            'start' =>$request['start'],
-            'end'=> $request['end'],
-            'details' => $request['details'],
-            'status' => $request['status']
-        ]);
+            $create =  Schedule::create([
+                'appointHash' => $request['appointHash'],
+                'employee_id' => $request['employeeId'],
+                'client_id' => $request['clientId'],
+                'service_id' => $request['serviceId'],
+                'pet_id' => $request['petId'],
+                'start' =>$request['start'],
+                'end'=> $request['end'],
+                'details' => $request['details'],
+                'status' => $request['status']
+            ]);
 
-        // Mail::send('mail',$data,function($messages) use ($client){
+            // Mail::send('mail',$data,function($messages) use ($client){
 
-        //     $messages->to($client->email);
-        //     $messages->subject('Hi There');
-        // });
+            //     $messages->to($client->email);
+            //     $messages->subject('Hi There');
+            // });
 
-        return $create;
+            return $create;
+            }
+     
+
+
+
 
     }
 
@@ -134,11 +146,19 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+      
+        
+        $filterschedule = Schedule::where('start',$request->start)
+                            ->where('client_id',$request->client_id)
+                            ->where('employee_id',$request->employee_id)
+                            ->exists();
+        
         $schedule = Schedule::findOrFail($id);
-
-        $schedule->update($request->all());
-        return $schedule;
+        if($filterschedule == false){
+            $schedule->update($request->all());
+            return $schedule;
+        }
+        return 'error';
 
 
     }

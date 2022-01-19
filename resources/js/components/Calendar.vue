@@ -557,7 +557,6 @@ export default {
         },
         makeAppointment() {
             this.loading = true;
-
             const clientId = this.selectClient?.id || this.users.id;
             const clientNumber = this.selectClient?.number || this.users.number;
             const employeeId = this.selectVet.id;
@@ -635,7 +634,8 @@ export default {
                         details,
                         status: this.status,
                     })
-                    .then(() => {
+                    .then((data) => {
+                       
                         Fire.$emit("AfterCreate");
                         $("#addNew").modal("hide");
                         this.loadEvents();
@@ -691,7 +691,14 @@ export default {
                     service_id: this.selectService.id,
                     details: this.details,
                 })
-                .then(() => {
+                .then((data) => {
+                     console.log('data>>>>>>>',data.data);
+                     if(data.data == 'error'){
+                         Toast.fire({
+                                icon: 'error',
+                                title: 'Schedule already exist'
+                                })
+                     }
                     Fire.$emit("AfterCreate");
                     this.overlay = false;
                     this.loadEvents();
