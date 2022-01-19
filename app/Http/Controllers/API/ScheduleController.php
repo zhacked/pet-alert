@@ -65,7 +65,7 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
 
-    
+        dd($request->all());
         $schedule = Schedule::where('start',$request->start)
                             ->where('client_id',$request->client_id)
                             ->where('employee_id',$request->employee_id)
