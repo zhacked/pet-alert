@@ -363,15 +363,17 @@
                     <v-card-actions class="my-0">
                         <v-spacer></v-spacer>
                         <v-btn
+                            :disabled="this.selectClient && this.selectVet && this.selectService && this.selectPet && this.time ? false : true"
                             class="btn-success"
                             color="#fff"
                             text
+                            
                             @click="
                                 editAppoint
                                     ? updateAppointment()
                                     : makeAppointment()
                             "
-                            :disabled="loading"
+                            
                         >
                             {{
                                 editAppoint
@@ -566,12 +568,6 @@ export default {
             const startTime = moment(this.time, "LT").format("HH:mm:ss");
             const timeEnd = this.timeEnd(this.time);
 
-            console.log("dsdsd", this.evt.start);
-            console.log("time", this.time);
-            console.log("timeEnd", timeEnd);
-
-            // const end = `${this.evt.start}T${timeEnd}`;
-
             let appointStartEvent = [];
             let appointEndEvent = [];
 
@@ -657,6 +653,9 @@ export default {
             this.time = "";
             this.selectPet = null;
             this.details = "";
+        },
+        checkFillAppointment(){
+            // return  ? true : false
         },
         showEditAppointment(event) {
             console.log(event);
