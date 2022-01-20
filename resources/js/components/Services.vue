@@ -110,13 +110,13 @@
 
                                  <v-row class="no-gutters">
                                     <v-col  class="col-sm-4">
-                                        <label for="name" class="col-sm-2 control-label">Validation</label>
+                                        <label for="name" class="col-sm-2 control-label">Week&nbsp;range</label>
                                     </v-col>
                                     <v-col class="col-sm-8">
                                         	<div class="form-group">
-                                                <input v-model="form.due_date" name="due_date" id="due_date"
+                                                <input type="number" min="0" v-model="form.due_date" name="due_date" id="due_date"
                                                 placeholder="no. weeks ..."
-                                                class="form-control" :class="{ 'is-invalid': form.errors.has('due_date') }">              
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('due_date') }" />              
                                                 <has-error :form="form" field="due_date"></has-error>
                                             </div>
                                     </v-col>
@@ -127,9 +127,9 @@
                                     </v-col>
                                     <v-col class="col-sm-8">
                                         	<div class="form-group">
-                                                <input v-model="form.count" name="count" id="count"
+                                                <input type="number" min="1" default="1" v-model="form.count" name="count" id="count"
                                                 placeholder="service count..."
-                                                class="form-control" :class="{ 'is-invalid': form.errors.has('count') }">              
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('count') }"/>              
                                                 <has-error :form="form" field="count"></has-error>
                                             </div>
                                     </v-col>
@@ -172,8 +172,8 @@
                     id:'',
                     name:'',
                    description:'',
-                   due_date:'',
-                   count:'',
+                   due_date:'0',
+                   count:'1',
                 })
             }
         },
