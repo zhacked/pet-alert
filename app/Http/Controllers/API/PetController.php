@@ -59,13 +59,13 @@ class PetController extends Controller
  
         // dd($request->all());
         $this->validate($request,[
+            'photo' => 'required|mimes:jpeg,jpg,png,gif|required|max:10000',
             'Name' => 'required|string|max:191',
             'species' => 'required|string',
             'breed' => 'required|string',
             'color' => 'required|string',
             'gender' => 'required|string',
-            'birthday' => 'required|string',
-           
+            'birthday' => 'required|string'
         ]);
 
        
