@@ -363,15 +363,17 @@
                     <v-card-actions class="my-0">
                         <v-spacer></v-spacer>
                         <v-btn
+                            :disabled="this.selectClient && this.selectVet && this.selectService && this.selectPet && this.time ? false : true"
                             class="btn-success"
                             color="#fff"
                             text
+                            
                             @click="
                                 editAppoint
                                     ? updateAppointment()
                                     : makeAppointment()
                             "
-                            :disabled="loading"
+                            
                         >
                             {{
                                 editAppoint
@@ -566,12 +568,6 @@ export default {
             const startTime = moment(this.time, "LT").format("HH:mm:ss");
             const timeEnd = this.timeEnd(this.time);
 
-            console.log("dsdsd", this.evt.start);
-            console.log("time", this.time);
-            console.log("timeEnd", timeEnd);
-
-            // const end = `${this.evt.start}T${timeEnd}`;
-
             let appointStartEvent = [];
             let appointEndEvent = [];
 
@@ -610,8 +606,9 @@ export default {
                 .toString(36)
                 .substring(2);
        
-
-            for (let i = 0; i <= parseInt(this.selectService.count); i++) {
+            if(this.selectService.count > 0) {
+                const countingSched = (parseInt(this.selectService.due_date) < 1 && parseInt(this.selectService.count) > 1) ? 1 : this.selectService.count
+                 for (let i = 0; i <= parseInt(countingSched - 1); ++i) {
                 console.log('tag', i);
                 const a = parseInt(this.selectService.due_date) * i;
                 const start = moment(this.evt.start)
@@ -622,6 +619,8 @@ export default {
 
                 appointStartEvent.push(appointStart);
                 appointEndEvent.push(appointEnd);
+
+
 
                 axios
                     .post("api/schedule", {
@@ -643,6 +642,8 @@ export default {
                         this.loadEvents();
                     });
             }
+            }
+           
 
             this.overlay = !this.overlay;
             this.selectClient = null;
@@ -652,6 +653,9 @@ export default {
             this.time = "";
             this.selectPet = null;
             this.details = "";
+        },
+        checkFillAppointment(){
+            // return  ? true : false
         },
         showEditAppointment(event) {
             console.log(event);
@@ -752,6 +756,8 @@ export default {
 
             const eventSchedule = await axios.get("api/eventSchedule");
 
+            
+
             await eventSchedule.data.forEach((event) => {
                 const allDay = this.rnd(0, 3) === 0;
                 const evt = {
@@ -779,9 +785,17 @@ export default {
 
                 events.push(evt);
             });
+      
+         
+            const eventFiltered = events.filter(e => (e.client.id === this.$gate.getUser().id))
+        
+            const appoitedEvents = this.$gate.isAdminOrisEmployee() ? events : eventFiltered
 
-            this.events = events;
-            // this.calendarOptions.events = events;
+
+
+
+            this.events = appoitedEvents;
+     
         },
 
         checkUser(selectedEvent) {
