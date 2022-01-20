@@ -611,7 +611,7 @@ export default {
                 .substring(2);
        
 
-            for (let i = 1; i <= parseInt(this.selectService.count); i++) {
+            for (let i = 0; i <= parseInt(this.selectService.count); i++) {
                 console.log('tag', i);
                 const a = parseInt(this.selectService.due_date) * i;
                 const start = moment(this.evt.start)
