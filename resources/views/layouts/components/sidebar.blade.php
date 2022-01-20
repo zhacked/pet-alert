@@ -125,6 +125,13 @@
 								<p>Employees</p>
 							</router-link>
 						</li>
+						<li class="nav-item">
+							<router-link to="/deleted" class="nav-link  text-white">
+								<i class="nav-icon fas fa-user-slash  text-gray"></i>
+								<p>Deleted Account</p>
+							</router-link>
+						</li>
+						
                     </ul>
                 </li>
 

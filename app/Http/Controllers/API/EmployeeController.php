@@ -16,7 +16,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return User::where('type','employee')->get();
+        return User::where('type','employee')
+                    ->WhereNull('is_deleted')->get();
     }
 
 
@@ -120,7 +121,9 @@ class EmployeeController extends Controller
         $user = User::findOrFail($id);
         // delete the user
 
-        $user->delete();
+        $user->update([
+            'is_deleted' => true
+        ]);
 
         return ['message' => 'User Deleted'];
     }

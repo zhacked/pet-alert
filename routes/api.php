@@ -44,4 +44,9 @@ Route::get('getPet/{id}', [App\Http\Controllers\API\PetController::class, 'getPe
 Route::get('reportAcceptance/{id}/{status}', [App\Http\Controllers\API\ScheduleController::class, 'acceptancereport']);
 Route::post('destroySched', [App\Http\Controllers\API\ScheduleController::class, 'destroySched']);
 Route::post('smsSend', [App\Http\Controllers\API\SmsController::class, 'smsSend']);
+Route::post('destroySched', [App\Http\Controllers\API\ScheduleController::class, 'destroySched']);
+Route::get('userdeleted', [App\Http\Controllers\API\UserController::class, 'userdeletedindex']);
+Route::get('userdelete/{id}', [App\Http\Controllers\API\UserController::class, 'userdeletedpermenent']);
+Route::get('useractivate/{id}', [App\Http\Controllers\API\UserController::class, 'useractivateagain']);
+
 ?>

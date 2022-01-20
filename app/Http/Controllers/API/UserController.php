@@ -30,8 +30,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        return User::WhereNull('is_deleted')->get();
+    }
 
-        return User::latest()->paginate(10);
+    public function userdeletedindex(){
+        return User::WhereNotNull('is_deleted')->get();
     }
     public function userLogin(){
         return User::Where('id', Auth::user()->id)->first();
@@ -156,8 +159,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isAdmin');
-
+       
         $user = User::findOrFail($id);
         // delete the user
 
@@ -165,6 +167,16 @@ class UserController extends Controller
 
         return ['message' => 'User Deleted'];
     }
-
+    public function userdeletedpermenent($id){
+        $user = User::findOrFail($id);
+        
+        $user->delete();
+    }
+    public function useractivateagain($id){
+        $user = User::findOrFail($id);
+        $user->update([
+            'is_deleted' => null
+        ]);
+    }
     
 }

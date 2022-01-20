@@ -286,10 +286,10 @@ export default {
     data() {
         return {
             headers: [
-                { text: "name", value: "name" },
+                { text: "Name", value: "name" },
                 { text: "Gender", value: "gender" },
                 { text: "Position", value: "position" },
-                { text: "address", value: "address" },
+                { text: "Address", value: "address" },
                 { text: "Email", value: "email" },
                 { text: "Contact Info", value: "number" },
                 { text: "Actions", value: "actions", sortable: false },
