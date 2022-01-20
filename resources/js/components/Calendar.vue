@@ -610,8 +610,9 @@ export default {
                 .toString(36)
                 .substring(2);
        
-
-            for (let i = 1; i <= parseInt(this.selectService.count); i++) {
+            if(this.selectService.count > 0) {
+                const countingSched = (parseInt(this.selectService.due_date) < 1 && parseInt(this.selectService.count) > 1) ? 1 : this.selectService.count
+                 for (let i = 0; i <= parseInt(countingSched - 1); ++i) {
                 console.log('tag', i);
                 const a = parseInt(this.selectService.due_date) * i;
                 const start = moment(this.evt.start)
@@ -622,6 +623,8 @@ export default {
 
                 appointStartEvent.push(appointStart);
                 appointEndEvent.push(appointEnd);
+
+
 
                 axios
                     .post("api/schedule", {
@@ -643,6 +646,8 @@ export default {
                         this.loadEvents();
                     });
             }
+            }
+           
 
             this.overlay = !this.overlay;
             this.selectClient = null;
@@ -752,6 +757,8 @@ export default {
 
             const eventSchedule = await axios.get("api/eventSchedule");
 
+            
+
             await eventSchedule.data.forEach((event) => {
                 const allDay = this.rnd(0, 3) === 0;
                 const evt = {
@@ -779,9 +786,17 @@ export default {
 
                 events.push(evt);
             });
+      
+         
+            const eventFiltered = events.filter(e => (e.client.id === this.$gate.getUser().id))
+        
+            const appoitedEvents = this.$gate.isAdminOrisEmployee() ? events : eventFiltered
 
-            this.events = events;
-            // this.calendarOptions.events = events;
+
+
+
+            this.events = appoitedEvents;
+     
         },
 
         checkUser(selectedEvent) {
