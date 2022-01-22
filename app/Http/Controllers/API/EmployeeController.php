@@ -42,7 +42,7 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'gender' => 'required|string',
-            'number' => 'required|numeric',
+            'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'position' => 'required|string',
             'address' => 'required|string',
             'password' => 'required|string',
@@ -99,7 +99,7 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$employee->id,
             'gender' => 'required|string',
-            'number' => 'required|numeric',
+            'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'position' => 'required|string',
             'address' => 'required|string',
             'password' => 'sometimes|min:6'

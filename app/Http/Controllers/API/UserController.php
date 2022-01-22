@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Report;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -116,7 +117,7 @@ class UserController extends Controller
     public function countuser()
     {
         $client = User::where('type','client')->count();
-        $report = Report::count();
+        $report = Schedule::count();
 
 
         return response()->json([
