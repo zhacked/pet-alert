@@ -72,7 +72,7 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                        <li class="nav-item"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li>
+                      
                         <li class="nav-item"><a class="nav-link active show" href="#settings" data-toggle="tab">Settings</a></li>
                         </ul>
                     </div>
@@ -95,7 +95,7 @@
                                     <label for="inputName" class="col-sm-2 control-label">Name</label>
 
                                     <div class="col-sm-12">
-                                    <input type="" v-model="form.name" class="form-control" id="inputName" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
+                                    <input  v-model="form.name" class="form-control" id="inputName" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }" >
                                      <has-error :form="form" field="name"></has-error>
                                     </div>
                                 </div>
@@ -109,10 +109,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
+                                    <label for="inputExperience" class="col-sm-2 control-label">Description</label>
 
                                     <div class="col-sm-12">
-                                    <textarea  v-model="form.bio" class="form-control" id="inputExperience" placeholder="Experience" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
+                                    <textarea  v-model="form.bio" class="form-control" id="inputExperience" placeholder="Description" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
                                      <has-error :form="form" field="bio"></has-error>
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@
                                         v-model="form.password"
                                         class="form-control"
                                         id="password"
-                                        placeholder="Passport"
+                                        placeholder="Password"
                                         :class="{ 'is-invalid': form.errors.has('password') }"
                                     >
                                      <has-error :form="form" field="password"></has-error>
@@ -227,6 +227,11 @@
         created() {
             axios.get("api/profile")
                 .then(({ data }) => (this.form.fill(data)));
+        },
+        mounted() {
+            if(!this.$gate.isAdmin()){
+               $('#inputName').attr('readonly',true);
+            }
            
         }
     }

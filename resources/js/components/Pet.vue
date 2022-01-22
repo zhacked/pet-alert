@@ -17,7 +17,7 @@
 						</v-card-title>
                         <v-card-text>
                             <v-card-actions class="card-tool"> 
-								<v-btn color="success"   
+								<v-btn color="success" v-show="$gate.isAdmin()"  
                                     elevation="2"  @click="newModal">Register Pet <i class="fas fa-plus fa-fw">
                                 </i></v-btn>
 							</v-card-actions>
