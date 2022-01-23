@@ -43,5 +43,6 @@ Route::get('custom_employee', [App\Http\Controllers\API\EmployeeController::clas
 Route::get('getPet/{id}', [App\Http\Controllers\API\PetController::class, 'getPet']);
 Route::get('reportAcceptance/{id}/{status}', [App\Http\Controllers\API\ScheduleController::class, 'acceptancereport']);
 Route::post('destroySched', [App\Http\Controllers\API\ScheduleController::class, 'destroySched']);
+Route::put('removeSched', [App\Http\Controllers\API\ScheduleController::class, 'removeSched']);
 Route::post('smsSend', [App\Http\Controllers\API\SmsController::class, 'smsSend']);
 ?>

@@ -23,7 +23,7 @@
                                 >
                                  <template v-slot:[`item.status`]="{ item }">
                       
-                                    <span class="overline" :class="item.status == 'accept' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status}}</span>
+                                    <span class="overline" :class="item.status == 'accept' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status === 'remove' ? "Removal request" : item.status}}</span>
                                 </template>
                                <template v-slot:[`item.actions`]="{ item }">
                                    <v-tooltip bottom>
@@ -49,26 +49,42 @@
                                     </v-tooltip>
 
 
-                                       <v-tooltip bottom>
-                                    <template v-slot:activator="{ on, attrs }">
-                                  
-
-                                    <v-btn
-                                    icon
-                                        v-show="item.status=='accept' || item.status=='pending'"
-                                        small
-                                        color="red"
-                                        dark
-                                      v-bind="attrs"
-                                        v-on="on"
-                                        @click="Status(item,'declined')"
-                                        >
-                                        <v-icon
-                                                    >mdi-calendar-remove</v-icon
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn
+                                            icon
+                                                v-show="item.status=='remove' || item.status === 'declined'"
+                                                small
+                                                color="orange"
+                                                dark
+                                            v-bind="attrs"
+                                                v-on="on"
+                                                @click="deleteAppointment(item)"
                                                 >
-                                    </v-btn>
-                                    </template>
-                                    <span>Decline Appointment</span>
+                                                <v-icon>mdi-calendar-remove</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Remove Appointment</span>
+                                    </v-tooltip>
+
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn
+                                            icon
+                                                v-show="item.status=='accept' || item.status=='pending'"
+                                                small
+                                                color="red"
+                                                dark
+                                            v-bind="attrs"
+                                                v-on="on"
+                                                @click="Status(item,'declined')"
+                                                >
+                                                <v-icon
+                                                            >mdi-calendar-alert</v-icon
+                                                        >
+                                            </v-btn>
+                                        </template>
+                                        <span>Decline Appointment</span>
                                     </v-tooltip>
 
                                         
@@ -89,12 +105,12 @@ import moment from 'moment';
         data() {
             return {
                 headers: [
+                { text: 'id', value: 'appointHash' },
                 { text: 'Date', value: 'start' },
                 { text: 'Name', value: 'client_data.name' },
                 { text: 'Pet', value: 'pet_data.Name' },
                 { text: 'Procedure', value: 'service_data.name' },
-                { text: 'Notes', value: 'details' },
-               
+                { text: 'Notes', value: 'details' },               
                 { text: 'Status', value: 'status' },
                 { text: 'Actions', value: 'actions', sortable: false }
                 ],
@@ -124,8 +140,8 @@ import moment from 'moment';
                  axios.get("api/schedule").then(({data}) => {
                      let newSet = [];
                      data.forEach(d => {
-                         console.log(moment(d.start).format("MM/DD/YY hh:mm a"))
-                         newSet.push({ ...d,start: moment(d.start).format("MM/DD/YY hh:mm a")})
+                        
+                         newSet.push({ ...d,start: moment(d.start).format("LL LT")})
                      })
                      this.report = newSet;
                     //  this.report = {
@@ -143,7 +159,23 @@ import moment from 'moment';
                                 title: 'Appointment Successfully  ' + status
                         })
                 });
-            }
+            },
+                 
+        deleteAppointment(item) {
+            console.log(item)
+            axios
+                .post("api/destroySched", {
+                    appointHash: item.appointHash,
+                })
+                .then(() => {
+                    this.dialogDelete = false;
+                });
+                 Toast.fire({
+                                icon: 'success',
+                                title: 'Appointment Removed' 
+                        })
+                Fire.$emit('AfterCreate')
+        },
         },
         created() {
             // this.loadClient();

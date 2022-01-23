@@ -163,6 +163,17 @@ class ScheduleController extends Controller
 
     }
 
+    public function removeSched(Request $request) {
+       
+        $schedule = Schedule::where('appointHash', '=', $request['appointHash']);
+
+    
+
+        $updateSched = $schedule->update(['status' => 'remove']);
+
+        return $updateSched;
+    }
+
     /**
      * Remove the specified resource from storage.
      *

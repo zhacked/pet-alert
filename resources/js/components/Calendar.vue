@@ -121,15 +121,19 @@
                                 <v-spacer></v-spacer>
 
                                 <v-btn
+                                    v-show="selectedEvent.status !== 'remove'"
                                     icon
                                     color="primary"
                                     @click="showEditAppointment(selectedEvent)"
                                 >
                                     <v-icon>mdi-calendar-edit</v-icon>
                                 </v-btn>
+                                
                                 <v-tooltip bottom>
                                     <template v-slot:activator="{ on, attrs }">
+
                                         <v-btn
+                                            v-show="selectedEvent.status !== 'remove'"
                                             v-bind="attrs"
                                             v-on="on"
                                             icon
@@ -138,6 +142,7 @@
                                         >
                                             <v-icon>mdi-calendar-remove</v-icon>
                                         </v-btn>
+                                        <v-btn small v-show="selectedEvent.status === 'remove'" disabled>{{selectedEvent.status === 'remove' && "Waiting for admin to remove request"}}</v-btn>
                                     </template>
                                     <span>Remove Appointment</span>
                                 </v-tooltip>
@@ -214,9 +219,10 @@
                     </v-btn>
 
                     <v-btn
+                       
                         color="green darken-1"
                         text
-                        @click="deleteAppointment(selectedEvent)"
+                        @click="removingAppointment(selectedEvent)"
                     >
                         Agree
                     </v-btn>
@@ -362,8 +368,9 @@
                   
                     <v-card-actions class="my-0">
                         <v-spacer></v-spacer>
+                        
                         <v-btn
-                            :disabled="this.selectClient && this.selectVet && this.selectService && this.selectPet && this.time ? false : true"
+                         
                             class="btn-success"
                             color="#fff"
                             text
@@ -449,6 +456,7 @@ export default {
             },
             timeAvailable: [],
             editAppoint: false,
+            isDisabled: true
         };
     },
 
@@ -577,10 +585,10 @@ export default {
                 this.evt.start
             ).format("MMM D YYYY hh:mm a")} -Pet Alert`;
 
-            // axios.post("api/smsSend",{
-            //     clientNumber,
-            //     message
-            // }).then(() => (console.log('Message sent')));
+            axios.post("api/smsSend",{
+                clientNumber,
+                message
+            }).then(() => (console.log('Message sent')));
 
             const cyrb53 = function (str, seed = 0) {
                 let h1 = 0xdeadbeef ^ seed,
@@ -639,7 +647,7 @@ export default {
                        
                         Fire.$emit("AfterCreate");
                         $("#addNew").modal("hide");
-                        this.loadEvents();
+                      
                     });
             }
             }
@@ -698,7 +706,7 @@ export default {
                     details: this.details,
                 })
                 .then((data) => {
-                     console.log('data>>>>>>>',data.data);
+                     
                      if(data.data == 'error'){
                          Toast.fire({
                                 icon: 'error',
@@ -707,20 +715,34 @@ export default {
                      }
                     Fire.$emit("AfterCreate");
                     this.overlay = false;
-                    this.loadEvents();
+            
                 });
         },
-        deleteAppointment(event) {
+
+        removingAppointment(event){
+            console.log(event)
             axios
-                .post("api/destroySched", {
-                    appointHash: event.appointHash,
+                .put("api/removeSched/" ,{
+                    appointHash: this.selectedEvent.appointHash
                 })
-                .then(() => {
-                    console.log("deleted");
-                    this.loadEvents();
-                    this.dialogDelete = false;
+                .then((data) => {
+                   console.log(data)
+                    Fire.$emit("AfterCreate");
+                   this.dialogDelete = false;
+                    
                 });
         },
+        
+        // deleteAppointment(event) {
+        //     axios
+        //         .post("api/destroySched", {
+        //             appointHash: event.appointHash,
+        //         })
+        //         .then(() => {
+        //             this.loadEvents();
+        //             this.dialogDelete = false;
+        //         });
+        // },
 
         loadClient() {
             axios.get("api/client").then((data) => (this.client = data));
@@ -753,6 +775,7 @@ export default {
 
         async loadEvents() {
             let events = [];
+         
 
             const eventSchedule = await axios.get("api/eventSchedule");
 
@@ -764,7 +787,7 @@ export default {
                     eventId: event.id,
                     name: `${event.service_data.name} | ${
                         event.status === "pending"
-                            ? "PENDING"
+                            ? "PENDING" : event.status === "remove" ? 'Waiting for removal'
                             : event.pet_data?.Name
                     }`,
                     client: event.client_data,
@@ -774,7 +797,7 @@ export default {
                     start: event.start,
                     end: event.end,
                     color:
-                        event.status === "pending"
+                        event.status === "pending" || event.status === 'remove'
                             ? "#696773"
                             : event.employee_data.color,
                     timed: !allDay,
@@ -785,9 +808,11 @@ export default {
 
                 events.push(evt);
             });
-      
+
+            const eventsNoDeclined = events.filter(e => (e.status !== 'declined'));
+          
          
-            const eventFiltered = events.filter(e => (e.client.id === this.$gate.getUser().id))
+            const eventFiltered = eventsNoDeclined.filter(e => (e.client.id === this.$gate.getUser().id))
         
             const appoitedEvents = this.$gate.isAdminOrisEmployee() ? events : eventFiltered
 
@@ -822,7 +847,11 @@ export default {
             return color1.isLight() ? "#000" : "#fff";
         },
     },
-
+    computed: {
+        checkAppointFilled(){
+            
+        }
+    },
     created() {
         this.loadClient();
         this.loadServices();
@@ -831,6 +860,7 @@ export default {
         this.loadEvents();
         Fire.$on("AfterCreate", () => {
             this.loadClient();
+            this.loadEvents();
         });
     },
 };
