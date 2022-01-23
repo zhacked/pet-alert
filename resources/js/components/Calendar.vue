@@ -417,6 +417,7 @@ export default {
             selectedElement: null,
             selectedOpen: false,
             events: [],
+            eventsAll: [],
             overlay: false,
             dialogDelete: false,
             //-----------------------------------//
@@ -478,6 +479,8 @@ export default {
             const hours = [];
             let existingTime = [];
 
+            console.log('timeEvents>>>',events)
+
             const checkTimeForDay = events.filter((e) => {
                 return e.start.includes(date);
             });
@@ -511,7 +514,7 @@ export default {
                 this.timeAvailable = this.timeAvail(
                     8,
                     17,
-                    this.events,
+                    this.eventsAll,
                     info.date
                 );
             } else {
@@ -677,7 +680,7 @@ export default {
             this.timeAvailable = this.timeAvail(
                 8,
                 17,
-                this.events,
+                this.eventsAll,
                 moment(event.start).format("YYYY-MM-DD"),
                 false
             );
@@ -782,6 +785,7 @@ export default {
             
 
             await eventSchedule.data.forEach((event) => {
+           
                 const allDay = this.rnd(0, 3) === 0;
                 const evt = {
                     eventId: event.id,
@@ -823,6 +827,46 @@ export default {
      
         },
 
+        async loadEventsAll(){
+            let eventsAll = [];
+            const eventSchedule = await axios.get("api/eventSchedule");
+
+        
+
+             await eventSchedule.data.forEach((event) => {
+           
+                const allDay = this.rnd(0, 3) === 0;
+                const evt = {
+                    eventId: event.id,
+                    name: `${event.service_data.name} | ${
+                        event.status === "pending"
+                            ? "PENDING" : event.status === "remove" ? 'Waiting for removal'
+                            : event.pet_data?.Name
+                    }`,
+                    client: event.client_data,
+                    pet: event.pet_data,
+                    service: event.service_data,
+                    vet: event.employee_data,
+                    start: event.start,
+                    end: event.end,
+                    color:
+                        event.status === "pending" || event.status === 'remove'
+                            ? "#696773"
+                            : event.employee_data.color,
+                    timed: !allDay,
+                    appointHash: event.appointHash,
+                    details: event.details,
+                    status: event.status,
+                };
+
+                eventsAll.push(evt);
+            });
+
+            this.eventsAll = eventsAll;
+
+            console.log(this.eventsAll)
+        },
+
         checkUser(selectedEvent) {
             const isAdminOrisEmployee = this.$gate.isAdminOrisEmployee();
             if (this.selectedOpen) {
@@ -858,6 +902,7 @@ export default {
         this.loadEmployees();
 
         this.loadEvents();
+        this.loadEventsAll();
         Fire.$on("AfterCreate", () => {
             this.loadClient();
             this.loadEvents();
