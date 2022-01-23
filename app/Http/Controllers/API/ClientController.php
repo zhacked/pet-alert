@@ -23,8 +23,10 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return User::where('type','client')->get();
+        return User::where('type','client')
+        ->WhereNull('is_deleted')->get();
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -49,7 +51,7 @@ class ClientController extends Controller
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'gender' => 'required|string',
-            'number' => 'required|numeric',
+            'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'address' => 'required|string'
         ]);
 
@@ -101,7 +103,7 @@ class ClientController extends Controller
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$client->id,
             'gender' => 'required|string',
-            'number' => 'required|numeric',
+            'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'address' => 'required|string'
         ]);
 
@@ -120,8 +122,10 @@ class ClientController extends Controller
        
         $user = User::findOrFail($id);
         // delete the user
-
-        $user->delete();
+        $user->update([
+            'is_deleted' => true
+        ]);
+        // $user->delete();
 
         return ['message' => 'User Deleted'];
     }

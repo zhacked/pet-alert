@@ -49,7 +49,7 @@
                                 >
                                     <i class="fa fa-edit"></i> Update
                                 </v-btn>
-                                <v-btn
+                                <!-- <v-btn
                                     small
                                     color="red"
                                     dark
@@ -57,7 +57,7 @@
                                     @click="deleteEmployees(item.id)"
                                 >
                                     <i class="fa fa-trash"></i> Delete
-                                </v-btn>
+                                </v-btn> -->
                             </template>
                         </v-data-table>
                     </v-card>
@@ -202,30 +202,7 @@
                                         field="gender"
                                     ></has-error>
                                 </div>
-                                <div class="form-group">
-                                    <select
-                                        name="type"
-                                        v-model="form.position"
-                                        id="type"
-                                        class="form-control"
-                                        :class="{
-                                            'is-invalid':
-                                                form.errors.has('position'),
-                                        }"
-                                    >
-                                        <option value="">
-                                            Select position
-                                        </option>
-                                        <option value="veterinarian">
-                                            Veterinarian
-                                        </option>
-                                        <option value="staff">Staff</option>
-                                    </select>
-                                    <has-error
-                                        :form="form"
-                                        field="position"
-                                    ></has-error>
-                                </div>
+                              
                                 <div class="form-group">
                                     <v-color-picker
                                         v-model="form.color"
@@ -286,10 +263,10 @@ export default {
     data() {
         return {
             headers: [
-                { text: "name", value: "name" },
+                { text: "Name", value: "name" },
                 { text: "Gender", value: "gender" },
                 { text: "Position", value: "position" },
-                { text: "address", value: "address" },
+                { text: "Address", value: "address" },
                 { text: "Email", value: "email" },
                 { text: "Contact Info", value: "number" },
                 { text: "Actions", value: "actions", sortable: false },
@@ -307,7 +284,7 @@ export default {
                 email: "",
                 number: "",
                 gender: "",
-                position: "",
+                position: "veterinarian",
                 color: Math.floor(Math.random()*16777215).toString(16),
                 password: "petalert123",
                 type: "employee",

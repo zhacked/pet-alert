@@ -132,7 +132,10 @@ let routes = [
     {
         path: '/appointment', component: require('./components/Appointment.vue').default
     },
-    
+    {
+        path: '/deleted', component: require('./components/DeletededAccount.vue').default
+    },
+   
     
     
     {

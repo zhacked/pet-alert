@@ -17,7 +17,7 @@
 						</v-card-title>
                         <v-card-text>
                             <v-card-actions class="card-tool"> 
-								<v-btn color="success"   
+								<v-btn color="success" v-show="$gate.isAdmin()"  
                                     elevation="2"  @click="newModal">Register Pet <i class="fas fa-plus fa-fw">
                                 </i></v-btn>
 							</v-card-actions>
@@ -40,7 +40,7 @@
                                         >
                                         <i class="fa fa-edit"></i>   Update
                                     </v-btn>
-                                      <v-btn
+                                      <!-- <v-btn
                                         small
                                         color="red"
                                         dark
@@ -48,7 +48,7 @@
                                        @click="deletePet(item.id)"
                                         >
                                         <i class="fa fa-trash"></i> Delete
-                                    </v-btn>
+                                    </v-btn> -->
                                 </template>
                                 
                              </v-data-table>

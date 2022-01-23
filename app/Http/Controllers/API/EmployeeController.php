@@ -16,7 +16,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return User::where('type','employee')->get();
+        return User::where('type','employee')
+                    ->WhereNull('is_deleted')->get();
     }
 
 
@@ -41,7 +42,7 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users',
             'gender' => 'required|string',
-            'number' => 'required|numeric',
+            'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'position' => 'required|string',
             'address' => 'required|string',
             'password' => 'required|string',
@@ -98,7 +99,7 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:191',
             'email' => 'required|string|email|max:191|unique:users,email,'.$employee->id,
             'gender' => 'required|string',
-            'number' => 'required|numeric',
+            'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'position' => 'required|string',
             'address' => 'required|string',
             'password' => 'sometimes|min:6'
@@ -120,7 +121,9 @@ class EmployeeController extends Controller
         $user = User::findOrFail($id);
         // delete the user
 
-        $user->delete();
+        $user->update([
+            'is_deleted' => true
+        ]);
 
         return ['message' => 'User Deleted'];
     }

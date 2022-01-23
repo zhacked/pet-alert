@@ -5,7 +5,7 @@
 				<v-col class="col-md-12">
 					<v-card >
 						<v-card-title class="card-header">
-							<strong> Report Detials</strong>
+							<strong> Report Details</strong>
                             <v-spacer></v-spacer>
                             <v-text-field
                                 v-model="search"
