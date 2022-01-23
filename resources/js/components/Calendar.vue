@@ -479,7 +479,7 @@ export default {
             const hours = [];
             let existingTime = [];
 
-            console.log('timeEvents>>>',events)
+    
 
             const checkTimeForDay = events.filter((e) => {
                 return e.start.includes(date);
@@ -496,7 +496,7 @@ export default {
             for (let hour = start; hour <= end; hour++) {
                 hours.push(moment({ hour }).format("h:mm A"));
             }
-            console.log("HOURS", hours);
+
             const newSetTime = filterTime
                 ? hours.filter((t) => !existingTime.includes(t))
                 : hours;
@@ -834,29 +834,9 @@ export default {
         
 
              await eventSchedule.data.forEach((event) => {
-           
-                const allDay = this.rnd(0, 3) === 0;
                 const evt = {
-                    eventId: event.id,
-                    name: `${event.service_data.name} | ${
-                        event.status === "pending"
-                            ? "PENDING" : event.status === "remove" ? 'Waiting for removal'
-                            : event.pet_data?.Name
-                    }`,
-                    client: event.client_data,
-                    pet: event.pet_data,
-                    service: event.service_data,
-                    vet: event.employee_data,
                     start: event.start,
-                    end: event.end,
-                    color:
-                        event.status === "pending" || event.status === 'remove'
-                            ? "#696773"
-                            : event.employee_data.color,
-                    timed: !allDay,
-                    appointHash: event.appointHash,
-                    details: event.details,
-                    status: event.status,
+                   
                 };
 
                 eventsAll.push(evt);
