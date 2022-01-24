@@ -39,7 +39,7 @@
                                         outlined
                                         @click="deleteUser(item.id)"
                                         >
-                                        <i class="fa fa-trash"></i> Delete
+                                        <i class="fa fa-trash"></i> Archived
                                     </v-btn>
                                     
 

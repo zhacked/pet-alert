@@ -128,7 +128,7 @@
 						<li class="nav-item">
 							<router-link to="/deleted" class="nav-link  text-white">
 								<i class="nav-icon fas fa-user-slash  text-gray"></i>
-								<p>Deleted Account</p>
+								<p>Archived account</p>
 							</router-link>
 						</li>
 						

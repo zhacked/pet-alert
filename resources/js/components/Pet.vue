@@ -40,15 +40,15 @@
                                         >
                                         <i class="fa fa-edit"></i>   Update
                                     </v-btn>
-                                      <!-- <v-btn
+                                      <v-btn
                                         small
                                         color="red"
                                         dark
                                         outlined
                                        @click="deletePet(item.id)"
                                         >
-                                        <i class="fa fa-trash"></i> Delete
-                                    </v-btn> -->
+                                        <i class="fa fa-trash"></i> Archive 
+                                    </v-btn>
                                 </template>
                                 
                              </v-data-table>
@@ -298,7 +298,7 @@
                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    type: 'warning',
+                    icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -308,7 +308,7 @@
                                 this.form.delete('api/pet/'+id).then(()=>{
                                         swal.fire(
                                         'Deleted!',
-                                        'Your file has been deleted.',
+                                        'Your file has been archived.',
                                         'success'
                                         )
                                     Fire.$emit('AfterCreate');

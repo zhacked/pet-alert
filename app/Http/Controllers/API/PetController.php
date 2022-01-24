@@ -17,12 +17,19 @@ class PetController extends Controller
      */
     public function index()
     {
+     
         if(Auth::user()->type === 'client'){
-             return Pet::with('clientData')->where('user_id', Auth::user()->id)->get();
+             return Pet::with('clientData')
+             ->WhereNull('is_deleted')
+             ->where('user_id', Auth::user()->id)
+             ->get();
         }
-
-        return Pet::with('clientData')->latest()->get();
+        return Pet::with('clientData')
+        ->WhereNull('is_deleted')
+        ->latest()
+        ->get();
     }
+
 
     public function __construct()
     {
@@ -93,11 +100,6 @@ class PetController extends Controller
 
 
 
-      
-
-
-
-        
     }
 
     /**
@@ -106,9 +108,13 @@ class PetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function petdeletepermently($id)
     {
-        //
+        $user = Pet::findOrFail($id);
+     
+        $user->delete();
+
+        return ['message' => 'User Deleted'];
     }
 
     /**
@@ -117,9 +123,9 @@ class PetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function getPetarchived()
     {
-        //
+        return Pet::WhereNotNull('is_deleted')->get();
     }
 
     /**
@@ -177,8 +183,20 @@ class PetController extends Controller
     {
         $user = Pet::findOrFail($id);
         // delete the user
+        $user->update([
+            'is_deleted' => true
+        ]);
+        // $user->delete();
 
-        $user->delete();
+        return ['message' => 'User Deleted'];
+    }
+    public function petactivateagain($id){
+        $user = Pet::findOrFail($id);
+
+        $user->update([
+            'is_deleted' => null
+        ]);
+        // $user->delete();
 
         return ['message' => 'User Deleted'];
     }

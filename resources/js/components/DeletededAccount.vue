@@ -4,9 +4,8 @@
 		<v-container>
 			<v-row class="mt-5" v-if="$gate.isAdmin()">
 				<v-col class="col-md-12">
-					<v-card >
 						<v-card-title class="card-header">
-							<strong> User Deleted Account</strong>
+							<strong> User Archived Account</strong>
                             <v-spacer></v-spacer>							
 						</v-card-title>
 
@@ -45,8 +44,48 @@
                                 
                                 </v-data-table>
                             </v-card>
-						
-					</v-card>
+				</v-col>
+                <v-col class="col-md-12">
+						<v-card-title class="card-header">
+							<strong> Pet Archived Account</strong>
+                            <v-spacer></v-spacer>							
+						</v-card-title>
+
+                            <v-card class="mt-5">
+                                <v-data-table
+                                    :headers="Petheaders"
+                                    :items="pet"
+                                    :items-per-page="3"
+                                    :search="search"
+                                    class="elevation-1"
+                                >
+                               <template v-slot:[`item.actions`]="{ item }">
+                                    <v-btn
+                                        small
+                                        color="green"
+                                        dark
+                                        outlined
+                                        @click="activtePet(item)"
+                                        >
+                                        <i class="fa fa-edit"></i>   Activated
+                                    </v-btn>
+
+                                    <v-btn
+                                        small
+                                        color="red"
+                                        dark
+                                        outlined
+                                        @click="deletePet(item.id)"
+                                        >
+                                        <i class="fa fa-trash"></i> Delete Permently
+                                    </v-btn>
+                                    
+
+					
+                                </template>
+                                
+                                </v-data-table>
+                            </v-card>
 				</v-col>
 			</v-row>
 
@@ -130,8 +169,18 @@
                 { text: 'Modify', value: 'created_at' },
                 { text: 'Actions', value: 'actions', sortable: false },
                 ],
+                Petheaders: [
+                { text: 'Pet Name', value: 'Name' },
+                { text: 'Owner', value: 'client_data.name' },
+                { text: 'Species', value: 'species' },
+                { text: 'Breed', value: 'breed' },
+                { text: 'Color', value: 'color' },
+                { text: 'Gender', value: 'gender' },
+                { text: '', value: 'actions' , sortable: false }
+                ],
                 editmode: false,
                 users : [],
+                pet:[],
                 length: '',
                 search:'',
                 form: new Form({
@@ -146,6 +195,35 @@
             }
         },
         methods: {
+            loadarchivePet(){
+                    axios.get("api/petarchived").then((data) => (this.pet = data.data));
+                
+            },
+            activtePet(user){
+                  this.form.reset();
+                  swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Activate it!'
+                    }).then((result) => {
+                         if (result.value) {
+                              axios.get('api/petactivate/'+user.id).then(()=>{
+                                        swal.fire(
+                                        'Activated!',
+                                        'Your file has been active again.',
+                                        'success'
+                                        )
+                                    Fire.$emit('AfterCreate');
+                                }).catch(()=> {
+                                    swal.fire("Failed!", "There was something wrong.", "warning");
+                                });
+                         }
+                    })
+            },
             editModal(user){
               
                 this.form.reset();
@@ -163,6 +241,30 @@
                                         swal.fire(
                                         'Activated!',
                                         'Your file has been active again.',
+                                        'success'
+                                        )
+                                    Fire.$emit('AfterCreate');
+                                }).catch(()=> {
+                                    swal.fire("Failed!", "There was something wrong.", "warning");
+                                });
+                         }
+                    })
+            },
+            deletePet(id){
+                 swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                         if (result.value) {
+                                axios.get('api/petdelete/'+id).then(()=>{
+                                        swal.fire(
+                                        'Deleted!',
+                                        'Your file has been Delete Permently.',
                                         'success'
                                         )
                                     Fire.$emit('AfterCreate');
@@ -225,8 +327,10 @@
         created() {
             
            this.loadUsers();
+           this.loadarchivePet();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
+               this.loadarchivePet();
            });
         }
     }

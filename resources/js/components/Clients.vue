@@ -53,15 +53,15 @@
                                         >
                                         <i class="fa fa-edit"></i> Update
                                     </v-btn>
-                                    <!-- <v-btn
+                                    <v-btn
                                         small
                                         color="red"
                                         dark
                                         outlined
                                          @click="deleteClient(item.id)"
                                         >
-                                        <i class="fa fa-trash"></i> Delete
-                                    </v-btn> -->
+                                        <i class="fa fa-trash"></i> Archive 
+                                    </v-btn>
                                 </template>
                        </v-data-table>
 					
@@ -318,7 +318,7 @@
                                 this.form.delete('api/client/'+id).then(()=>{
                                         swal.fire(
                                         'Deleted!',
-                                        'Your file has been deleted.',
+                                        'Your file has been archived.',
                                         'success'
                                         )
                                     Fire.$emit('AfterCreate');

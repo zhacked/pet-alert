@@ -41,6 +41,10 @@ Route::get('ownerPet', [App\Http\Controllers\API\PetController::class, 'petRecor
 Route::get('eventSchedule', [App\Http\Controllers\API\ScheduleController::class, 'eventSchedule'])->name('eventSchedule');
 Route::get('custom_employee', [App\Http\Controllers\API\EmployeeController::class, 'customemployees'])->name('customemployees');
 Route::get('getPet/{id}', [App\Http\Controllers\API\PetController::class, 'getPet']);
+Route::get('petarchived', [App\Http\Controllers\API\PetController::class, 'getPetarchived']);
+Route::get('petdelete/{id}', [App\Http\Controllers\API\PetController::class, 'petdeletepermently']);
+Route::get('petactivate/{id}', [App\Http\Controllers\API\PetController::class, 'petactivateagain']);
+
 Route::get('reportAcceptance/{id}/{status}', [App\Http\Controllers\API\ScheduleController::class, 'acceptancereport']);
 Route::post('destroySched', [App\Http\Controllers\API\ScheduleController::class, 'destroySched']);
 Route::put('removeSched', [App\Http\Controllers\API\ScheduleController::class, 'removeSched']);
