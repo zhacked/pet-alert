@@ -71,6 +71,7 @@
 						<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+                    
 					<form @submit.prevent="editmode ? updatePet() : createPet()">
 						<div class="modal-body">
                              <div class="form-group">
@@ -152,7 +153,7 @@
                                 </template>
                                 <v-date-picker
                                 v-model="form.birthday"
-                                
+                                :max="new Date().toISOString().substr(0, 10)"
                                 scrollable
                                 >
                                 <v-spacer></v-spacer>
@@ -208,6 +209,7 @@
                 client:[],
                 search:'',
                 length: '',
+             
                 form: new Form({
                     user_id:'',
                     id:'',

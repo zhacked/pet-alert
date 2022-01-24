@@ -124,20 +124,23 @@
 
                                 </div>
 
-                                <div class="form-group">
+                                <div class="input-group">
                                     <label for="password" class="col-sm-12 control-label">Change Password (leave empty if not changing)</label>
-
-                                    <div class="col-sm-12">
-                                    <input type="password"
+                                    <input :type="show == true ? 'password' : 'text'"
                                         v-model="form.password"
                                         class="form-control"
                                         id="password"
+                                        
                                         placeholder="Password"
                                         :class="{ 'is-invalid': form.errors.has('password') }"
                                     >
-                                     <has-error :form="form" field="password"></has-error>
+                                     <has-error :form="form" field="password"></has-error>  
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2" @click="showPassword"><i :class="show == true ? 'fa fa-eye' : 'fa fa-eye-slash'" aria-hidden="true"></i></span>
                                     </div>
                                 </div>
+
+                        
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-12">
@@ -163,6 +166,7 @@
                 arena:'',
                 import_count:'',
                 user:'',
+                show:false,
                 form: new Form({
                     id:'',
                     name : '',
@@ -186,7 +190,14 @@
             getcomming(){
                   return "image/coming.jpg"
             },
-           
+            showPassword(){
+                if(this.show === true){
+                     this.show = false;
+                }else{
+                     this.show = true;
+                }
+               
+            },  
             updateInfo(){
                 this.$Progress.start();
                 if(this.form.password == ''){
