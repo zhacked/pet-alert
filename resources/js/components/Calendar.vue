@@ -583,15 +583,18 @@ export default {
             const startTime = moment(this.time, "LT").format("HH:mm:ss");
             const timeEnd = this.timeEnd(this.time);
 
+            const dateTime = `${this.evt.start}T${startTime}`
+
             let appointStartEvent = [];
             let appointEndEvent = [];
 
             const trimmedServiceName = this.selectService.name.substring(0, 15);
       
-            const message = `Good day Ma'am/Sir! Your schedule for ${trimmedServiceName} starts at ${moment(
-                this.evt.start
-            ).format("MMM D YYYY hh:mm a")} -Pet Alert`;
+            const message = `Good day!\nThis is a reminder that ${this.selectPet.Name}'s appointment is on ${moment(
+               this.evt.start
+            ).format("MMM DD")} at ${moment(startTime, "HH:mm:ss").format("ka")} -Pet Alert`;
 
+          
             axios.post("api/smsSend",{
                 clientNumber,
                 message
