@@ -65,6 +65,7 @@ Vue.filter('format',function(date){
 
 
 Vue.prototype.$gate = new Gate(window.user)
+Vue.prototype.$moment = moment;
 
 Vue.use(VueRouter)
 Vue.use(VueProgressBar, {
