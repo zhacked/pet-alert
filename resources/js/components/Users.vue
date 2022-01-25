@@ -196,13 +196,13 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Yes, archive it'
                     }).then((result) => {
                          if (result.value) {
                                 this.form.delete('api/user/'+id).then(()=>{
                                         swal.fire(
-                                        'Deleted!',
-                                        'Your file has been deleted.',
+                                        'Archived!',
+                                        'Your file has been Archived.',
                                         'success'
                                         )
                                     Fire.$emit('AfterCreate');

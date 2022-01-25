@@ -27,7 +27,6 @@ class ClientController extends Controller
         ->WhereNull('is_deleted')->get();
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -121,12 +120,22 @@ class ClientController extends Controller
     {
        
         $user = User::findOrFail($id);
+       
+        $pet = Pet::where('user_id',$user->id)->get();
+
+     
         // delete the user
         $user->update([
             'is_deleted' => true
         ]);
-        // $user->delete();
 
+        foreach($pet as $data){
+            $data->update([
+                'is_deleted' => true
+            ]);
+        }
+        // $user->delete();
+ 
         return ['message' => 'User Deleted'];
     }
 }

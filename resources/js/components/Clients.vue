@@ -54,6 +54,7 @@
                                         <i class="fa fa-edit"></i> Update
                                     </v-btn>
                                     <v-btn
+                                        v-show="$gate.isAdmin()"
                                         small
                                         color="red"
                                         dark
@@ -312,12 +313,12 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Yes, archive it'
                     }).then((result) => {
                          if (result.value) {
                                 this.form.delete('api/client/'+id).then(()=>{
                                         swal.fire(
-                                        'Deleted!',
+                                        'Archived!',
                                         'Your file has been archived.',
                                         'success'
                                         )

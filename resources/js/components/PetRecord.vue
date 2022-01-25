@@ -24,7 +24,7 @@
                                 >
                                 <template v-slot:[`item.status`]="{ item }">
                       
-                                    <span class="overline" :class="item.status == 'accept' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status}}</span>
+                                    <span class="overline" :class="item.status == 'Accepted' ? 'text-success' : item.status == 'Declined' ? 'text-danger' : 'text-orange' ">{{item.status}}</span>
                                 </template>
                                 
                              </v-data-table>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Pet;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Report;
@@ -175,6 +176,13 @@ class UserController extends Controller
     }
     public function useractivateagain($id){
         $user = User::findOrFail($id);
+        $pet = Pet::where('user_id',$user->id)->get();
+        
+        foreach($pet as $data){
+            $data->update([
+                'is_deleted' => null
+            ]);
+        }
         $user->update([
             'is_deleted' => null
         ]);
