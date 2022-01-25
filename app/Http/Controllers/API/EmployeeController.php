@@ -44,6 +44,9 @@ class EmployeeController extends Controller
             'gender' => 'required|string',
             'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'position' => 'required|string',
+            'schedFrom' => 'required',
+            'schedTo' => 'required',
+            'position' => 'required|string',
             'address' => 'required|string',
             'password' => 'required|string',
 
@@ -56,6 +59,8 @@ class EmployeeController extends Controller
             'gender' => $request['gender'],
             'address' => $request['address'],
             'position'=>$request['position'],
+            'schedFrom' => $request['schedFrom'],
+            'schedTo' => $request['schedTo'],
             'type'=>$request['type'],
             'color' => $request['color'],
             'password' => Hash::make($request['password']),
@@ -102,6 +107,8 @@ class EmployeeController extends Controller
             'number' => 'required|numeric|digits:11|regex:/(09)[0-9]{9}/',
             'position' => 'required|string',
             'address' => 'required|string',
+            'schedFrom' => 'required|string',
+            'schedTo' => 'required|string',
             'password' => 'sometimes|min:6'
         ]);
 

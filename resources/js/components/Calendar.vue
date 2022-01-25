@@ -331,19 +331,20 @@
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-card-title
-                                        >Today's availability</v-card-title
+                                        >Today's&nbsp;availability</v-card-title
                                     >
 
                                     <v-chip-group
                                         active-class="primary--text"
                                         column
                                         v-model="time"
+                                        v-if="selectVet"
                                     >
                                         <v-chip
+                                            
                                             small
                                             filter
-                                            v-for="(item, index) in this
-                                                .timeAvailable"
+                                            v-for="(item, index) in this.timeAvail(selectVet && selectVet.schedFrom, selectVet && selectVet.schedTo, this.eventsAll, selectedDate)"
                                             :key="index"
                                             :value="item"
                                             @click="selectTime(item)"
@@ -370,7 +371,7 @@
                         <v-spacer></v-spacer>
                         
                         <v-btn
-                         
+                            
                             class="btn-success"
                             color="#fff"
                             text
@@ -440,6 +441,7 @@ export default {
             selectVet: {},
             selectService: {},
             selectPet: {},
+            selectedDate: "",
             details: "",
             client: {},
             vets: {},
@@ -474,11 +476,12 @@ export default {
                 this.extendOriginal = null;
             }
         },
-        timeAvail(start = 8, end = 17, events, date, filterTime = true) {
+        timeAvail(start, end, events, date, filterTime = true) {
             const locale = "en"; // or whatever you want...
             const hours = [];
             let existingTime = [];
-
+            const s = parseInt(start)
+            const e = parseInt(end)
     
 
             const checkTimeForDay = events.filter((e) => {
@@ -493,7 +496,7 @@ export default {
 
             moment.locale(locale); // optional - can remove if you are only dealing with one locale
 
-            for (let hour = start; hour <= end; hour++) {
+            for (let hour = s; hour <= e; hour++) {
                 hours.push(moment({ hour }).format("h:mm A"));
             }
 
@@ -511,12 +514,13 @@ export default {
 
                 console.log("INFODATE", info.date);
 
-                this.timeAvailable = this.timeAvail(
-                    8,
-                    17,
-                    this.eventsAll,
-                    info.date
-                );
+                this.selectedDate = info.date
+                // this.timeAvailable = this.timeAvail(
+                //     8,
+                //     17,
+                //     this.eventsAll,
+                //     info.date
+                // );
             } else {
                 this.focus = info.start || info.date;
                 this.type = "day";
