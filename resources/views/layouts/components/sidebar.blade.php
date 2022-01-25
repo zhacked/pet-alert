@@ -1,5 +1,5 @@
 <aside class="main-sidebar sidebar-primary sidebar-blue elevation-4" >
-	<div class="container text-center">
+	<div class="container text-xl-center">
 		<img src="image/logo_sidebar.png" class="elevation-3" width="150" height="30">
 	</div>
 
