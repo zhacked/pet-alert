@@ -99,10 +99,11 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form
+                        <v-form
                             @submit.prevent="
                                 editmode ? updateEmployees() : createEmployees()
                             "
+                            v-model="valid"
                         >
                             <div class="modal-body">
                                 <div class="form-group">
@@ -182,6 +183,31 @@
 								<has-error :form="form" field="color"></has-error>
 							</div>
                          -->
+                                <v-container>
+                                    <v-subheader>Set Schedule</v-subheader>
+                                    <v-row align="center">
+                                        <v-col class="d-flex" cols="12" sm="6">
+                                            <v-select
+                                                v-model="scheduleFrom"
+                                                :items="timeAvail()"
+                                                :rules="[rules.required]"
+                                                label="From"
+                                                dense
+                                            ></v-select>
+                                        </v-col>
+
+                                        <v-col class="d-flex" cols="12" sm="6">
+                                            <v-select
+                                            v-model="scheduleTo"
+                                                :items="timeAvail()"
+                                                :rules="[rules.required]"
+                                                label="To"
+                                                dense
+                                            ></v-select>
+                                        </v-col>
+
+                                    </v-row>
+                                </v-container>
                                 <div class="form-group">
                                     <select
                                         name="type"
@@ -202,7 +228,7 @@
                                         field="gender"
                                     ></has-error>
                                 </div>
-                              
+
                                 <div class="form-group">
                                     <v-color-picker
                                         v-model="form.color"
@@ -243,6 +269,7 @@
                                     >Update</v-btn
                                 >
                                 <v-btn
+                                    :disabled="!valid"
                                     v-show="!editmode"
                                     type="submit"
                                     color="success"
@@ -250,7 +277,7 @@
                                     >SUBMIT</v-btn
                                 >
                             </div>
-                        </form>
+                        </v-form>
                     </div>
                 </div>
             </div>
@@ -271,6 +298,11 @@ export default {
                 { text: "Contact Info", value: "number" },
                 { text: "Actions", value: "actions", sortable: false },
             ],
+             rules: {
+          required: value => !!value || 'Required.',
+        
+        },
+         valid: true,
             editmode: false,
             client: {},
             pet: {},
@@ -285,10 +317,15 @@ export default {
                 number: "",
                 gender: "",
                 position: "veterinarian",
-                color: Math.floor(Math.random()*16777215).toString(16),
+                schedFrom: "",
+                schedTo: "",
+                color: Math.floor(Math.random() * 16777215).toString(16),
                 password: "petalert123",
                 type: "employee",
             }),
+            hours: [],
+            scheduleFrom: null,
+            scheduleTo: null,
         };
     },
     methods: {
@@ -298,6 +335,12 @@ export default {
         updateEmployees() {
             this.$Progress.start();
             console.log("Editing data");
+            const from = this.$moment(this.scheduleFrom,'LT').format('k')
+            const to = this.$moment(this.scheduleTo, 'LT').format('k')
+
+            this.form.schedFrom = from;
+            this.form.schedTo = to;
+
             this.form
                 .put("api/employeess/" + this.form.id)
                 .then(() => {
@@ -361,6 +404,13 @@ export default {
         },
         createEmployees() {
             this.$Progress.start();
+
+            const from = this.$moment(this.scheduleFrom,'LT').format('k')
+            const to = this.$moment(this.scheduleTo, 'LT').format('k')
+
+            this.form.schedFrom = from.toString();
+            this.form.schedTo = to.toString();
+            
             this.form
                 .post("api/employeess")
                 .then(() => {
@@ -373,10 +423,31 @@ export default {
                     this.$Progress.finish();
                 })
                 .catch(() => {});
+
+
         },
+        timeAvail(start = 0, end = 23) {
+            const locale = "en"; // or whatever you want...
+            const hours = [];
+
+            this.$moment.locale(locale); // optional - can remove if you are only dealing with one locale
+
+            for (let hour = start; hour <= end; hour++) {
+                hours.push(this.$moment({ hour }).format("h:mm A"));
+            }
+            return hours;
+        },
+
+        timeAvailability(){
+            this.hours = tshi.timeAvail();
+    
+        }
+
+
     },
     created() {
         this.loadClient();
+        //  this.timeAvailability()
         this.loadEmployees();
         Fire.$on("AfterCreate", () => {
             this.loadEmployees();

@@ -100,11 +100,11 @@ class ScheduleController extends Controller
                 'status' => $request['status']
             ]);
 
-            Mail::send('mail',$data,function($messages) use ($client){
+            // Mail::send('mail',$data,function($messages) use ($client){
 
-                $messages->to($client->email);
-                $messages->subject('Hi There');
-            });
+            //     $messages->to($client->email);
+            //     $messages->subject('Hi There');
+            // });
 
             return $create;
             }

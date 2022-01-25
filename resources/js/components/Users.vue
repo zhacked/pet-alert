@@ -231,11 +231,12 @@
                 })
                 .catch(()=>{
                 })
-            }
+            },
+           
         },
         created() {
-            
-           this.loadUsers();
+           
+            this.loadUsers();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
            });
