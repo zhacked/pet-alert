@@ -588,18 +588,6 @@ export default {
             let appointStartEvent = [];
             let appointEndEvent = [];
 
-            const trimmedServiceName = this.selectService.name.substring(0, 15);
-      
-            const message = `Good day!\nThis is a reminder that ${this.selectPet.Name}'s appointment is on ${moment(
-               this.evt.start
-            ).format("MMM DD")} at ${moment(startTime, "HH:mm:ss").format("ka")} -Pet Alert`;
-
-          
-            axios.post("api/smsSend",{
-                clientNumber,
-                message
-            }).then(() => (console.log('Message sent')));
-
             const cyrb53 = function (str, seed = 0) {
                 let h1 = 0xdeadbeef ^ seed,
                     h2 = 0x41c6ce57 ^ seed;

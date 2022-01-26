@@ -151,14 +151,32 @@ import moment from 'moment';
                  } );
             },
             Status(data,status){
+
+                const date = this.$moment(data.start, 'LT LT').format('MMM DD');
+                const time = this.$moment(data.start, 'LT LT').format('ka');
+                const petName = data.pet_data.Name
+                const clientNumber = data.client_data.number
+
+                const trimmedPetName = petName.substring(0, 27);
+        
+                const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
+
+                if(status === 'accept') {
+                    axios.post("api/smsSend",{
+                        clientNumber,
+                        message
+                    }).then(() => (console.log('Message sent')));
+                }
+            
+
                 axios.get('api/reportAcceptance/'+data.id+'/'+status).then(({data})=>{
-                      Fire.$emit("AfterCreate");
-                 
-                        Toast.fire({
-                                icon: 'success',
-                                title: 'Appointment Successfully  ' + status
-                        })
-                });
+                        Fire.$emit("AfterCreate");
+                    
+                            Toast.fire({
+                                    icon: 'success',
+                                    title: 'Appointment Successfully  ' + status
+                            })
+                    });
             },
                  
         deleteAppointment(item) {
