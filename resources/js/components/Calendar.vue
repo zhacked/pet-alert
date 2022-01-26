@@ -583,19 +583,10 @@ export default {
             const startTime = moment(this.time, "LT").format("HH:mm:ss");
             const timeEnd = this.timeEnd(this.time);
 
+            const dateTime = `${this.evt.start}T${startTime}`
+
             let appointStartEvent = [];
             let appointEndEvent = [];
-
-            const trimmedServiceName = this.selectService.name.substring(0, 15);
-      
-            const message = `Good day Ma'am/Sir! Your schedule for ${trimmedServiceName} starts at ${moment(
-                this.evt.start
-            ).format("MMM D YYYY hh:mm a")} -Pet Alert`;
-
-            axios.post("api/smsSend",{
-                clientNumber,
-                message
-            }).then(() => (console.log('Message sent')));
 
             const cyrb53 = function (str, seed = 0) {
                 let h1 = 0xdeadbeef ^ seed,
