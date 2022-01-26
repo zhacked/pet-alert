@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class ScheduleController extends Controller
@@ -65,7 +66,6 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
 
-  
         $schedule = Schedule::where('start',$request->start)
                             ->where('client_id',$request->client_id)
                             ->where('employee_id',$request->employee_id)
@@ -100,19 +100,18 @@ class ScheduleController extends Controller
                 'status' => $request['status']
             ]);
 
-            Mail::send('mail',$data,function($messages) use ($client){
+            if(Auth::user()->type == 'admin'){
+                Mail::send('mail',$data,function($messages) use ($client){
 
-                $messages->to($client->email);
-                $messages->subject('Hi There');
-            });
-
+                    $messages->to($client->email);
+                    $messages->subject('Hi There');
+                });
+    
+            }
+           
             return $create;
             }
-     
-
-
-
-
+    
     }
 
     /**
@@ -121,9 +120,29 @@ class ScheduleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function Email(request $request)
     {
-        //
+  
+        $client = User::findOrFail($request->data['client_data']['id']); 
+        $service = Service::findOrFail($request->data['service_data']['id']);
+        $pet = Pet::findOrFail($request->data['pet_data']['id']);
+        $employee = User::findOrFail($request->data['employee_data']['id']);
+        $data=[
+            'client'=>$client,
+            'employee' => $employee,
+            'service' => $service,
+            'pet' => $pet,
+            'messages'=> $request['details'],
+            'date_start' => $request['start'],
+            'date_end' => $request['end'],
+            'status' => $request['status']
+        ];
+        
+        Mail::send('mail',$data,function($messages) use ($client){
+
+            $messages->to($client->email);
+            $messages->subject('Hi There');
+        });
     }
 
     /**

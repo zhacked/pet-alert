@@ -23,7 +23,7 @@
                                 >
                                  <template v-slot:[`item.status`]="{ item }">
                       
-                                    <span class="overline" :class="item.status == 'accept' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status === 'remove' ? "Removal request" : item.status}}</span>
+                                    <span class="overline" :class="item.status == 'accepted' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status === 'remove' ? "Removal request" : item.status}}</span>
                                 </template>
                                <template v-slot:[`item.actions`]="{ item }">
                                    <v-tooltip bottom>
@@ -38,7 +38,7 @@
                                         dark
                                     v-bind="attrs"
                                         v-on="on"
-                                        @click="Status(item,'accept')"
+                                        @click="Status(item,'accepted')"
                                         >
                                          <v-icon
                                                     >mdi-calendar-check</v-icon
@@ -71,7 +71,7 @@
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn
                                             icon
-                                                v-show="item.status=='accept' || item.status=='pending'"
+                                                v-show="item.status=='accepted' || item.status=='pending'"
                                                 small
                                                 color="red"
                                                 dark
@@ -109,6 +109,7 @@ import moment from 'moment';
                 { text: 'Date', value: 'start' },
                 { text: 'Name', value: 'client_data.name' },
                 { text: 'Pet', value: 'pet_data.Name' },
+                { text: 'Veterinarian', value: 'employee_data.name' },
                 { text: 'Procedure', value: 'service_data.name' },
                 { text: 'Notes', value: 'details' },               
                 { text: 'Status', value: 'status' },
@@ -161,11 +162,17 @@ import moment from 'moment';
         
                 const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
 
-                if(status === 'accept') {
+                if(status === 'accepted') {
                     axios.post("api/smsSend",{
                         clientNumber,
                         message
                     }).then(() => (console.log('Message sent')));
+
+                    axios.post('api/emailsend',{
+                        data 
+                    }).then(()=>{
+                        console.log('Email sent')
+                    }); 
                 }
             
 

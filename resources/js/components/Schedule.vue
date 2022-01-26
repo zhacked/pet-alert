@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <calendar :viewing="false" :status="'accept'"></calendar>
+        <calendar :viewing="false" :status="'accepted'"></calendar>
     </v-app>
 </template>
 <script>

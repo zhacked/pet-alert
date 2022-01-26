@@ -45,7 +45,7 @@ import moment from "moment";
                 { text: 'Findings', value: 'details' },
                 { text: 'Date', value: 'start' },
                 { text: 'Treatment Done', value: 'service_data.name' },
-                { text: 'Vet Incharge Name', value: 'client_data.name' },
+                { text: 'Vet Incharge Name', value: 'employee_data.name' },
                 { text: 'status', value: 'status' },
                 ],
                 petRecord : [],
