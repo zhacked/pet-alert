@@ -582,9 +582,8 @@ export default {
             const details = this.details;
             const startTime = moment(this.time, "LT").format("HH:mm:ss");
             const timeEnd = this.timeEnd(this.time);
-
-            const dateTime = `${this.evt.start}T${startTime}`
-
+            const petName = this.selectPet.Name
+           
             let appointStartEvent = [];
             let appointEndEvent = [];
 
@@ -626,7 +625,7 @@ export default {
                 appointStartEvent.push(appointStart);
                 appointEndEvent.push(appointEnd);
 
-
+                
 
                 axios
                     .post("api/schedule", {
@@ -647,10 +646,37 @@ export default {
                         $("#addNew").modal("hide");
                       
                     });
+                }
             }
-            }
-           
 
+
+            if(this.$gate.isAdminOrisEmployee()){
+ 
+           
+            const trimmedPetName = petName.substring(0, 27);
+            console.log(trimmedPetName)
+            const date = this.$moment(this.evt.start, 'LT LT').format('MMM DD');
+            const time = this.$moment(this.evt.start, 'LT LT').format('ka');
+             const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
+                 axios.post("api/smsSend",{
+                        clientNumber,
+                        message
+                    }).then(() => (console.log('Message sent')));
+
+
+                 axios.post('api/adminemailsend',{
+                        clientId,
+                        clientNumber,
+                        employeeId,
+                        petId,
+                        serviceId,
+                        details,
+                        status: this.status, 
+                    }).then(()=>{
+                        console.log('Email sent')
+                }); 
+            }
+             
             this.overlay = !this.overlay;
             this.selectClient = null;
             this.selectVet = null;
@@ -865,6 +891,8 @@ export default {
             const color1 = tinycolor(event.color);
             return color1.isLight() ? "#000" : "#fff";
         },
+        
+
     },
     computed: {
         checkAppointFilled(){

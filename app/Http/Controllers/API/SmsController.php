@@ -34,7 +34,7 @@ class SmsController extends Controller
 
     public function smsSend(Request $request)
     {
- 
+       
 //   dd(getenv("ITXTMO_CODE"));
         // $ch = curl_init();
 		// $itexmo = array("1" => $request['clientNumber'], "2" => $request['message'], "3" => getenv("ITXTMO_CODE"), 'passwd' => getenv("ITXTMO_PASS"));

@@ -70,22 +70,9 @@ class ScheduleController extends Controller
                             ->where('client_id',$request->client_id)
                             ->where('employee_id',$request->employee_id)
                             ->exists();
-        $client = User::findOrFail($request['clientId']); 
-        $service = Service::findOrFail($request['serviceId']);
-        $pet = Pet::findOrFail($request['petId']);
-        $employee = User::findOrFail($request['employeeId']);
+      
         if($schedule  == false){
-            $data=[
-                'client'=>$client,
-                'employee' => $employee,
-                'service' => $service,
-                'pet' => $pet,
-                'messages'=> $request['details'],
-                'date_start' => $request['start'],
-                'date_end' => $request['end'],
-                'status' => $request['status']
-            ];
-            
+         
             
 
             $create =  Schedule::create([
@@ -100,14 +87,24 @@ class ScheduleController extends Controller
                 'status' => $request['status']
             ]);
 
-            if(Auth::user()->type == 'admin'){
-                Mail::send('mail',$data,function($messages) use ($client){
-
-                    $messages->to($client->email);
-                    $messages->subject('Hi There');
-                });
+            // $data=[
+            //     'client'=>$client,
+            //     'employee' => $employee,
+            //     'service' => $service,
+            //     'pet' => $pet,
+            //     'messages'=> $request['details'],
+            //     'date_start' => $request['start'],
+            //     'date_end' => $request['end'],
+            //     'status' => $request['status']
+            // ];
+            
+            // if(Auth::user()->type == 'admin'){
+            //     Mail::send('mail',$data,function($messages) use ($client){
+            //         $messages->to($client->email);
+            //         $messages->subject('Hi There');
+            //     });
     
-            }
+            // }
            
             return $create;
             }
@@ -145,6 +142,29 @@ class ScheduleController extends Controller
         });
     }
 
+    public function adminEmail(request $request){
+        $client = User::findOrFail($request['clientId']); 
+        $service = Service::findOrFail($request['serviceId']);
+        $pet = Pet::findOrFail($request['petId']);
+        $employee = User::findOrFail($request['employeeId']);
+        $data=[
+            'client'=>$client,
+            'employee' => $employee,
+            'service' => $service,
+            'pet' => $pet,
+            'messages'=> $request['details'],
+            'date_start' => $request['start'],
+            'date_end' => $request['end'],
+            'status' => $request['status']
+        ];
+        
+        Mail::send('mail',$data,function($messages) use ($client){
+
+            $messages->to($client->email);
+            $messages->subject('Hi There');
+        });
+
+    }
     /**
      * Show the form for editing the specified resource.
      *

@@ -54,4 +54,6 @@ Route::get('userdeleted', [App\Http\Controllers\API\UserController::class, 'user
 Route::get('userdelete/{id}', [App\Http\Controllers\API\UserController::class, 'userdeletedpermenent']);
 Route::get('useractivate/{id}', [App\Http\Controllers\API\UserController::class, 'useractivateagain']);
 Route::post('emailsend', [App\Http\Controllers\API\ScheduleController::class, 'Email']);
+Route::post('adminemailsend', [App\Http\Controllers\API\ScheduleController::class, 'adminEmail']);
+
 ?>
