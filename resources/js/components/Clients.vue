@@ -54,7 +54,7 @@
                                         <i class="fa fa-edit"></i> Update
                                     </v-btn>
                                     <v-btn
-                                        v-show="$gate.isAdmin()"
+                                        v-show="$gate.isAdminOrisEmployee()"
                                         small
                                         color="red"
                                         dark

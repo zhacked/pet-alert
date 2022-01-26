@@ -7,12 +7,8 @@
     </ul>
 
 
-   
-
     <ul class="navbar-nav ml-auto">
-            <a  class="text-danger" href="{{ route('logout') }}"
-            onclick="event.preventDefault();
-                          document.getElementById('logout-form').submit();">
+            <a  class="text-danger" id="logout">
             <i class="nav-icon fa fa-power-off red"></i>
             {{ __('Logout') }}
 

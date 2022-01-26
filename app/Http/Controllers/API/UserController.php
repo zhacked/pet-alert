@@ -171,7 +171,12 @@ class UserController extends Controller
     }
     public function userdeletedpermenent($id){
         $user = User::findOrFail($id);
+        $pet = Pet::where('user_id',$user->id)->get();
         
+        foreach($pet as $data){
+            $data->delete();
+        }
+
         $user->delete();
     }
     public function useractivateagain($id){

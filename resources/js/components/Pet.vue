@@ -17,7 +17,7 @@
 						</v-card-title>
                         <v-card-text>
                             <v-card-actions class="card-tool"> 
-								<v-btn color="success" v-show="$gate.isAdmin()"  
+								<v-btn color="success" v-show="$gate.isAdminOrisEmployee()"  
                                     elevation="2"  @click="newModal">Register Pet <i class="fas fa-plus fa-fw">
                                 </i></v-btn>
 							</v-card-actions>
@@ -32,6 +32,7 @@
                                 >
                                <template v-slot:[`item.actions`]="{ item }">
                                      <v-btn
+                                        v-show="$gate.isAdminOrisEmployee()"
                                         small
                                         color="primary"
                                         dark
@@ -41,7 +42,7 @@
                                         <i class="fa fa-edit"></i>   Update
                                     </v-btn>
                                       <v-btn
-                                        v-show="$gate.isAdmin()"
+                                        v-show="$gate.isAdminOrisEmployee()"
                                         small
                                         color="red"
                                         dark

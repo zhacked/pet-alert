@@ -5,7 +5,7 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           {{-- {{ Breadcrumbs::render($name) }} --}}
-              Dashboard
+          {{-- Dashboard     --}}
          
   
 

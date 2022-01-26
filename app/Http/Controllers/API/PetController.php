@@ -125,7 +125,7 @@ class PetController extends Controller
      */
     public function getPetarchived()
     {
-        return Pet::WhereNotNull('is_deleted')->get();
+        return Pet::with('clientData')->WhereNotNull('is_deleted')->get();
     }
 
     /**

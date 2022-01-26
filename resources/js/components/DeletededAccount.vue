@@ -8,7 +8,13 @@
 							<strong> User Archived Account</strong>
                             <v-spacer></v-spacer>							
 						</v-card-title>
-
+                            <v-text-field
+                                        v-model="search"
+                                        append-icon="mdi-magnify"
+                                        label="Search client"
+                                        single-line
+                                        hide-details
+                            ></v-text-field>
                             <v-card class="mt-5">
                                 <v-data-table
                                     :headers="headers"
@@ -17,6 +23,7 @@
                                     :search="search"
                                     class="elevation-1"
                                 >
+
                                <template v-slot:[`item.actions`]="{ item }">
                                     <v-btn
                                         small
@@ -59,7 +66,7 @@
                                     :search="search"
                                     class="elevation-1"
                                 >
-                               <template v-slot:[`item.actions`]="{ item }">
+                               <!-- <template v-slot:[`item.actions`]="{ item }">
                                     <v-btn
                                         small
                                         color="green"
@@ -83,7 +90,7 @@
 
 					
                                 </template>
-                                
+                                 -->
                                 </v-data-table>
                             </v-card>
 				</v-col>
@@ -287,13 +294,13 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, archive it'
+                    confirmButtonText: 'Yes, Delete it'
                     }).then((result) => {
                          if (result.value) {
                               axios.get('api/userdelete/'+id).then(()=>{
                                         swal.fire(
                                         'Archived!',
-                                        'Your file has been Archived.',
+                                        'Your file has been Delete Permently.',
                                         'success'
                                         )
                                     Fire.$emit('AfterCreate');

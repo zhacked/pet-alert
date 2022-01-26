@@ -30,10 +30,34 @@
 @auth
     <script type="text/javascript">
         window.user = @json(auth()->user())
+
+  
+
     </script>
 @endauth
 
     <script src="/js/app.js"></script>
-
+    <script type="text/javascript">
+        $("#logout").on("click", function() {
+            swal.fire({
+                    title: 'Are you sure?',
+                    text: "You're about to Logout",
+                    icon: 'error',
+                    position: 'top-end',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Logout',
+                    backdrop:true,
+                    allowOutsideClick: false,
+                    }).then((result) => {
+                         if (result.value) {
+                            if (result.value===true) { 
+                                    $('#logout-form').submit() // this submits the form 
+                                } 
+                         }
+                    })
+        })  
+    </script> 
 </body>
 </html>
