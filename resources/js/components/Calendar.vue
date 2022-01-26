@@ -657,7 +657,7 @@ export default {
             console.log(trimmedPetName)
             const date = this.$moment(this.evt.start, 'LT LT').format('MMM DD');
             const time = this.$moment(this.evt.start, 'LT LT').format('ka');
-             const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
+            const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
                  axios.post("api/smsSend",{
                         clientNumber,
                         message
@@ -671,7 +671,7 @@ export default {
                         petId,
                         serviceId,
                         details,
-                        status: this.status, 
+                        date
                     }).then(()=>{
                         console.log('Email sent')
                 }); 

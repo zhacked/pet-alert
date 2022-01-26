@@ -87,24 +87,7 @@ class ScheduleController extends Controller
                 'status' => $request['status']
             ]);
 
-            // $data=[
-            //     'client'=>$client,
-            //     'employee' => $employee,
-            //     'service' => $service,
-            //     'pet' => $pet,
-            //     'messages'=> $request['details'],
-            //     'date_start' => $request['start'],
-            //     'date_end' => $request['end'],
-            //     'status' => $request['status']
-            // ];
-            
-            // if(Auth::user()->type == 'admin'){
-            //     Mail::send('mail',$data,function($messages) use ($client){
-            //         $messages->to($client->email);
-            //         $messages->subject('Hi There');
-            //     });
-    
-            // }
+        
            
             return $create;
             }
@@ -119,7 +102,7 @@ class ScheduleController extends Controller
      */
     public function Email(request $request)
     {
-  
+        
         $client = User::findOrFail($request->data['client_data']['id']); 
         $service = Service::findOrFail($request->data['service_data']['id']);
         $pet = Pet::findOrFail($request->data['pet_data']['id']);
@@ -129,10 +112,10 @@ class ScheduleController extends Controller
             'employee' => $employee,
             'service' => $service,
             'pet' => $pet,
-            'messages'=> $request['details'],
-            'date_start' => $request['start'],
-            'date_end' => $request['end'],
-            'status' => $request['status']
+            'messages'=> $request->data['details'],
+            'date_start' => $request->data['start'],
+            'date_end' => $request->data['end'],
+            'status' => 'accepted'
         ];
         
         Mail::send('mail',$data,function($messages) use ($client){
@@ -153,7 +136,7 @@ class ScheduleController extends Controller
             'service' => $service,
             'pet' => $pet,
             'messages'=> $request['details'],
-            'date_start' => $request['start'],
+            'date_start' => $request['date'],
             'date_end' => $request['end'],
             'status' => $request['status']
         ];
