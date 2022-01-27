@@ -656,6 +656,7 @@ export default {
                 const trimmedPetName = petName.substring(0, 27);
                 console.log(trimmedPetName)
                 const date = this.$moment(this.evt.start).format('MMM DD');
+                const start_date = this.$moment(this.evt.start).format('LLL');
                 const time = this.$moment(this.time, "LT").format('ka');
                 const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
 
@@ -674,7 +675,7 @@ export default {
                         petId,
                         serviceId,
                         details,
-                        date
+                        start_date
                     }).then(()=>{
                         console.log('Email sent')
                 }); 
