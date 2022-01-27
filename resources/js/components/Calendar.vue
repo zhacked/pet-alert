@@ -653,18 +653,21 @@ export default {
             if(this.$gate.isAdminOrisEmployee()){
  
            
-            const trimmedPetName = petName.substring(0, 27);
-            console.log(trimmedPetName)
-            const date = this.$moment(this.evt.start, 'LT LT').format('MMM DD');
-            const time = this.$moment(this.evt.start, 'LT LT').format('ka');
-            const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
-                 axios.post("api/smsSend",{
+                const trimmedPetName = petName.substring(0, 27);
+                console.log(trimmedPetName)
+                const date = this.$moment(this.evt.start).format('MMM DD');
+                const time = this.$moment(this.time, "LT").format('ka');
+                const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
+
+                console.log(message)
+
+                axios.post("api/smsSend",{
                         clientNumber,
                         message
                     }).then(() => (console.log('Message sent')));
 
 
-                 axios.post('api/adminemailsend',{
+                axios.post('api/adminemailsend',{
                         clientId,
                         clientNumber,
                         employeeId,
