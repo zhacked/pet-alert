@@ -573,6 +573,7 @@ export default {
             return moment(time, "h:mm A").add(1, "h").format("HH:mm:ss");
         },
         makeAppointment() {
+
             this.loading = true;
             const clientId = this.selectClient?.id || this.users.id;
             const clientNumber = this.selectClient?.number || this.users.number;
@@ -652,14 +653,16 @@ export default {
 
             if(this.$gate.isAdminOrisEmployee()){
  
-           
+                console.log('tag', '')
                 const trimmedPetName = petName.substring(0, 27);
            
                 const date = this.$moment(this.evt.start).format('MMM DD');
-                const start_date = this.$moment(this.evt.start).format('LLL');
+                const startdate = this.$moment(this.evt.start).format('LL');
+                const starttime = this.$moment(this.time, "LT").format('LT');
                 const time = this.$moment(this.time, "LT").format('ka');
+                const start_date =  `${startdate} ${starttime}`;
                 const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
-
+                
                 console.log(message)
 
                 axios.post("api/smsSend",{

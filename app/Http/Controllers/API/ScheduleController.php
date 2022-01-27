@@ -127,6 +127,7 @@ class ScheduleController extends Controller
 
     public function adminEmail(request $request){
 
+
         $client = User::findOrFail($request['clientId']); 
         $service = Service::findOrFail($request['serviceId']);
         $pet = Pet::findOrFail($request['petId']);
@@ -143,7 +144,6 @@ class ScheduleController extends Controller
         ];
         
         Mail::send('mail',$data,function($messages) use ($client){
-
             $messages->to($client->email);
             $messages->subject('Hi There');
         });
