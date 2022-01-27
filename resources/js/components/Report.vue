@@ -152,9 +152,9 @@ import moment from 'moment';
                  } );
             },
             Status(data,status){
-
-                const date = this.$moment(data.start, 'LT LT').format('MMM DD');
-                const time = this.$moment(data.start, 'LT LT').format('ka');
+                console.log(data)
+                const date = this.$moment(data.start, 'LL LT').format('MMM DD');
+                const time = this.$moment(data.start, 'LL LT').format('ha');
                 const petName = data.pet_data.Name
                 const clientNumber = data.client_data.number
 
@@ -162,28 +162,30 @@ import moment from 'moment';
         
                 const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
 
-                if(status === 'accepted') {
-                    axios.post("api/smsSend",{
-                        clientNumber,
-                        message
-                    }).then(() => (console.log('Message sent')));
+                console.log(message)
 
-                    axios.post('api/emailsend',{
-                        data 
-                    }).then(()=>{
-                        console.log('Email sent')
-                    }); 
-                }
+                // if(status === 'accepted') {
+                //     axios.post("api/smsSend",{
+                //         clientNumber,
+                //         message
+                //     }).then(() => (console.log('Message sent')));
+
+                //     axios.post('api/emailsend',{
+                //         data 
+                //     }).then(()=>{
+                //         console.log('Email sent')
+                //     }); 
+                // }
             
 
-                axios.get('api/reportAcceptance/'+data.id+'/'+status).then(({data})=>{
-                        Fire.$emit("AfterCreate");
+                // axios.get('api/reportAcceptance/'+data.id+'/'+status).then(({data})=>{
+                //         Fire.$emit("AfterCreate");
                     
-                            Toast.fire({
-                                    icon: 'success',
-                                    title: 'Appointment Successfully  ' + status
-                            })
-                    });
+                //             Toast.fire({
+                //                     icon: 'success',
+                //                     title: 'Appointment Successfully  ' + status
+                //             })
+                //     });
             },
                  
         deleteAppointment(item) {

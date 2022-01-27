@@ -270,7 +270,7 @@
                     <v-card-text>
                         <v-container>
                             <v-row>
-                                <v-col cols="12" md="6">
+                                <v-col cols="12" md="5">
                                     <v-select
                                         dense
                                         v-show="$gate.isAdminOrisEmployee()"
@@ -302,6 +302,7 @@
                                     ></v-select>
 
                                     <v-select
+                                        :disabled="!this.selectPet"
                                         dense
                                         v-model="selectVet"
                                         :items="vets"
@@ -316,6 +317,7 @@
                                     ></v-select>
 
                                     <v-select
+                                        :disabled="!this.selectVet"
                                         dense
                                         v-model="selectService"
                                         :items="services"
@@ -329,7 +331,7 @@
                                         return-object
                                     ></v-select>
                                 </v-col>
-                                <v-col cols="12" md="6">
+                                <v-col cols="12" md="7">
                                     <v-card-title
                                         >Today's&nbsp;availability</v-card-title
                                     >
@@ -371,7 +373,7 @@
                         <v-spacer></v-spacer>
                         
                         <v-btn
-                            
+                            :disabled="checkAppointFilled"
                             class="btn-success"
                             color="#fff"
                             text
@@ -437,11 +439,11 @@ export default {
                     "Title must be less than 10 characters",
             ],
 
-            selectClient: {},
-            selectVet: {},
-            selectService: {},
-            selectPet: {},
-            selectedDate: "",
+            selectClient: null,
+            selectVet: null,
+            selectService: null,
+            selectPet: null,
+            selectedDate: null,
             details: "",
             client: {},
             vets: {},
@@ -652,14 +654,13 @@ export default {
 
 
             if(this.$gate.isAdminOrisEmployee()){
- 
-                console.log('tag', '')
+
                 const trimmedPetName = petName.substring(0, 27);
            
                 const date = this.$moment(this.evt.start).format('MMM DD');
                 const startdate = this.$moment(this.evt.start).format('LL');
                 const starttime = this.$moment(this.time, "LT").format('LT');
-                const time = this.$moment(this.time, "LT").format('ka');
+                const time = this.$moment(this.time, "LT").format('ha');
                 const start_date =  `${startdate} ${starttime}`;
                 const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
                 
@@ -903,7 +904,11 @@ export default {
     },
     computed: {
         checkAppointFilled(){
-            
+            if(this.time && this.selectService && this.selectPet && this.selectVet){
+                return false
+            }
+
+            return true
         }
     },
     created() {
