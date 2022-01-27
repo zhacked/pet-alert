@@ -842,7 +842,7 @@ export default {
          
             const eventFiltered = eventsNoDeclined.filter(e => (e.client.id === this.$gate.getUser().id))
         
-            const appoitedEvents = this.$gate.isAdminOrisEmployee() ? events : eventFiltered
+            const appoitedEvents = this.$gate.isAdminOrisEmployee() ? eventsNoDeclined : eventFiltered
 
 
 
