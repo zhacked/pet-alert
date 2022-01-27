@@ -102,7 +102,7 @@ class ScheduleController extends Controller
      */
     public function Email(request $request)
     {
-        
+    
         $client = User::findOrFail($request->data['client_data']['id']); 
         $service = Service::findOrFail($request->data['service_data']['id']);
         $pet = Pet::findOrFail($request->data['pet_data']['id']);
@@ -126,6 +126,7 @@ class ScheduleController extends Controller
     }
 
     public function adminEmail(request $request){
+        dd($request);
         $client = User::findOrFail($request['clientId']); 
         $service = Service::findOrFail($request['serviceId']);
         $pet = Pet::findOrFail($request['petId']);
@@ -136,7 +137,7 @@ class ScheduleController extends Controller
             'service' => $service,
             'pet' => $pet,
             'messages'=> $request['details'],
-            'date_start' => $request['date'],
+            'date_start' => $request['start_date'],
             'date_end' => $request['end'],
             'status' => $request['status']
         ];

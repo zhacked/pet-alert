@@ -654,7 +654,7 @@ export default {
  
            
                 const trimmedPetName = petName.substring(0, 27);
-                console.log(trimmedPetName)
+           
                 const date = this.$moment(this.evt.start).format('MMM DD');
                 const start_date = this.$moment(this.evt.start).format('LLL');
                 const time = this.$moment(this.time, "LT").format('ka');
