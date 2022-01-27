@@ -22,23 +22,3 @@
 			</div>
 		</body>
 </html>
-
-<script>
-    $("#logout").on("click", function() {
-		console.log('test');
-    //     fire.swal({
-    //     title: 'Logga ut?',
-    //     icon: 'warning',
-    //     showCancelButton: true,
-    //     confirmButtonColor: '#3085d6',
-    //     cancelButtonColor: '#d33',
-    //     confirmButtonText: 'OK',
-    //     closeOnConfirm: true,
-    //     closeOnCancel: true
-    //    }).then((result) => { 
-    //       if (result.value===true) { 
-    //          $('#logoutform').submit() // this submits the form 
-    //       } 
-    //    }) 
-    })   
-</script>

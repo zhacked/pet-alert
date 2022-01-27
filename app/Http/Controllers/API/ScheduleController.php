@@ -126,7 +126,7 @@ class ScheduleController extends Controller
     }
 
     public function adminEmail(request $request){
-        dd($request);
+
         $client = User::findOrFail($request['clientId']); 
         $service = Service::findOrFail($request['serviceId']);
         $pet = Pet::findOrFail($request['petId']);
