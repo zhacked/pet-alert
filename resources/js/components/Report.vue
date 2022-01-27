@@ -162,30 +162,28 @@ import moment from 'moment';
         
                 const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
 
-                console.log(message)
+                if(status === 'accepted') {
+                    axios.post("api/smsSend",{
+                        clientNumber,
+                        message
+                    }).then(() => (console.log('Message sent')));
 
-                // if(status === 'accepted') {
-                //     axios.post("api/smsSend",{
-                //         clientNumber,
-                //         message
-                //     }).then(() => (console.log('Message sent')));
-
-                //     axios.post('api/emailsend',{
-                //         data 
-                //     }).then(()=>{
-                //         console.log('Email sent')
-                //     }); 
-                // }
+                    axios.post('api/emailsend',{
+                        data 
+                    }).then(()=>{
+                        console.log('Email sent')
+                    }); 
+                }
             
 
-                // axios.get('api/reportAcceptance/'+data.id+'/'+status).then(({data})=>{
-                //         Fire.$emit("AfterCreate");
+                axios.get('api/reportAcceptance/'+data.id+'/'+status).then(({data})=>{
+                        Fire.$emit("AfterCreate");
                     
-                //             Toast.fire({
-                //                     icon: 'success',
-                //                     title: 'Appointment Successfully  ' + status
-                //             })
-                //     });
+                            Toast.fire({
+                                    icon: 'success',
+                                    title: 'Appointment Successfully  ' + status
+                            })
+                    });
             },
                  
         deleteAppointment(item) {
