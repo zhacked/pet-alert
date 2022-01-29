@@ -65,7 +65,14 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
+    
+        if(Auth::user()->type == 'admin'){
+            $status = 'accepted';
+        }else{
+            $status = 'pending';
+        }
 
+       
         $schedule = Schedule::where('start',$request->start)
                             ->where('client_id',$request->client_id)
                             ->where('employee_id',$request->employee_id)
@@ -84,7 +91,7 @@ class ScheduleController extends Controller
                 'start' =>$request['start'],
                 'end'=> $request['end'],
                 'details' => $request['details'],
-                'status' => $request['status']
+                'status' => $status
             ]);
 
         
