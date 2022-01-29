@@ -662,7 +662,7 @@ export default {
                 const starttime = this.$moment(this.time, "LT").format('LT');
                 const time = this.$moment(this.time, "LT").format('ha');
                 const start_date =  `${startdate} ${starttime}`;
-                const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
+                const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Allert`;
                 
                 console.log(message)
 

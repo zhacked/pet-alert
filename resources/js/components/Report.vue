@@ -160,7 +160,7 @@ import moment from 'moment';
 
                 const trimmedPetName = petName.substring(0, 27);
         
-                const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Alert`;
+                const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Allert`;
 
                 if(status === 'accepted') {
                     axios.post("api/smsSend",{
