@@ -28,6 +28,7 @@
                                         <v-col>
                                             <v-text-field
                                             v-model="search"
+                                            append-icon="mdi-magnify"
                                             label="Search Client.."
                                             class="mx-4"
                                             ></v-text-field>
@@ -61,7 +62,7 @@
                                         outlined
                                          @click="deleteClient(item.id)"
                                         >
-                                        <i class="fa fa-trash"></i> Archive 
+                                        <i class="fas fa-archive"></i> Archive 
                                     </v-btn>
                                 </template>
                        </v-data-table>

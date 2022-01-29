@@ -7,22 +7,13 @@
 						<v-card-title class="card-header">
 							<strong> Pet List</strong>
                             <v-spacer></v-spacer>
-                             <v-text-field
-                                v-model="search"
-                                append-icon="mdi-magnify"
-                                label="Search"
-                                single-line
-                                hide-details
-                            ></v-text-field>
-						</v-card-title>
-                        <v-card-text>
                             <v-card-actions class="card-tool"> 
 								<v-btn color="success" v-show="$gate.isAdminOrisEmployee()"  
                                     elevation="2"  @click="newModal">Register Pet <i class="fas fa-plus fa-fw">
                                 </i></v-btn>
 							</v-card-actions>
-                            
-                        </v-card-text>
+                             
+						</v-card-title>
                                   
                               <v-data-table
                                     :headers="headers"
@@ -30,6 +21,25 @@
                                     :search="search"
                                     class="elevation-1"
                                 >
+
+                                <template v-slot:top>
+                                    <v-row>
+                                        <v-col>
+
+                                        </v-col>
+                                        <v-col>
+                                            <v-text-field
+                                            v-model="search"
+                                            append-icon="mdi-magnify"
+                                            label="Search Pet.."
+                                            class="mx-4"
+                                            single-line
+                                            hide-details
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </template>
+
                                <template v-slot:[`item.actions`]="{ item }">
                                      <v-btn
                                         v-show="$gate.isAdminOrisEmployee()"
@@ -49,7 +59,7 @@
                                         outlined
                                        @click="deletePet(item.id)"
                                         >
-                                        <i class="fa fa-trash"></i> Archive 
+                                        <i class="fas fa-archive"></i> Archive 
                                     </v-btn>
                                 </template>
                                 
