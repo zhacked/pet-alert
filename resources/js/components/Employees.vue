@@ -296,7 +296,7 @@ export default {
                 { text: "Address", value: "address" },
                 { text: "Email", value: "email" },
                 { text: "Contact Info", value: "number" },
-                { text: "Actions", value: "actions", sortable: false },
+                { text: "", value: "actions", sortable: false },
             ],
              rules: {
           required: value => !!value || 'Required.',

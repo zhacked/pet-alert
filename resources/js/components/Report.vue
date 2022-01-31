@@ -111,7 +111,7 @@ import moment from 'moment';
                 { text: 'Procedure', value: 'service_data.name' },
                 { text: 'Notes', value: 'details' },               
                 { text: 'Status', value: 'status' },
-                { text: 'Actions', value: 'actions', sortable: false }
+                { text: '', value: 'actions', sortable: false }
                 ],
                 editmode: false,
                 pet : [],

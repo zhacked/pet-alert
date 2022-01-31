@@ -135,7 +135,7 @@
                 { text: 'Email', value: 'email' },
                 { text: 'Gender', value: 'gender' },
                 { text: 'Modify', value: 'created_at' },
-                { text: 'Actions', value: 'actions', sortable: false },
+                { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
                 users : {},
