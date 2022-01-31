@@ -28,7 +28,16 @@ class ScheduleController extends Controller
     }
     public function index()
     {
-        return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->get();
+
+        if(Auth::user()->type == 'admin')
+        {
+            return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->get();
+        }else{
+            return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])
+                            ->where('employee_id',Auth::user()->id)
+                            ->get();
+        }
+       
     }
 
     /**
@@ -184,6 +193,7 @@ class ScheduleController extends Controller
                             ->exists();
         
         $schedule = Schedule::findOrFail($id);
+
         if($filterschedule == false){
             $schedule->update($request->all());
             return $schedule;
