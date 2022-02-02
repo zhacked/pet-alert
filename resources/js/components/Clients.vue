@@ -225,7 +225,7 @@
                 { text: 'Name', value: 'Name' },
                 { text: 'Breed', value: 'breed' },
                 { text: 'Species', value: 'species' },
-                { text: 'Actions', value: 'actions', sortable: false },
+                { text: '', value: 'actions', sortable: false },
                 ],
                 editmode: false,
                 petname: '',

@@ -28,11 +28,9 @@
                                <template v-slot:[`item.actions`]="{ item }">
                                    <v-tooltip bottom>
                                     <template v-slot:activator="{ on, attrs }">
-                                  
-
                                         <v-btn
                                         icon
-                                        v-show="item.status=='declined' || item.status=='pending'"
+                                        v-show="$gate.isAdmin() && (item.status=='declined' || item.status=='pending')"
                                         small
                                         color="green"
                                         dark
@@ -52,8 +50,8 @@
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn
-                                            icon
-                                                v-show="item.status=='remove' || item.status === 'declined'"
+                                                icon
+                                                v-show="$gate.isAdmin() && (item.status=='remove' || item.status === 'declined')"
                                                 small
                                                 color="orange"
                                                 dark
@@ -71,7 +69,7 @@
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn
                                             icon
-                                                v-show="item.status=='accepted' || item.status=='pending'"
+                                                v-show="$gate.isAdmin() && (item.status=='accepted' || item.status=='pending')"
                                                 small
                                                 color="red"
                                                 dark
@@ -113,7 +111,7 @@ import moment from 'moment';
                 { text: 'Procedure', value: 'service_data.name' },
                 { text: 'Notes', value: 'details' },               
                 { text: 'Status', value: 'status' },
-                { text: 'Actions', value: 'actions', sortable: false }
+                { text: '', value: 'actions', sortable: false }
                 ],
                 editmode: false,
                 pet : [],
@@ -145,10 +143,7 @@ import moment from 'moment';
                          newSet.push({ ...d,start: moment(d.start).format("LL LT")})
                      })
                      this.report = newSet;
-                    //  this.report = {
-                    //      ...data,
-                    //      start: moment(data.start).format("LL LT")
-                    //  }
+                    
                  } );
             },
             Status(data,status){
