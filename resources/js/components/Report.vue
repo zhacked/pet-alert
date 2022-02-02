@@ -21,9 +21,8 @@
                                     :search="search"
                                     class="elevation-1 text-center"
                                 >
-                                 <template v-slot:[`item.status`]="{ item }">
-                      
-                                    <span class="overline" :class="item.status == 'accepted' ? 'text-success' : item.status == 'declined' ? 'text-danger' : 'text-orange' ">{{item.status === 'remove' ? "Removal request" : item.status}}</span>
+                                <template v-slot:[`item.status`]="{ item }">
+                                    <span class="overline" :class="item.status == 'accepted' ? 'text-success' : item.status == 'declined' ? 'text-danger' : item.status == 'done' ? 'text-primary'  : 'text-orange'">{{item.status === 'remove' ? "Removal request" : item.status}}</span>
                                 </template>
                                <template v-slot:[`item.actions`]="{ item }">
                                    <v-tooltip bottom>
@@ -51,7 +50,7 @@
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn
                                                 icon
-                                                v-show="$gate.isAdmin() && (item.status=='remove' || item.status === 'declined')"
+                                                v-show="$gate.isAdmin() && item.status!='done' && (item.status=='remove' || item.status === 'declined')"
                                                 small
                                                 color="orange"
                                                 dark
@@ -69,7 +68,7 @@
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn
                                             icon
-                                                v-show="$gate.isAdmin() && (item.status=='accepted' || item.status=='pending')"
+                                                v-show="$gate.isAdmin() && item.status!='done' && (item.status=='accepted' || item.status=='pending')"
                                                 small
                                                 color="red"
                                                 dark
@@ -78,15 +77,37 @@
                                                 @click="Status(item,'declined')"
                                                 >
                                                 <v-icon
-                                                            >mdi-calendar-alert</v-icon
+                                                >mdi-calendar-alert</v-icon
                                                         >
                                             </v-btn>
                                         </template>
                                         <span>Decline Appointment</span>
-                                    </v-tooltip>
-
-                                        
+                                    </v-tooltip>   
                                 </template>
+                               <template v-slot:[`item.done`]="{ item }">
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn
+                                            icon
+                                            v-show="$gate.isAdmin() && item.status!='done' && (item.status=='accepted' || item.status=='pending')"
+                                            small
+                                            color="primary"
+                                            dark
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            @click="Status(item,'done')"
+                                            >
+                                                <v-icon>mdi-account-check</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Mark as Done</span>
+                                    </v-tooltip>   
+
+                                     <span v-show="$gate.isAdmin() && item.status=='done'" class="primary--text"><v-icon class="primary--text">mdi-check</v-icon> <strong>  Done </strong></span>
+                                </template>
+
+                               
+                                
                                 
                              </v-data-table>
 							
@@ -111,7 +132,8 @@ import moment from 'moment';
                 { text: 'Procedure', value: 'service_data.name' },
                 { text: 'Notes', value: 'details' },               
                 { text: 'Status', value: 'status' },
-                { text: '', value: 'actions', sortable: false }
+                { text: '', value: 'actions', sortable: false },
+                { text: '', value: 'done', sortable: false }
                 ],
                 editmode: false,
                 pet : [],
@@ -139,7 +161,6 @@ import moment from 'moment';
                  axios.get("api/schedule").then(({data}) => {
                      let newSet = [];
                      data.forEach(d => {
-                        
                          newSet.push({ ...d,start: moment(d.start).format("LL LT")})
                      })
                      this.report = newSet;

@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-row class="pa-10">
+        <v-row class="pa-0">
             <v-col>
                 <v-sheet>
                     <v-toolbar flat>

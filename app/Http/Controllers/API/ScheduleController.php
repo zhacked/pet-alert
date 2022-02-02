@@ -31,10 +31,11 @@ class ScheduleController extends Controller
 
         if(Auth::user()->type == 'admin')
         {
-            return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->get();
+            return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])->orderBy('start', 'asc')->get();
         }else{
             return Schedule::with(['clientData','employeeData', 'petData', 'serviceData'])
                             ->where('employee_id',Auth::user()->id)
+                            ->orderBy('start', 'asc')
                             ->get();
         }
        

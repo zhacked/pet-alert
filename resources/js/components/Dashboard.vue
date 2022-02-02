@@ -1,13 +1,27 @@
 <template>
-    <div class="container">
+    <div class="">
         <v-row class=" justify-content-center">
-            <div class="col-lg-4 col-6">
+           <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box">
+                <div class="inner">
+                  
+                  <h3 class="card-header">Employees</h3>
+                  <div style="height:73px;  overflow-x: hidden;  overflow-y: scroll;">
+                    <div v-for="item in this.employees" :key="item.id" class="external-event" :style="{backgroundColor: item.color, color: isLight(item.color) ? '#000' : '#fff'}">{{item.name}}</div>
+                  </div>
+                  
+                </div>
+      
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box ">
                 <div class="inner">
                     <h3>{{count.client}}</h3>
 
-                    <p>Clients</p>
+                    <p>NUMBER OF CLIENT/S</p>
                 </div>
                 <div class="icon">
                    <i class="fas fa-users"></i>
@@ -15,13 +29,13 @@
                 <a href="/clients" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-             <div class="col-lg-4 col-6">
+             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box">
                 <div class="inner">
                     <h3>{{count.report}}</h3>
 
-                    <p>Treatments</p>
+                    <p>NUMBER OF TODAY'S APPOINTMENT</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-notes-medical"></i>
@@ -29,7 +43,7 @@
                 <a href="/report" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
-             <div class="col-lg-4 col-6 " id="clock">
+             <div class="col-lg-3 col-6 " id="clock">
                 <!-- small box -->
                 <div class="small-box sidebar-blue text-white">
                   <div class="inner">
@@ -46,25 +60,7 @@
 
         </v-row>
         <v-row>
-          <div class="col-md-3">
-            <div class="sticky-top mb-3">
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title">Employees</h4>
-                </div>
-                <div class="card-body">
-                  <!-- the events -->
-                  <div  id="external-events">
-                    <div v-for="item in this.employees" :key="item.id" class="external-event" :style="{backgroundColor: item.color, color: isLight(item.color) ? '#000' : '#fff'}">{{item.name}}</div>
-                   
-
-                  </div>
-                </div>
-                <!-- /.card-body -->
-              </div>
-            </div>
-          </div>
-             <div class="col-md-9">
+             <div class="col-md-12">
             <div class="sticky-top mb-3">
               <div class="card">
                

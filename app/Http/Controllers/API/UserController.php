@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use DateTime;
 use App\Models\Pet;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Report;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -117,10 +119,16 @@ class UserController extends Controller
      */
     public function countuser()
     {
-        $client = User::where('type','client')->count();
-        $report = Schedule::count();
+        $date = date('Y-m-d');
+        $client = User::where('type','client')
+                ->count();
+        // $report = Schedule::where(STR_TO_DATE('start','%m/%d/%y'),$date)->count();
+        $report  = DB::table('schedules')
+        ->select('schedules.*')
+        ->where(DB::raw("(STR_TO_DATE(schedules.start,'%Y-%m-%d'))"),$date)
+        ->count();
 
-
+ 
         return response()->json([
             'client' =>  $client, 
              'report' => $report
