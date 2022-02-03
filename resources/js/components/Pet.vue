@@ -89,12 +89,12 @@
                              <div class="form-group">
                                     <label for="photo" class="col-sm-12 control-label text-center"><h3>Profile Photo</h3> </label>
                                     <has-error :form="form" field="photo" class="text-center"></has-error>
-                                    <div class="widget-user-image">
-                                        <img class="img-fluid img-thumbnal mx-auto d-block"  style="border:1px solid black;" width="100" :src="getPetProfilePhoto()" alt="User Avatar">
+                                    <div class="widget-user-image" style="padding: 10px;border:1px solid black; width: 150px; height: 150px; display: flex; justify-content: center; align-items: center; margin: auto;">
+                                        <img class="img-fluid img-thumbnal mx-auto d-block" style="object-fit: contain; margin: auto" :src="getPetProfilePhoto()" alt="User Avatar">
                                     </div>
 
                                     <div class="col-sm-12">
-                                        <input type="file" style="color:white; border:1px solid black"  @change="updatePetProfile" name="photo" class="form-input"
+                                        <input type="file"   @change="updatePetProfile" name="photo" class="form-input"
                                         :class="{ 'is-invalid': form.errors.has('photo') }">
                                     </div>
                                  
@@ -246,10 +246,11 @@
                 
             },
             getPetProfilePhoto(){
-                if(this.form.photo != ''){
+               
+                if(this.form.photo){
                     return (this.form.photo.length > 200) ? this.form.photo : "/image/pet/"+ this.form.photo ;
                 }else{
-                    return "/image/dog.png"
+                    return "/image/pet/pawprint.png"
                 }
                 
             },
