@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -27,32 +31,84 @@ class LoginController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
-    public function redirectTo() {
-        $role = Auth::user()->type; 
-        switch ($role) {
-          case 'admin':
-            return '/home';
-            break;
-          case 'employee':
-            return '/home';
-            break;
-          case 'client':
-            return '/profile';
-            break; 
-          
-        //   default:
-        //     return '/home'; 
-          break;
+    protected $redirectTo = RouteServiceProvider::HOME;
+    public function redirectTo() : string {
+       
+        if(Auth::user()->type !== 'client'){
+          return '/home';
+        }else{
+          return '/profile';
         }
+       
       }
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+
+     
+   
+
+ 
+
+    /**
+     * Get username property.
+     *
+     * @return string
+     */
+
+    public function login(Request $request)
     {
-        $this->middleware('guest')->except('logout');
+     
+    
+      $this->validate($request, [
+          'email' => 'required',
+          'password' => 'required',
+      ]);
+     
+        $user = DB::table('users')->where('email', $request->input('email'))->first();
+
+        if($user === null){
+          Session::put('login_error', 'Your email and password wrong!!');
+          die();
+        }
+
+        if ($user->is_deleted =! null &&  auth()->guard('web')->attempt(['email' => $request->input('email'), 'password' => $request->input('password') ])) {
+         
+            $new_sessid   = Session::getId(); //get new session_id after user sign in
+            
+            if($user->session_id != null) {
+                $last_session = Session::getHandler()->read($user->session_id); 
+
+                if ($last_session) {
+                    if (Session::getHandler()->destroy($user->session_id)) {
+                        
+                    }
+                }
+            }
+            
+            DB::table('users')->where('id', $user->id)->update(['session_id' => $new_sessid]);
+            $user = auth()->guard('web')->user();
+
+          
+            return redirect($this->redirectTo());
+        }   
+        Session::put('login_error', 'Your email and password wrong!!');
+        return back();
+
     }
+
+    public function logout(){
+    
+      $user = Auth::user();
+
+
+      Session::flush();
+      Redirect::back();
+   
+      return redirect('/');
+  }
+
+
 }

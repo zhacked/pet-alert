@@ -575,8 +575,10 @@ export default {
             return moment(time, "h:mm A").add(1, "h").format("HH:mm:ss");
         },
         makeAppointment() {
-
+        
             this.loading = true;
+            const selectClient = this.selectClient || this.users;
+            console.log('client',selectClient);
             const clientId = this.selectClient?.id || this.users.id;
             const clientNumber = this.selectClient?.number || this.users.number;
             const employeeId = this.selectVet.id;
@@ -652,38 +654,35 @@ export default {
                 }
             }
 
-
-            if(this.$gate.isAdminOrisEmployee()){
-
-                const trimmedPetName = petName.substring(0, 27);
-           
-                const date = this.$moment(this.evt.start).format('MMM DD');
-                const startdate = this.$moment(this.evt.start).format('LL');
-                const starttime = this.$moment(this.time, "LT").format('LT');
-                const time = this.$moment(this.time, "LT").format('ha');
-                const start_date =  `${startdate} ${starttime}`;
-                const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Allert`;
-                
-                console.log(message)
-
+            const trimmedPetName = petName.substring(0, 27);
+            const date = this.$moment(this.evt.start).format('MMM DD');
+            const startdate = this.$moment(this.evt.start).format('LL');
+            const starttime = this.$moment(this.time, "LT").format('LT');
+            const time = this.$moment(this.time, "LT").format('ha');
+            const start_date =  `${startdate} ${starttime}`;
+            const message = `Good day!\nThis is a reminder that ${trimmedPetName}'s appointment is on ${date} at ${time} -Pet Allert`;
+            
+            if(this.$gate.isAdmin()){
                 axios.post("api/smsSend",{
                         clientNumber,
                         message
                     }).then(() => (console.log('Message sent')));
 
-
                 axios.post('api/adminemailsend',{
-                        clientId,
-                        clientNumber,
-                        employeeId,
-                        petId,
-                        serviceId,
-                        details,
-                        start_date
-                    }).then(()=>{
-                        console.log('Email sent')
-                }); 
+                    clientId,
+                    clientNumber,
+                    employeeId,
+                    petId,
+                    serviceId,
+                    details,
+                    start_date
+                }).then(()=>{
+                    console.log('Email sent')
+            }); 
+
             }
+
+            
              
             this.overlay = !this.overlay;
             this.selectClient = null;
