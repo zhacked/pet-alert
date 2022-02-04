@@ -158,23 +158,22 @@
                                     ></has-error>
                                 </div>
 
-                                <div class="form-group">
-                                    <input
+                                <!-- <div class="form-group"> -->
+                                    <v-text-field
                                         v-model="form.number"
                                         name="contact"
                                         id="contact"
+                                        counter="11"
                                         placeholder="number"
-                                        class="form-control"
-                                        :class="{
-                                            'is-invalid':
-                                                form.errors.has('number'),
-                                        }"
-                                    />
-                                    <has-error
+                                        outlined
+                                        dense
+                                    
+                                    ></v-text-field>
+                                    <!-- <has-error
                                         :form="form"
                                         field="number"
                                     ></has-error>
-                                </div>
+                                </div> -->
 
                                 <!-- <div class="form-group">
 								<input v-model="form.color" name="color" id="color" type="color"
@@ -190,7 +189,7 @@
                                             <v-select
                                                 v-model="scheduleFrom"
                                                 :items="timeAvail()"
-                                                :rules="[rules.required]"
+                                                
                                                 label="From"
                                                 dense
                                             ></v-select>
@@ -198,9 +197,9 @@
 
                                         <v-col class="d-flex" cols="12" sm="6">
                                             <v-select
-                                            v-model="scheduleTo"
+                                                v-model="scheduleTo"
                                                 :items="timeAvail()"
-                                                :rules="[rules.required]"
+                                                
                                                 label="To"
                                                 dense
                                             ></v-select>
@@ -269,7 +268,7 @@
                                     >Update</v-btn
                                 >
                                 <v-btn
-                                    :disabled="!valid"
+                                    :disabled="(scheduleFrom && scheduleTo) ? false : true"
                                     v-show="!editmode"
                                     type="submit"
                                     color="success"
@@ -414,6 +413,8 @@ export default {
             this.form
                 .post("api/employeess")
                 .then(() => {
+                    this.scheduleFrom = null;
+                    this.scheduleTo = null;
                     Fire.$emit("AfterCreate");
                     $("#addNew").modal("hide");
                     toast({
@@ -421,8 +422,12 @@ export default {
                         title: "User Created in successfully",
                     });
                     this.$Progress.finish();
+                   
                 })
                 .catch(() => {});
+
+
+                console.log(this.scheduleFrom)
 
 
         },
