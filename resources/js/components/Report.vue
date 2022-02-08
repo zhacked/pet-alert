@@ -83,13 +83,15 @@
                                         </template>
                                         <span>Decline Appointment</span>
                                     </v-tooltip>   
+
+                                      <span v-show="$gate.isAdmin() && item.status=='done'" class="primary--text"><v-icon class="primary--text">mdi-check</v-icon></span>
                                 </template>
                                <template v-slot:[`item.done`]="{ item }">
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn
                                             icon
-                                            v-show="$gate.isAdmin() && item.status!='done' && (item.status=='accepted' || item.status=='pending')"
+                                            v-show="$gate.isAdmin() && item.status!='done' && item.status=='accepted'"
                                             small
                                             color="primary"
                                             dark
@@ -103,7 +105,7 @@
                                         <span>Mark as Done</span>
                                     </v-tooltip>   
 
-                                     <span v-show="$gate.isAdmin() && item.status=='done'" class="primary--text"><v-icon class="primary--text">mdi-check</v-icon> <strong>  Done </strong></span>
+                                   
                                 </template>
 
                                
