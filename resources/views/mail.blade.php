@@ -37,10 +37,10 @@
                        <strong> Type :</strong> {{$pet->species}}
                     </li>
                     <li>
-                      <strong>  breed :</strong> {{$pet->breed}}
+                      <strong>  Breed :</strong> {{$pet->breed}}
                     </li>
                     <li>
-                       <strong> birthday : </strong> {{$pet->birthday}}
+                       <strong> Birthday : </strong> {{$pet->birthday}}
                     </li>
                 </ul>
             </span>

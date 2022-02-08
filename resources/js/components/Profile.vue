@@ -17,7 +17,7 @@
             <div class="col-md-12 mt-3">
                 
                 <div class="card card-widget widget-user">
-                <div class="widget-user-header text-bold text-white" style="background-image:url('./image/user-cover.jpg')">
+                <div class="widget-user-header text-bold text-white" style="background-image:url('./image/bgpets.jpg')">
                     <h1 class="widget-user-username text-dark" 
                         style="
                             font-family: Aclonica, sans-serif;
@@ -66,8 +66,6 @@
                 </div>
             </div>
 
-
-
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header p-2">
@@ -78,7 +76,6 @@
                     </div>
                     <div class="card-body" style="background-color: #BFBFBF;">
                         <div class="tab-content">
-
                             <div class="tab-pane  w-100" id="activity">
                                     <v-img
                                         class="mx-auto"
@@ -90,57 +87,50 @@
                             </div>
 
                             <div class="tab-pane active show" id="settings">
+                                <div class="form-group">
+                                    <label for="photo" class="profile"> Change Profile Photo</label>
+                                    <div class="col-sm-12">
+
+                                        <label class="addphoto"> Add Photo <i class="fas fa-plus fa-fw"></i>
+                                            <input type="file" size="60" @change="updateProfile" name="photo" class="form-input" >
+                                        </label> 
+                                       
+                                    </div>
+                                </div>
                                 <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                                    <label for="inputName" class="profile">Name</label>
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 pass">
                                     <input  v-model="form.name" class="form-control" id="inputName" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }" >
                                      <has-error :form="form" field="name"></has-error>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                                    <label for="inputEmail" class="profile">Email</label>
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 pass">
                                     <input type="text" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email"  :class="{ 'is-invalid': form.errors.has('email') }">
                                      <has-error :form="form" field="email"></has-error>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="inputExperience" class="col-sm-2 control-label">Description</label>
-
-                                    <div class="col-sm-12">
-                                    <textarea  v-model="form.bio" class="form-control" id="inputExperience" placeholder="Description" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
-                                     <has-error :form="form" field="bio"></has-error>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="photo" class="col-sm-2 control-label">Profile Photo</label>
-                                    <div class="col-sm-12">
-                                        <input type="file" style="color:white; border:1px solid black"  @change="updateProfile" name="photo" class="form-input">
-                                    </div>
-
-                                </div>
-
+                               
                                 <div class="input-group">
-                                    <label for="password" class="col-sm-12 control-label">Change Password (leave empty if not changing)</label>
-                                    <input :type="show == true ? 'password' : 'text'"
-                                        v-model="form.password"
-                                        class="form-control"
-                                        id="password"
-                                        
-                                        placeholder="Password"
-                                        :class="{ 'is-invalid': form.errors.has('password') }"
-                                    >
-                                     <has-error :form="form" field="password"></has-error>  
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" id="basic-addon2" @click="showPassword"><i :class="show == true ? 'fa fa-eye' : 'fa fa-eye-slash'" aria-hidden="true"></i></span>
+                                    <label for="password" class="profile">Change Password (leave empty if not changing)</label>
+                                    <div class="pass">
+                                        <input :type="show == false ? 'password' : 'text'"
+                                            v-model="form.password"
+                                            class="form-control"
+                                            id="password"
+                                            placeholder="Password"
+                                            :class="{ 'is-invalid': form.errors.has('password') }"
+                                        >
+                                        <has-error :form="form" field="password"></has-error>  
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2" @click="showPassword"><i :class="show == true ? 'fa fa-eye' : 'fa fa-eye-slash'" aria-hidden="true"></i></span>
+                                        </div>
                                     </div>
                                 </div>
-
-                        
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-12">
@@ -156,8 +146,6 @@
         </div>
     </div>
 </template>
-
-
 
 <script>
     export default {

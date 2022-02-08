@@ -10,7 +10,7 @@
                     style="max-width: 90%; width: 600px border:1px solid black;">
                     <div class="card-body container-fluid px-5 py-3">
                         <h3 class="text-center text-black">ACCOUNT LOGIN</h3>
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('login') }}" id="loginform">
                             @csrf
                             <div class="mb-3">
                                 <label for="email"
@@ -27,8 +27,8 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="input-group mb-3">
-                                <label for="password" class="col-sm-12 control-label">{{ __('Password') }}</label>
+                            <div class="input-group mb-3" >
+                                <label for="password" id="pass" class="col-sm-12">{{ __('Password') }}</label>
                                 <input type="password"
                                         id="password"
                                         class="form-control custom-input @error('password') is-invalid @enderror"
@@ -45,13 +45,14 @@
                             </div>
                            
                             @if (Route::has('password.request'))
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                            <a class="btn btn-link" id="btnforgot" href="{{ route('password.request') }}">
                                 {{ __('Forgot Your Password?') }}
                             </a>
                             @endif
 
-                            <div class="d-grid col-6 float-right ">
+                            <div class="d-grid col-6">
                                 <button class="btn btn-block btn-primary mt-4 py-3 text-uppercase text-white"
+                                    id="btnsignin"
                                     type="submit">
                                     {{ __('SIGN IN') }}
                                 </button>

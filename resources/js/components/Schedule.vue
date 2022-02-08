@@ -9,7 +9,6 @@ import Calendar from './Calendar.vue';
 
 import moment from "moment";
 
-
 export default {
     components: {
 
@@ -22,12 +21,8 @@ export default {
     },
  
     methods: {
-      
-
        
     },
-
-
 };
 </script>
 

@@ -94,8 +94,10 @@
                                     </div>
 
                                     <div class="col-sm-12">
-                                        <input type="file"   @change="updatePetProfile" name="photo" class="form-input"
-                                        :class="{ 'is-invalid': form.errors.has('photo') }">
+                                        <label class="addphoto"> Add Photo <i class="fas fa-plus fa-fw"></i>
+                                            <input type="file"   @change="updatePetProfile" name="photo" class="form-input"
+                                            :class="{ 'is-invalid': form.errors.has('photo') }">
+                                        </label>
                                     </div>
                                  
 
